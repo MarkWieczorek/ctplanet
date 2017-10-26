@@ -13,8 +13,8 @@ be used to reproduce the results presented in *Wieczorek et al.* (2013).
 This python program requires the use of [pyshtools](https://github.com/SHTOOLS/SHTOOLS), version 4.1 or greater.
 
 Wieczorek, M. A., G. A. Neumann, F. Nimmo, W. S. Kiefer, G. J. Taylor,
-&nbsp;&nbsp;&nbsp;&nbsp;H. J. Melosh, R. J. Phillips, S. C. Solomon, J. C. Andrews-Hanna,
-&nbsp;&nbsp;&nbsp;&nbsp;S. W. Asmar, A. S. Konopliv, F. G. Lemoine, D. E. Smith, M. M. Watkins,
-&nbsp;&nbsp;&nbsp;&nbsp;J. G. Williams, M. T. Zuber (2013), The crust of the Moon as seen by GRAIL,
-&nbsp;&nbsp;&nbsp;&nbsp;Science, 339, 671-675, doi:[10.1126/science.1231530](http://doi.org/10.1126/science.1231530).
+    H. J. Melosh, R. J. Phillips, S. C. Solomon, J. C. Andrews-Hanna,
+    S. W. Asmar, A. S. Konopliv, F. G. Lemoine, D. E. Smith, M. M. Watkins,
+    J. G. Williams, M. T. Zuber (2013), The crust of the Moon as seen by GRAIL,
+    Science, 339, 671-675, doi:[10.1126/science.1231530](http://doi.org/10.1126/science.1231530).
 
