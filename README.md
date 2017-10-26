@@ -10,6 +10,7 @@ the effects of lateral variations in crustal density.
 The script `pyCrust-Moon` demonstrates how to use both functions, and can
 be used to reproduce the results presented in *Wieczorek et al.* (2013).
 
+This python program requires the use of [pyshtools](https://github.com/SHTOOLS/SHTOOLS), version 4.1 or greater.
 
 Wieczorek, M. A., G. A. Neumann, F. Nimmo, W. S. Kiefer, G. J. Taylor,
     H. J. Melosh, R. J. Phillips, S. C. Solomon, J. C. Andrews-Hanna,
