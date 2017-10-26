@@ -7,7 +7,7 @@ planet from gravity and topography data. `pyMoho` assumes that the density of
 the crust and mantle are both constant values, whereas `pyMohoRho` includes
 the effects of lateral variations in crustal density.
 
-The script `pyCrust-Moon` demonstrates how to use both functions, and can
+The script `pyCrust_Moon` demonstrates how to use both functions, and can
 be used to reproduce the results presented in *Wieczorek et al.* (2013).
 
 This python program requires the use of [pyshtools](https://github.com/SHTOOLS/SHTOOLS), version 4.1 or greater.
