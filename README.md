@@ -12,6 +12,7 @@ be used to reproduce the results presented in *Wieczorek et al.* (2013).
 
 This python program requires the use of [pyshtools](https://github.com/SHTOOLS/SHTOOLS), version 4.1 or greater.
 
+## Reference
 Wieczorek, M. A., G. A. Neumann, F. Nimmo, W. S. Kiefer, G. J. Taylor,
     H. J. Melosh, R. J. Phillips, S. C. Solomon, J. C. Andrews-Hanna,
     S. W. Asmar, A. S. Konopliv, F. G. Lemoine, D. E. Smith, M. M. Watkins,
