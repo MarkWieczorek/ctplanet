@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 pyCrust-Moon
 
@@ -84,15 +84,13 @@ def main():
                          filter_type=filter, half=half, lmax_calc=lmax_calc,
                          quiet=False)
 
-    # zero pad the coefficients to from lmax_calc to topo.lmax
-    moho_pad = pyshtools.SHCoeffs.from_array(moho.to_array(lmax=topo.lmax))
-
-    thick_grid = (topo-moho_pad).expand(grid='DH2')
+    thick_grid = (topo-moho.pad(topo.lmax)).expand(grid='DH2')
     thick_grid.plot(show=False, fname='Thick-Moon-1.png')
     moho.plot_spectrum(show=False, fname='Moho-spectrum-Moon-1.png')
 
     print('Crustal thickness at Apollo 12/14 landing sites (km) = {:e}'.format(
-        (topo-moho_pad).expand(lat=a_12_14_lat, lon=a_12_14_long)/1.e3))
+        (topo-moho.pad(topo.lmax)).expand(lat=a_12_14_lat,
+                                          lon=a_12_14_long)/1.e3))
 
     # Model with variable density
 
@@ -100,14 +98,13 @@ def main():
                             thickave, filter_type=filter, half=half,
                             lmax_calc=lmax_calc, quiet=False)
 
-    moho_pad = pyshtools.SHCoeffs.from_array(moho.to_array(lmax=topo.lmax))
-
-    thick_grid = (topo-moho_pad).expand(grid='DH2')
+    thick_grid = (topo-moho.pad(topo.lmax)).expand(grid='DH2')
     thick_grid.plot(show=False, fname='Thick-Moon-2.png')
     moho.plot_spectrum(show=False, fname='Moho-spectrum-Moon-2.png')
 
     print('Crustal thickness at Apollo 12/14 landing sites (km) = {:e}'.format(
-        (topo-moho_pad).expand(lat=a_12_14_lat, lon=a_12_14_long)/1.e3))
+        (topo-moho.pad(topo.lmax)).expand(lat=a_12_14_lat,
+                                          lon=a_12_14_long)/1.e3))
 
 
 # ==== EXECUTE SCRIPT ====
