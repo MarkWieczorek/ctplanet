@@ -16,12 +16,7 @@ Wieczorek, M. A., G. A. Neumann, F. Nimmo, W. S. Kiefer, G. J. Taylor,
     J. G. Williams, M. T. Zuber (2013), The crust of the Moon as seen by GRAIL,
     Science, 339, 671-675, doi:10.1126/science.1231530, 2013.
 """
-
-import os
-import sys
 import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 
 import pyshtools
 
@@ -32,8 +27,7 @@ import pyMoho
 
 def main():
 
-    degmax = 900    # This is the maximum possible degree to be read from the
-                    # gravity and topography spherical harmonic files.
+    degmax = 900    # maximum degree to be read from the files.
 
     gravfile = 'Data/JGGRAIL_900C11A_SHA.TAB'
     topofile = 'Data/LOLA1500p.sh'

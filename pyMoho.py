@@ -8,11 +8,7 @@ pyMohoRho   Calculate relief using a constant density mantle and a variable
 
 Requires pyshtools version 4.1 or later.
 '''
-import os
-import sys
 import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 
 import pyshtools as pyshtools
 
@@ -70,7 +66,6 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
     quiet : boolean, optional, default = False
         If True, suppress printing output during the iterations.
     """
-
     if (filter_type == 1 or filter_type == 2) and half is None:
         raise ValueError("half must be set when filter_type is either 1 or 2.")
 
@@ -103,17 +98,17 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
         if filter_type == 0:
             moho.coeffs[:, l, :l + 1] = ba[:, l, :l + 1] * pot.mass * \
                 (2 * l + 1) * ((r0 / d)**l) / \
-                (4.0 * np.pi * (rho_m - rho_c) * d**2)
+                (4. * np.pi * (rho_m - rho_c) * d**2)
         elif filter_type == 1:
             moho.coeffs[:, l, :l + 1] = pyshtools.gravmag.DownContFilterMA(
                 l, half, r0, d) * ba[:, l, :l + 1] * pot.mass * \
                 (2 * l + 1) * ((r0 / d)**l) / \
-                (4.0 * np.pi * (rho_m - rho_c) * d**2)
+                (4. * np.pi * (rho_m - rho_c) * d**2)
         else:
             moho.coeffs[:, l, :l + 1] = pyshtools.gravmag.DownContFilterMC(
                 l, half, r0, d) * ba[:, l, :l + 1] * pot.mass * \
                 (2 * l + 1) * ((r0 / d)**l) / \
-                (4.0 * np.pi * (rho_m - rho_c) * d**2)
+                (4. * np.pi * (rho_m - rho_c) * d**2)
 
     moho_grid3 = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc)
 
@@ -150,7 +145,7 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
         if quiet is False:
             print('Iteration {:d}'.format(iter))
 
-        moho_grid = (moho_grid2 + moho_grid3) / 2.0
+        moho_grid = (moho_grid2 + moho_grid3) / 2.
         temp_grid = topo_grid - moho_grid
 
         if quiet is False:
@@ -254,7 +249,6 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
     quiet : boolean, optional, default = False
         If True, suppress printing output during the iterations.
     """
-
     if (filter_type == 1 or filter_type == 2) and half is None:
         raise ValueError("half must be set when filter_type is either 1 or 2.")
 
@@ -262,7 +256,7 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
         lmax_calc = lmax
 
     d = topo.r0 - thickave
-    rho_crust_ave = density.coeffs[0, 0, 0] * (1.0 - porosity)
+    rho_crust_ave = density.coeffs[0, 0, 0] * (1. - porosity)
 
     pot2 = pot.copy()
 
@@ -283,15 +277,15 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
             density_grid.data.min() / 1.e3))
 
     bc, r0 = pyshtools.gravmag.CilmPlusRhoHDH(
-        topo_grid.data, density_grid.data * (1.0 - porosity), nmax, pot.mass,
+        topo_grid.data, density_grid.data * (1. - porosity), nmax, pot.mass,
         lmax=lmax_calc)
     ba = pot2.to_array(lmax=lmax_calc) - bc
 
     # next subtract lateral variations in the crust without reflief
     for l in range(1, lmax_calc + 1):
         ba[:, l, :l + 1] = ba[:, l, :l + 1] \
-                           - 4.0 * np.pi * density.coeffs[:, l, :l + 1] \
-                           * (1.0 - porosity) \
+                           - 4. * np.pi * density.coeffs[:, l, :l + 1] \
+                           * (1. - porosity) \
                            * (r0**3 - (d**3)*(d/r0)**l) \
                            / (2 * l + 1) / (l + 3) / pot.mass
 
@@ -302,12 +296,12 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
         if filter_type == 0:
             moho.coeffs[:, l, :l + 1] = ba[:, l, :l + 1] * pot.mass * \
                 (2 * l + 1) * ((r0 / d)**l) / \
-                (4.0 * np.pi * (rho_m - rho_crust_ave) * d**2)
+                (4. * np.pi * (rho_m - rho_crust_ave) * d**2)
         elif filter_type == 1:
             moho.coeffs[:, l, :l + 1] = pyshtools.gravmag.DownContFilterMA(
                 l, half, r0, d) * ba[:, l, :l + 1] * pot.mass * \
                 (2 * l + 1) * ((r0 / d)**l) / \
-                (4.0 * np.pi * (rho_m - rho_crust_ave) * d**2)
+                (4. * np.pi * (rho_m - rho_crust_ave) * d**2)
         else:
             moho.coeffs[:, l, :l + 1] = pyshtools.gravmag.DownContFilterMC(
                 l, half, r0, d) * ba[:, l, :l + 1] * pot.mass * \
@@ -315,7 +309,7 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
                 (4.0 * np.pi * (rho_m - rho_crust_ave) * d**2)
 
     moho_grid3 = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc)
-    drho_grid = rho_m - density_grid * (1.0 - porosity)
+    drho_grid = rho_m - density_grid * (1. - porosity)
 
     if quiet is False:
         print('Maximum Crustal thickness (km) = {:e}'.format(
@@ -348,7 +342,7 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
         if quiet is False:
             print('Iteration {:d}'.format(iter))
 
-        moho_grid = (moho_grid2 + moho_grid3) / 2.0
+        moho_grid = (moho_grid2 + moho_grid3) / 2.
         temp_grid = topo_grid - moho_grid
 
         if quiet is False:
