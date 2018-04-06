@@ -37,7 +37,7 @@ def main():
     pot = pyshtools.SHCoeffs.from_array(potcoefs, lmax=lmaxp)
     pot.r_ref = header[0] * 1.e3
     pot.gm = header[1] * 1.e9
-    pot.mass = pot.gm / pyshtools.constant.grav_constant
+    pot.mass = pot.gm / float(pyshtools.constant.grav_constant)
 
     print('Gravity file = {:s}'.format(gravfile))
     print('Lmax of potential coefficients = {:d}'.format(lmaxp))
