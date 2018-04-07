@@ -45,13 +45,13 @@ def main():
     pot_file = "/Users/lunokhod/Moon/GRAIL/GravityModels/" + \
         "JGGRAIL_900C11A_SHA.TAB"
 
-    coeffs, header, lmaxp = pyshtools.shio.shread(pot_file, lmax=10,
+    coeffs, lmaxp, header = pyshtools.shio.shread(pot_file, lmax=10,
                                                   header=True)
     r0_pot = float(header[0])*1.e3
     gm = float(header[1])*1.e9
 
     potential = pyshtools.SHCoeffs.from_array(coeffs)
-    potential.r0 = r0_pot
+    potential.r_ref = r0_pot
     potential.gm = gm
 
     print("Mean planetary radius (km) = {:e}".format(r0 / 1.e3))

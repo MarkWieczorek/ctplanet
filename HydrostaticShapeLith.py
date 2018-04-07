@@ -23,7 +23,7 @@ def HydrostaticFlatteningLith(radius, rho, ilith, potential, omega, lmax,
     Usage
     -----
     hlm, clm_hydro, mass = HydrostaticFlatteningLith(radius, density, ilith,
-        potential, omega, lmax, [finiteamplitude, rp])
+        potential, omega, lmax, [finiteamplitude, rp, mp])
 
     Returns
     -------
@@ -49,7 +49,7 @@ def HydrostaticFlatteningLith(radius, rho, ilith, potential, omega, lmax,
         Index of the interface that corresponds to the base of the lithosphere.
     potential : SHCoeffs class instance
         Observed gravitational potential coefficients. The class instance must
-        set the attributes gm and r0 for the GM and reference radius of the
+        set the attributes gm and r_ref for the GM and reference radius of the
         coefficients, respectively.
     omega : float
         Angular rotation rate of the planet.
@@ -88,7 +88,7 @@ def HydrostaticFlatteningLith(radius, rho, ilith, potential, omega, lmax,
 
     g = float(pyshtools.constant.grav_constant)
     gm = potential.gm
-    r0 = potential.r0
+    r_ref = potential.r_ref
 
     hlm = [pyshtools.SHCoeffs.from_zeros(lmax) for i in range(ilith+1)]
     clm_hydro = pyshtools.SHCoeffs.from_zeros(lmax)
@@ -214,10 +214,10 @@ def HydrostaticFlatteningLith(radius, rho, ilith, potential, omega, lmax,
 
                 for j in range(1, ilith+1):
                     a[ilith+1, j] = 4. * np.pi * g * drho[j] * \
-                        radius[j]**(l+2) / (2. * l + 1.) / r0**(l+1)
+                        radius[j]**(l+2) / (2. * l + 1.) / r_ref**(l+1)
 
                 a[ilith+1, ilith+1] = 4. * np.pi * g * radius[n]**(l+2) / \
-                    (2. * l + 1.) / r0**(l+1)
+                    (2. * l + 1.) / r_ref**(l+1)
 
                 b = np.zeros(ilith+2)
                 if l == 2 and m == 0:
@@ -236,7 +236,7 @@ def HydrostaticFlatteningLith(radius, rho, ilith, potential, omega, lmax,
                 # Add contributions from degree 2 relief to degree 4.
                 if l == 4 and m <= 2:
                     b[1:ilith+1] = b4[0, m, 1:ilith+1]
-                b[ilith+1] = gm * potential.coeffs[0, l, m] / r0
+                b[ilith+1] = gm * potential.coeffs[0, l, m] / r_ref
 
                 # calculate delta
                 if k > 0:
@@ -251,7 +251,7 @@ def HydrostaticFlatteningLith(radius, rho, ilith, potential, omega, lmax,
                                     radius[i]**l / radius[j]**(l+1)
                     for j in range(1, ilith+1):
                         d[ilith+1] -= dcplus[j, 0, l, m] * gm * \
-                                    radius[j]**l / r0**(l+1)
+                                    radius[j]**l / r_ref**(l+1)
 
                 # solve the linear equation A h = b
                 atemp = a.copy()
@@ -293,7 +293,7 @@ def HydrostaticFlatteningLith(radius, rho, ilith, potential, omega, lmax,
                     # Add contributions from degree 2 relief to degree 4.
                     if l == 4 and m <= 2:
                         b[1:ilith+1] = b4[1, m, 1:ilith+1]
-                    b[ilith+1] = gm * potential.coeffs[1, l, m] / r0
+                    b[ilith+1] = gm * potential.coeffs[1, l, m] / r_ref
 
                     # calculate delta
                     if k > 0:
@@ -308,7 +308,7 @@ def HydrostaticFlatteningLith(radius, rho, ilith, potential, omega, lmax,
                                         radius[i]**l / radius[j]**(l+1)
                         for j in range(1, ilith+1):
                             d[ilith+1] -= dcplus[j, 1, l, m] * gm * \
-                                        radius[j]**l / r0**(l+1)
+                                        radius[j]**l / r_ref**(l+1)
 
                     # solve the linear equation A h = b
                     atemp = a.copy()
@@ -339,7 +339,7 @@ def HydrostaticFlatteningLith(radius, rho, ilith, potential, omega, lmax,
                                     omega**2 * radius[i] * \
                                     hlm[i].coeffs[1, l, m] * p422022
 
-    # Calculate potential at r0 resulting from all interfaces below and
+    # Calculate potential at r_ref resulting from all interfaces below and
     # including ilith
 
     coeffs = np.zeros((2, lmax+1, lmax+1))
@@ -349,16 +349,16 @@ def HydrostaticFlatteningLith(radius, rho, ilith, potential, omega, lmax,
             clm, r = pyshtools.gravmag.CilmPlusDH(grid.data, nmax, gm/g,
                                                   drho[i], lmax=lmax)
             for l in range(2, lmax+1):
-                coeffs[:, l, :l+1] += clm[:, l, :l+1] * (radius[i] / r0)**l
+                coeffs[:, l, :l+1] += clm[:, l, :l+1] * (radius[i] / r_ref)**l
         else:
             for l in range(2, lmax+1):
                 coeffs[:, l, :l+1] += hlm[i].coeffs[:, l, :l+1] * 4. * \
-                    np.pi * drho[i] * radius[i]**2 * (radius[i] / r0)**l * \
+                    np.pi * drho[i] * radius[i]**2 * (radius[i] / r_ref)**l * \
                     g / gm / (2. * l + 1.)
 
     clm_hydro = pyshtools.SHCoeffs.from_array(coeffs, normalization='4pi',
                                               csphase=1)
-    clm_hydro.r0 = r0
+    clm_hydro.r_ref = r_ref
     clm_hydro.gm = gm
 
     return hlm, clm_hydro, mass_model

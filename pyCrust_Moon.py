@@ -27,16 +27,18 @@ import pyMoho
 
 def main():
 
-    degmax = 900    # maximum degree to be read from the files.
+    lmax = 900
+    lmax_calc = 600
 
     gravfile = 'Data/JGGRAIL_900C11A_SHA.TAB'
     topofile = 'Data/LOLA1500p.sh'
     densityfile = 'Data/density_no_mare_n3000_f3050_719.sh'
 
-    potcoefs, lmaxp, header = pyshtools.shio.SHReadH(gravfile, degmax, 2)
-    pot = pyshtools.SHCoeffs.from_array(potcoefs, lmax=lmaxp)
-    pot.r_ref = header[0] * 1.e3
-    pot.gm = header[1] * 1.e9
+    potcoefs, lmaxp, header = pyshtools.shio.shread(gravfile, header=True,
+                                                    lmax=lmax)
+    pot = pyshtools.SHCoeffs.from_array(potcoefs)
+    pot.r_ref = float(header[0]) * 1.e3
+    pot.gm = float(header[1]) * 1.e9
     pot.mass = pot.gm / float(pyshtools.constant.grav_constant)
 
     print('Gravity file = {:s}'.format(gravfile))
@@ -44,21 +46,18 @@ def main():
     print('Reference radius (m) = {:e}'.format(pot.r_ref))
     print('GM = {:e}\n'.format(pot.gm))
 
-    topo = pyshtools.SHCoeffs.from_file(topofile, degmax)
+    topo = pyshtools.SHCoeffs.from_file(topofile, lmax=lmax)
     topo.r0 = topo.coeffs[0, 0, 0]
 
     print('Topography file = {:s}'.format(topofile))
     print('Lmax of topography coefficients = {:d}'.format(topo.lmax))
     print('Reference radius (m) = {:e}\n'.format(topo.r0))
 
-    density = pyshtools.SHCoeffs.from_file(densityfile, degmax)
+    density = pyshtools.SHCoeffs.from_file(densityfile, lmax=lmax)
     rho_c = density.coeffs[0, 0, 0]
 
     print('Average grain density of crust (kg/m3) = {:e}'.format(rho_c))
     print('Lmax of density coefficients = {:d}\n'.format(density.lmax))
-
-    lmax = 900
-    lmax_calc = 600
 
     a_12_14_lat = -3.3450
     a_12_14_long = -20.450
@@ -78,13 +77,13 @@ def main():
                          filter_type=filter, half=half, lmax_calc=lmax_calc,
                          quiet=False)
 
-    thick_grid = (topo-moho.pad(topo.lmax)).expand(grid='DH2')
+    thick_grid = (topo.pad(lmax) - moho.pad(lmax)).expand(grid='DH2')
     thick_grid.plot(show=False, fname='Thick-Moon-1.png')
     moho.plot_spectrum(show=False, fname='Moho-spectrum-Moon-1.png')
 
-    print('Crustal thickness at Apollo 12/14 landing sites (km) = {:e}'.format(
-        (topo-moho.pad(topo.lmax)).expand(lat=a_12_14_lat,
-                                          lon=a_12_14_long)/1.e3))
+    print('Crustal thickness at Apollo 12/14 landing sites (km) = {:e}'
+          .format((topo.pad(lmax) - moho.pad(lmax))
+                  .expand(lat=a_12_14_lat, lon=a_12_14_long) / 1.e3))
 
     # Model with variable density
 

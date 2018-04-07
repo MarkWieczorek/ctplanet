@@ -17,7 +17,7 @@ import pyshtools as pyshtools
 
 
 def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
-           nmax=8, delta_max=5.0, lmax_calc=None, quiet=False):
+           nmax=8, delta_max=5., lmax_calc=None, quiet=False):
     """
     Calculate the relief along the crust-mantle interface assuming a
     constant density crust and mantle.
@@ -36,7 +36,7 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
     ----------
     pot : SHCoeffs class instance
         Gravitational potential spherical harmonic coefficients. The attributes
-        gm and r_ref must be set.
+        gm, mass, and r_ref must be set.
     topo : SHCoeffs class instance
         Spherical harmonic coefficients of the surface relief. The attribute
         r0 must be set.
@@ -81,11 +81,11 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
                                    (pot.r_ref / topo.r0)**l
     pot2.r_ref = topo.r0
 
-    topo_grid = topo.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc)
+    topo_grid = topo.expand(grid='DH2', lmax=lmax)
 
     if quiet is False:
-        print("Maximum radius (km) = {:e}".format(topo_grid.data.max() / 1.e3))
-        print("Minimum radius (km) = {:e}".format(topo_grid.data.min() / 1.e3))
+        print("Maximum radius (km) = {:f}".format(topo_grid.data.max() / 1.e3))
+        print("Minimum radius (km) = {:f}".format(topo_grid.data.min() / 1.e3))
 
     bc, r0 = pyshtools.gravmag.CilmPlusDH(topo_grid.data, nmax, pot.mass,
                                           rho_c, lmax=lmax_calc)
@@ -112,11 +112,12 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
 
     moho_grid3 = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc)
 
+    temp_grid = topo_grid - moho_grid3
     if quiet is False:
         print('Maximum Crustal thickness (km) = {:e}'.format(
-            (topo_grid - moho_grid3).data.max() / 1.e3))
+            temp_grid.data.max() / 1.e3))
         print('Minimum Crustal thickness (km) = {:e}'.format(
-            (topo_grid - moho_grid3).data.min() / 1.e3))
+            temp_grid.data.min() / 1.e3))
 
     moho.coeffs = pyshtools.gravmag.BAtoHilmDH(ba, moho_grid3.data, nmax,
                                                pot.mass, r0, (rho_m - rho_c),
@@ -131,9 +132,9 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
     if quiet is False:
         print('Delta (km) = {:e}'.format(abs(moho_grid3.data -
                                              moho_grid2.data).max() / 1.e3))
-        print('Maximum Crustal thickness (km) = {:e}'
+        print('Maximum Crustal thickness (km) = {:f}'
               .format(temp_grid.data.max() / 1.e3))
-        print('Minimum Crustal thickness (km) = {:e}'
+        print('Minimum Crustal thickness (km) = {:f}'
               .format(temp_grid.data.min() / 1.e3))
 
     iter = 0
@@ -151,9 +152,9 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
         if quiet is False:
             print("Delta (km) = {:e}".format(
                 abs(moho_grid.data - moho_grid2.data).max() / 1.e3))
-            print('Maximum Crustal thickness (km) = {:e}'.format(
+            print('Maximum Crustal thickness (km) = {:f}'.format(
                 temp_grid.data.max() / 1.e3))
-            print('Minimum Crustal thickness (km) = {:e}'.format(
+            print('Minimum Crustal thickness (km) = {:f}'.format(
                 temp_grid.data.min() / 1.e3))
 
         moho_grid3 = moho_grid2
@@ -178,9 +179,9 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
 
         if quiet is False:
             print('Delta (km) = {:e}'.format(delta / 1.e3))
-            print('Maximum Crustal thickness (km) = {:e}'.format(
+            print('Maximum Crustal thickness (km) = {:f}'.format(
                 temp_grid.data.max() / 1.e3))
-            print('Minimum Crustal thickness (km) = {:e}'.format(
+            print('Minimum Crustal thickness (km) = {:f}'.format(
                 temp_grid.data.min() / 1.e3))
 
         moho_grid3 = moho_grid2
@@ -197,7 +198,7 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
 
 
 def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
-              filter_type=0, half=None, nmax=8, delta_max=5.0, lmax_calc=None,
+              filter_type=0, half=None, nmax=8, delta_max=5., lmax_calc=None,
               quiet=False):
     """
     Calculate the relief along the crust-mantle interface assuming a
@@ -217,7 +218,7 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
     ----------
     pot : SHCoeffs class instance
         Gravitational potential spherical harmonic coefficients. The attributes
-        gm and r_ref must be set.
+        gm, mass, and r_ref must be set.
     topo : SHCoeffs class instance
         Spherical harmonic coefficients of the surface relief. The attribute
         r0 must be set.
@@ -265,15 +266,15 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
                                    (pot.r_ref / topo.r0)**l
     pot2.r_ref = topo.r0
 
-    topo_grid = topo.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc)
-    density_grid = density.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc)
+    topo_grid = topo.expand(grid='DH2', lmax=lmax)
+    density_grid = density.expand(grid='DH2', lmax=lmax)
 
     if quiet is False:
-        print("Maximum radius (km) = {:e}".format(topo_grid.data.max() / 1.e3))
-        print("Minimum radius (km) = {:e}".format(topo_grid.data.min() / 1.e3))
-        print("Maximum density (kg/m3) = {:e}".format(
+        print("Maximum radius (km) = {:f}".format(topo_grid.data.max() / 1.e3))
+        print("Minimum radius (km) = {:f}".format(topo_grid.data.min() / 1.e3))
+        print("Maximum density (kg/m3) = {:f}".format(
             density_grid.data.max() / 1.e3))
-        print("Minimum desntiy (kg/m3) = {:e}".format(
+        print("Minimum desntiy (kg/m3) = {:f}".format(
             density_grid.data.min() / 1.e3))
 
     bc, r0 = pyshtools.gravmag.CilmPlusRhoHDH(
@@ -310,12 +311,13 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
 
     moho_grid3 = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc)
     drho_grid = rho_m - density_grid * (1. - porosity)
+    temp_grid = topo_grid - moho_grid3
 
     if quiet is False:
-        print('Maximum Crustal thickness (km) = {:e}'.format(
-            (topo_grid - moho_grid3).data.max() / 1.e3))
-        print('Minimum Crustal thickness (km) = {:e}'.format(
-            (topo_grid - moho_grid3).data.min() / 1.e3))
+        print('Maximum Crustal thickness (km) = {:f}'.format(
+            temp_grid.data.max() / 1.e3))
+        print('Minimum Crustal thickness (km) = {:f}'.format(
+            temp_grid.data.min() / 1.e3))
 
     moho.coeffs = pyshtools.gravmag.BAtoHilmRhoHDH(
         ba, moho_grid3.data, drho_grid.data, nmax, pot.mass, r0,
@@ -328,9 +330,9 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
     if quiet is False:
         print('Delta (km) = {:e}'.format(abs(moho_grid3.data -
                                              moho_grid2.data).max() / 1.e3))
-        print('Maximum Crustal thickness (km) = {:e}'
+        print('Maximum Crustal thickness (km) = {:f}'
               .format(temp_grid.data.max() / 1.e3))
-        print('Minimum Crustal thickness (km) = {:e}'
+        print('Minimum Crustal thickness (km) = {:f}'
               .format(temp_grid.data.min() / 1.e3))
 
     iter = 0
@@ -373,9 +375,9 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
 
         if quiet is False:
             print('Delta (km) = {:e}'.format(delta / 1.e3))
-            print('Maximum Crustal thickness (km) = {:e}'.format(
+            print('Maximum Crustal thickness (km) = {:f}'.format(
                 temp_grid.data.max() / 1.e3))
-            print('Minimum Crustal thickness (km) = {:e}'.format(
+            print('Minimum Crustal thickness (km) = {:f}'.format(
                 temp_grid.data.min() / 1.e3))
 
         moho_grid3 = moho_grid2
