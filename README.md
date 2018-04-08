@@ -7,13 +7,17 @@ planet from gravity and topography data, and the calculation of hydrostatic
 relief along density interfaces.beneath the lithosphere.
 
 ### Modules
+#### `pyMoho`
 `pyMoho`                Calculate relief using a constant density crust and
                         mantle.
 `pyMohoRho`             Calculate relief using a constant density mantle and a
                         variable density crust.
-`HydrostaticShapeLith`  Calculate the relief of hydorstatic interfaces beneath
-                        the lithosphere, taking into account rotation and/or
-                        tides.
+#### `Hydrostatic`
+`HydrostaticShapeLith`  Calculate the relief of hydrostatic interfaces beneath
+                        the lithosphere, along with the predicted gravity,
+                        taking into account rotation and/or tides.
+`HydrostaticShape`      Calculate the relief of hydrostatic interfaces and
+                        predicted gravity of a rotating hydrostatic planet.
 
 ### Example scripts
 `pyCrust_Moon`   A script that demonstrates how to calculate the thickenss
@@ -31,13 +35,19 @@ relief along density interfaces.beneath the lithosphere.
 
 ## How to install and run pyCrust
 
-First, you will need to install pyshtools [pyshtools](https://github.com/SHTOOLS/SHTOOLS),
-version 4.1 or greater. Normally, you should be able to do this with the
+First, you will need to install pyshtools [pyshtools](https://github.com/SHTOOLS/SHTOOLS), version 4.2 or greater. Normally, you should be able to do this with the
 command
 
     pip install pyshtools
 
-Next install pyCrust
+To install manually from the `develop` branch follow these steps
+
+    git clone https://github.com/SHTOOLS/SHTOOLS.git
+    cd SHTOOLS
+    git checkout develop
+    pip install -v -e .
+
+Next install pyCrust in a different directory
 
     git clone
     https://github.com/MarkWieczorek/pycrust.git

@@ -7,7 +7,7 @@ import numpy as np
 
 import pyshtools
 
-from HydrostaticShapeLith import HydrostaticFlatteningLith
+from Hydrostatic import HydrostaticShapeLith
 
 # ==== MAIN FUNCTION ====
 
@@ -124,10 +124,10 @@ def main():
                     rho[1] = rho_mantle
 
                     hlm, clm_hydro, mass_model = \
-                        HydrostaticFlatteningLith(radius, rho, i_lith,
-                                                  potential, omega, lmax,
-                                                  finiteamplitude=False,
-                                                  rp=rem, mp=mass_earth)
+                        HydrostaticShapeLith(radius, rho, i_lith,
+                                             potential, omega, lmax,
+                                             finiteamplitude=False,
+                                             rp=rem, mp=mass_earth)
 
                     a = hlm[1].expand(lat=0., lon=0., lmax_calc=lmax)
                     b = hlm[1].expand(lat=0., lon=90., lmax_calc=lmax)
