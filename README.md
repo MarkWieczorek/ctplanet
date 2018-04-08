@@ -2,20 +2,20 @@
 Create a crustal thickness map of a planet from gravity and topography.
 
 ## Description
-`pyCrust` provides several functions for generating crustal thickness maps of a
-planet from gravity and topography data, and the calculation of hydrostatic
-relief along density interfaces.beneath the lithosphere.
+The repo pyCrust provides several functions for generating crustal thickness maps of a planet from gravity and topography data, and the calculation of hydrostatic relief along density interfaces beneath the lithosphere.
 
 ### Modules
-#### `pyMoho`
+#### pyMoho.py
 `pyMoho`                Calculate relief using a constant density crust and
                         mantle.
+
 `pyMohoRho`             Calculate relief using a constant density mantle and a
                         variable density crust.
-#### `Hydrostatic`
+#### Hydrostatic.py
 `HydrostaticShapeLith`  Calculate the relief of hydrostatic interfaces beneath
                         the lithosphere, along with the predicted gravity,
                         taking into account rotation and/or tides.
+
 `HydrostaticShape`      Calculate the relief of hydrostatic interfaces and
                         predicted gravity of a rotating hydrostatic planet.
 
@@ -24,11 +24,13 @@ relief along density interfaces.beneath the lithosphere.
                  of the lunar crust using either a constant or variable density
                  crust. The latter can be used to reproduce the results
                  presented in *Wieczorek et al.* (2013).
+
 `pyCrust_Mars`   A script that demonstrates how to calculate the thickenss
                  of the Martian crust using either a constant or variable
                  density crust. For the variable density crust, the density is
                  assumed to change discontinuously across the dichotomy
                  boundary.
+
 `Core-Moon`      Calculate the hydrostatic relief of the lunar core accounting
                  for the non-hydrostatic potential that comes from the
                  lithosphere.
