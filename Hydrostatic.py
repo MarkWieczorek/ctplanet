@@ -14,7 +14,7 @@ import pyshtools as pyshtools
 # ==== HydrostaticShapeLith ====
 
 def HydrostaticShapeLith(radius, rho, ilith, potential, omega, lmax,
-                         finiteamplitude=False, rp=None, mp=None):
+                         finiteamplitude=False, rp=None, mp=None, nmax=7):
     """
     Calculate the shape of hydrostatic relief in a rotating planet or moon with
     a non-hydrostatic lithosphere, along with the total gravitation potential
@@ -60,12 +60,15 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, omega, lmax,
     finiteamplitude : bool, optional, default = False
         If True, compute finite amplitude terms when calculating the
         gravitational potentials.
-    rp : optional, default = None
+    rp : float, optional, default = None
         If specified, include the tidal potential acting on a synchronously
         rotating moon, where rp is the average distance between the planet
         and satellite.
-    mp : optional, default = None
+    mp : float, optional, default = None
         The mass of the host planet, at a distance rp from the satellite.
+    nmax : int, optional, default = 7
+        The order of the approximation when computing the gravitational
+        potential.
     """
     tides = False
     if rp is not None:
@@ -98,13 +101,11 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, omega, lmax,
         hlm[i].coeffs[0, 0, 0] = radius[i]
 
     if finiteamplitude:
-        nmax = 6
         kmax = 4
         dcminus = np.zeros((ilith+1, 2, lmax+1, lmax+1))
         dcplus = np.zeros((ilith+1, 2, lmax+1, lmax+1))
     else:
         kmax = 1
-        nmax = 1
 
     # First determine the spherical harmonic coefficients of (Y20 Ylm)
     # and for tides, (Y22 Ylm). We are only concerned with the coefficient
@@ -366,7 +367,7 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, omega, lmax,
 
 
 def HydrostaticShape(radius, rho, omega, gm, r_ref, finiteamplitude=False,
-                     rp=None, mp=None):
+                     rp=None, mp=None, nmax=7):
     """
     Calculate the shape of hydrostatic relief in a rotating planet or moon,
     along with the total gravitation potential. For the case of a moon in
@@ -375,7 +376,7 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, finiteamplitude=False,
     Usage
     -----
     hlm, clm_hydro, mass = HydrostaticFlatteningLith(radius, density,
-        omega, gm, r_ref, [finiteamplitude, rp, mp])
+        omega, gm, r_ref, [finiteamplitude, rp, mp, nmax])
 
     Returns
     -------
@@ -406,12 +407,15 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, finiteamplitude=False,
     finiteamplitude : bool, optional, default = False
         If True, compute finite amplitude terms when calculating the
         gravitational potentials.
-    rp : optional, default = None
+    rp : float, optional, default = None
         If specified, include the tidal potential acting on a synchronously
         rotating moon, where rp is the average distance between the planet
         and satellite.
-    mp : optional, default = None
+    mp : float, optional, default = None
         The mass of the host planet, at a distance rp from the satellite.
+    nmax : int, optional, default = 7
+        The order of the approximation when computing the gravitational
+        potential.
     """
     tides = False
     if rp is not None:
@@ -443,13 +447,11 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, finiteamplitude=False,
         hlm[i].coeffs[0, 0, 0] = radius[i]
 
     if finiteamplitude:
-        nmax = 7    # perfectly resolves gravity from degree 2 and 4 topo
         kmax = 4
         dcminus = np.zeros((n+1, 2, lmax+1, lmax+1))
         dcplus = np.zeros((n+1, 2, lmax+1, lmax+1))
     else:
         kmax = 1
-        nmax = 1
 
     # First determine the spherical harmonic coefficients of (Y20 Ylm)
     # and for tides, (Y22 Ylm). We are only concerned with the coefficient
