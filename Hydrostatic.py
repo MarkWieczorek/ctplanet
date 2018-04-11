@@ -14,7 +14,8 @@ import pyshtools as pyshtools
 # ==== HydrostaticShapeLith ====
 
 def HydrostaticShapeLith(radius, rho, ilith, potential, omega, lmax,
-                         finiteamplitude=False, rp=None, mp=None, nmax=7):
+                         finiteamplitude=False, rp=None, mp=None, nmax=7,
+                         kmax=4):
     """
     Calculate the shape of hydrostatic relief in a rotating planet or moon with
     a non-hydrostatic lithosphere, along with the total gravitation potential
@@ -69,6 +70,9 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, omega, lmax,
     nmax : int, optional, default = 7
         The order of the approximation when computing the gravitational
         potential.
+    kmax : int, optionalm, defaut = 4
+        Number of iterations to perform when calculating the finite-amplitude
+        correction.
     """
     tides = False
     if rp is not None:
@@ -101,7 +105,6 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, omega, lmax,
         hlm[i].coeffs[0, 0, 0] = radius[i]
 
     if finiteamplitude:
-        kmax = 4
         dcminus = np.zeros((ilith+1, 2, lmax+1, lmax+1))
         dcplus = np.zeros((ilith+1, 2, lmax+1, lmax+1))
     else:
@@ -367,7 +370,7 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, omega, lmax,
 
 
 def HydrostaticShape(radius, rho, omega, gm, r_ref, finiteamplitude=False,
-                     rp=None, mp=None, nmax=7):
+                     rp=None, mp=None, nmax=7, kmax=4):
     """
     Calculate the shape of hydrostatic relief in a rotating planet or moon,
     along with the total gravitation potential. For the case of a moon in
@@ -416,6 +419,10 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, finiteamplitude=False,
     nmax : int, optional, default = 7
         The order of the approximation when computing the gravitational
         potential.
+    kmax : int, optionalm, defaut = 4
+        Number of iterations to perform when calculating the finite-amplitude
+        correction.
+
     """
     tides = False
     if rp is not None:
@@ -447,7 +454,6 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, finiteamplitude=False,
         hlm[i].coeffs[0, 0, 0] = radius[i]
 
     if finiteamplitude:
-        kmax = 4
         dcminus = np.zeros((n+1, 2, lmax+1, lmax+1))
         dcplus = np.zeros((n+1, 2, lmax+1, lmax+1))
     else:
