@@ -90,9 +90,11 @@ def main():
             print('h20 = {:e}\n'.format(hlm_fluid[n].coeffs[0, 2, 0]) +
                   'h40 = {:e}'.format(hlm_fluid[n].coeffs[0, 4, 0]))
             print('h20 (unnorm)= {:e}\n'
-                  .format(hlm_surf_unnorm.coeffs[0, 2, 0]/r_ref) +
+                  .format(hlm_surf_unnorm.coeffs[0, 2, 0]/r0_model) +
                   'h40 (unnorm)= {:e}'
-                  .format(hlm_surf_unnorm.coeffs[0, 4, 0]/r_ref))
+                  .format(hlm_surf_unnorm.coeffs[0, 4, 0]/r0_model))
+
+    print(mass, mass_model)
 
 
 # ==== EXECUTE SCRIPT ====
