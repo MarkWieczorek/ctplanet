@@ -171,7 +171,7 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, omega, lmax,
                     4. * np.pi * rho[0] * radius[1] * \
                     hlm[1].coeffs[0, 2, 0]**2 + 8. * np.pi * np.sqrt(5.) / \
                     21. * rho[0] * hlm[1].coeffs[0, 2, 0]**3
-            else:
+            elif i > 1 and i <= ilith:
                 mass[i] = mass[i-1] + 4. * np.pi * \
                     (radius[i]**3 - radius[i-1]**3) * rho[i-1] / 3. + \
                     4. * np.pi * rho[i-1] * (radius[i] *
@@ -180,6 +180,9 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, omega, lmax,
                                              hlm[i-1].coeffs[0, 2, 0]**2) + \
                     8. * np.pi * np.sqrt(5.) / 21. * rho[i-1] * \
                     (hlm[i].coeffs[0, 2, 0]**3 - hlm[i-1].coeffs[0, 2, 0]**3)
+            else:
+                mass[i] = mass[i-1] + 4. * np.pi * \
+                    (radius[i]**3 - radius[i-1]**3) * rho[i-1] / 3.
 
         mass_model = mass[n]
 
