@@ -148,20 +148,13 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, omega, lmax,
                 cp22[1, l, m] = coeffs[1, l, m]
                 sh[1, l, m] = 0.
 
-    # Calculate mass(<=r), delta_rho
+    # Calculate delta_rho
 
     drho = np.zeros(n+1)
     mass = np.zeros(n+1)
 
     for i in range(1, n+1):
         drho[i] = rho[i-1] - rho[i]
-        if i == 1:
-            mass[i] = 4. * np.pi * radius[1]**3 * rho[0] / 3.
-        else:
-            mass[i] = mass[i-1] + 4. * np.pi * \
-                (radius[i]**3 - radius[i-1]**3) * rho[i-1] / 3.
-
-    mass_model = mass[n]
 
     # Calculate matrix A and invert for relief.
 
@@ -171,6 +164,28 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, omega, lmax,
     mass_sheet = np.zeros((2, lmax+1, lmax+1))
 
     for k in range(kmax):
+        # calculate mass, taking into account the flattening of each interface
+        for i in range(1, n+1):
+            if i == 1:
+                mass[1] = 4. * np.pi * radius[1]**3 * rho[0] / 3. + \
+                    4. * np.pi * rho[0] * radius[1] * \
+                    hlm[1].coeffs[0, 2, 0]**2 + 8. * np.pi * np.sqrt(5.) / \
+                    21. * rho[0] * hlm[1].coeffs[0, 2, 0]**3
+            elif i > 1 and i <= ilith:
+                mass[i] = mass[i-1] + 4. * np.pi * \
+                    (radius[i]**3 - radius[i-1]**3) * rho[i-1] / 3. + \
+                    4. * np.pi * rho[i-1] * (radius[i] *
+                                             hlm[i].coeffs[0, 2, 0]**2 -
+                                             radius[i-1] *
+                                             hlm[i-1].coeffs[0, 2, 0]**2) + \
+                    8. * np.pi * np.sqrt(5.) / 21. * rho[i-1] * \
+                    (hlm[i].coeffs[0, 2, 0]**3 - hlm[i-1].coeffs[0, 2, 0]**3)
+            else:
+                mass[i] = mass[i-1] + 4. * np.pi * \
+                    (radius[i]**3 - radius[i-1]**3) * rho[i-1] / 3.
+
+        mass_model = mass[n]
+
         # calculate finite amplitude corrections
         if finiteamplitude and k > 0:
             for i in range(1, ilith+1):
@@ -497,20 +512,13 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, finiteamplitude=False,
                 cp22[1, l, m] = coeffs[1, l, m]
                 sh[1, l, m] = 0.
 
-    # Calculate mass(<=r), delta_rho
+    # Calculate delta_rho
 
     drho = np.zeros(n+1)
     mass = np.zeros(n+1)
 
     for i in range(1, n+1):
         drho[i] = rho[i-1] - rho[i]
-        if i == 1:
-            mass[i] = 4. * np.pi * radius[1]**3 * rho[0] / 3.
-        else:
-            mass[i] = mass[i-1] + 4. * np.pi * \
-                (radius[i]**3 - radius[i-1]**3) * rho[i-1] / 3.
-
-    mass_model = mass[n]
 
     # Calculate matrix A and invert for relief.
 
@@ -520,6 +528,26 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, finiteamplitude=False,
     mass_sheet = np.zeros((2, lmax+1, lmax+1))
 
     for k in range(kmax):
+
+        # calculate mass, taking into account the flattening of each interface
+        for i in range(1, n+1):
+            if i == 1:
+                mass[1] = 4. * np.pi * radius[1]**3 * rho[0] / 3. + \
+                    4. * np.pi * rho[0] * radius[1] * \
+                    hlm[1].coeffs[0, 2, 0]**2 + 8. * np.pi * np.sqrt(5.) / \
+                    21. * rho[0] * hlm[1].coeffs[0, 2, 0]**3
+            else:
+                mass[i] = mass[i-1] + 4. * np.pi * \
+                    (radius[i]**3 - radius[i-1]**3) * rho[i-1] / 3. + \
+                    4. * np.pi * rho[i-1] * (radius[i] *
+                                             hlm[i].coeffs[0, 2, 0]**2 -
+                                             radius[i-1] *
+                                             hlm[i-1].coeffs[0, 2, 0]**2) + \
+                    8. * np.pi * np.sqrt(5.) / 21. * rho[i-1] * \
+                    (hlm[i].coeffs[0, 2, 0]**3 - hlm[i-1].coeffs[0, 2, 0]**3)
+
+        mass_model = mass[n]
+
         # calculate finite amplitude corrections
         if finiteamplitude and k > 0:
             for i in range(1, n+1):
