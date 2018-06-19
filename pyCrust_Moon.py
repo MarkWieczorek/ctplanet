@@ -54,9 +54,9 @@ def main():
     print('Reference radius (m) = {:e}\n'.format(topo.r0))
 
     density = pyshtools.SHCoeffs.from_file(densityfile, lmax=lmax)
-    rho_c = density.coeffs[0, 0, 0] # average grain density
+    rho_c0 = density.coeffs[0, 0, 0] # average grain density
 
-    print('Average grain density of crust (kg/m3) = {:e}'.format(rho_c))
+    print('Average grain density of crust (kg/m3) = {:e}'.format(rho_c0))
     print('Lmax of density coefficients = {:d}\n'.format(density.lmax))
 
     a_12_14_lat = -3.3450
@@ -69,13 +69,18 @@ def main():
     filter = 1
     half = 80
 
-    # Constant density model
+    print('Average thickness of the crust (km) = {:e}'.format(thickave/1.e3))
+    print('Porosity (%)= {:e}'.format(porosity*100))
+    print('Mantle density (kg/m3)= {:e}'.format(rho_m))
 
-    rho_c = rho_c * (1. - porosity)  # assumed constant density
+    # Constant density model
+    print('\n=== Constant density crust ===')
+    rho_c = rho_c0 * (1. - porosity)  # assumed constant density
+    print('Bulk density of the crust(kg/m3)= {:e}'.format(rho_c*100))
 
     moho = pyMoho.pyMoho(pot, topo, lmax, rho_c, rho_m, thickave,
                          filter_type=filter, half=half, lmax_calc=lmax_calc,
-                         quiet=False)
+                         quiet=False, delta_max=25.)
 
     thick_grid = (topo.pad(lmax) - moho.pad(lmax)).expand(grid='DH2')
     thick_grid.plot(show=False, fname='Thick-Moon-1.png')
@@ -86,10 +91,11 @@ def main():
                   .expand(lat=a_12_14_lat, lon=a_12_14_long) / 1.e3))
 
     # Model with variable density
+    print('\n=== Variable density crust ===')
 
     moho = pyMoho.pyMohoRho(pot, topo, density, porosity, lmax, rho_m,
                             thickave, filter_type=filter, half=half,
-                            lmax_calc=lmax_calc, quiet=False)
+                            lmax_calc=lmax_calc, quiet=False, delta_max=25.)
 
     thick_grid = (topo-moho.pad(topo.lmax)).expand(grid='DH2')
     thick_grid.plot(show=False, fname='Thick-Moon-2.png')
