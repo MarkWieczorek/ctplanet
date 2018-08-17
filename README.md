@@ -37,7 +37,7 @@ The repo pyCrust provides several functions for generating crustal thickness map
 
 ## How to install and run pyCrust
 
-First, you will need to install [pyshtools](https://github.com/SHTOOLS/SHTOOLS), version 4.2 or greater. Normally, you should be able to do this with the
+First, you will need to install [pyshtools](https://github.com/SHTOOLS/SHTOOLS), version 4.3 or greater. Normally, you should be able to do this with the
 command
 
     pip install pyshtools

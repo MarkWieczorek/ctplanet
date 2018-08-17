@@ -278,7 +278,7 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
             density_grid.data.min() / 1.e3))
 
     bc, r0 = pyshtools.gravmag.CilmPlusRhoHDH(
-        topo_grid.data, density_grid.data * (1. - porosity), nmax, pot.mass,
+        topo_grid.data, nmax, pot.mass, density_grid.data * (1. - porosity),
         lmax=lmax_calc)
     ba = pot2.to_array(lmax=lmax_calc) - bc
 
