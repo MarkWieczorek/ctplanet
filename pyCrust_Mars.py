@@ -35,16 +35,11 @@ def main():
     lmax_calc = 90
     lmax = lmax_calc * 4
 
-    potcoefs, lmaxp, header = pyshtools.shio.shread(gravfile, header=True,
-                                                    lmax=lmax)
-    potential = pyshtools.SHCoeffs.from_array(potcoefs)
-    potential.r_ref = float(header[0]) * 1.e3
-    potential.gm = float(header[1]) * 1.e9
-    potential.mass = potential.gm / float(pyshtools.constant.grav_constant)
+    potential = pyshtools.SHGravCoeffs.from_file(gravfile, header_units='km')
 
     print('Gravity file = {:s}'.format(gravfile))
-    print('Lmax of potential coefficients = {:d}'.format(lmaxp))
-    print('Reference radius (km) = {:f}'.format(potential.r_ref / 1.e3))
+    print('Lmax of potential coefficients = {:d}'.format(potential.lmax))
+    print('Reference radius (km) = {:f}'.format(potential.r0 / 1.e3))
     print('GM = {:e}\n'.format(potential.gm))
 
     topo = pyshtools.SHCoeffs.from_file(topofile, lmax=lmax)
@@ -66,7 +61,7 @@ def main():
     nmax = 7
     lmax_hydro = 15
     t0_sigma = 5.  # maximum difference between minimum crustal thickness
-    omega = float(pyshtools.constant.omega_mars)
+    omega = pyshtools.constant.omega_mars.value
     d_lith = 150.e3
 
     t0 = 1.e3  # minimum crustal thickness
@@ -117,12 +112,14 @@ def main():
               .format((r0_model - radius[i_lith]) / 1.e3))
 
     # --- Compute gravity contribution from hydrostatic density interfaces ---
+    rho_crust = 2900.
+    thickave = 44.e3    # initial guess of average crustal thickness
+    r_sigma = topo.r0 - thickave
 
-    if False:
+    if True:
         # compute values for a planet that is completely fluid
         hlm_fluid, clm_fluid, mass_model = \
-            HydrostaticShape(radius, rho, omega, potential.gm, potential.r_ref,
-                             finiteamplitude=True)
+            HydrostaticShape(radius, rho, omega, potential.gm, potential.r0)
         print('--- Hydrostatic potential coefficients for a fluid planet ---')
         print('c20 = {:e}\nc40 = {:e}'.format(clm_fluid.coeffs[0, 2, 0],
                                               clm_fluid.coeffs[0, 4, 0]))
@@ -131,8 +128,8 @@ def main():
                                               hlm_fluid[n].coeffs[0, 4, 0]))
 
     hlm, clm_hydro, mass_model = \
-        HydrostaticShapeLith(radius, rho, i_lith, potential, omega,
-                             lmax_hydro, finiteamplitude=False)
+        HydrostaticShapeLith(radius, rho, i_lith, potential, topo, rho_crust,
+                             r_sigma, omega, lmax_hydro)
 
     print('Total mass of model (kg) = {:e}'.format(mass_model))
     print('% of J2 arising from beneath lithosphere = {:f}'

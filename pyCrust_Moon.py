@@ -34,16 +34,11 @@ def main():
     topofile = 'Data/LOLA1500p.sh'
     densityfile = 'Data/density_no_mare_n3000_f3050_719.sh'
 
-    potcoefs, lmaxp, header = pyshtools.shio.shread(gravfile, header=True,
-                                                    lmax=lmax)
-    pot = pyshtools.SHCoeffs.from_array(potcoefs)
-    pot.r_ref = float(header[0]) * 1.e3
-    pot.gm = float(header[1]) * 1.e9
-    pot.mass = pot.gm / float(pyshtools.constant.grav_constant)
+    pot = pyshtools.SHGravCoeffs.from_file(gravfile, header_units='km')
 
     print('Gravity file = {:s}'.format(gravfile))
-    print('Lmax of potential coefficients = {:d}'.format(lmaxp))
-    print('Reference radius (m) = {:e}'.format(pot.r_ref))
+    print('Lmax of potential coefficients = {:d}'.format(pot.lmax))
+    print('Reference radius (m) = {:e}'.format(pot.r0))
     print('GM = {:e}\n'.format(pot.gm))
 
     topo = pyshtools.SHCoeffs.from_file(topofile, lmax=lmax)

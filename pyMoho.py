@@ -71,15 +71,16 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
 
     if lmax_calc is None:
         lmax_calc = lmax
-
     d = topo.r0 - thickave
+
+    mass = pot.gm / pyshtools.constant.G.value
 
     pot2 = pot.copy()
 
     for l in range(2, pot2.lmax + 1):
         pot2.coeffs[:, l, :l + 1] = pot.coeffs[:, l, :l + 1] * \
-                                   (pot.r_ref / topo.r0)**l
-    pot2.r_ref = topo.r0
+                                   (pot.r0 / topo.r0)**l
+    pot2.r0 = topo.r0
 
     topo_grid = topo.expand(grid='DH2', lmax=lmax)
 
@@ -87,7 +88,7 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
         print("Maximum radius (km) = {:f}".format(topo_grid.data.max() / 1.e3))
         print("Minimum radius (km) = {:f}".format(topo_grid.data.min() / 1.e3))
 
-    bc, r0 = pyshtools.gravmag.CilmPlusDH(topo_grid.data, nmax, pot.mass,
+    bc, r0 = pyshtools.gravmag.CilmPlusDH(topo_grid.data, nmax, mass,
                                           rho_c, lmax=lmax_calc)
     ba = pot2.to_array(lmax=lmax_calc) - bc
 
@@ -96,17 +97,17 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
 
     for l in range(1, lmax_calc + 1):
         if filter_type == 0:
-            moho.coeffs[:, l, :l + 1] = ba[:, l, :l + 1] * pot.mass * \
+            moho.coeffs[:, l, :l + 1] = ba[:, l, :l + 1] * mass * \
                 (2 * l + 1) * ((r0 / d)**l) / \
                 (4. * np.pi * (rho_m - rho_c) * d**2)
         elif filter_type == 1:
             moho.coeffs[:, l, :l + 1] = pyshtools.gravmag.DownContFilterMA(
-                l, half, r0, d) * ba[:, l, :l + 1] * pot.mass * \
+                l, half, r0, d) * ba[:, l, :l + 1] * mass * \
                 (2 * l + 1) * ((r0 / d)**l) / \
                 (4. * np.pi * (rho_m - rho_c) * d**2)
         else:
             moho.coeffs[:, l, :l + 1] = pyshtools.gravmag.DownContFilterMC(
-                l, half, r0, d) * ba[:, l, :l + 1] * pot.mass * \
+                l, half, r0, d) * ba[:, l, :l + 1] * mass * \
                 (2 * l + 1) * ((r0 / d)**l) / \
                 (4. * np.pi * (rho_m - rho_c) * d**2)
 
@@ -120,7 +121,7 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
             temp_grid.data.min() / 1.e3))
 
     moho.coeffs = pyshtools.gravmag.BAtoHilmDH(ba, moho_grid3.data, nmax,
-                                               pot.mass, r0, (rho_m - rho_c),
+                                               mass, r0, (rho_m - rho_c),
                                                lmax=lmax,
                                                filter_type=filter_type,
                                                filter_deg=half,
@@ -166,7 +167,7 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
             print('Iteration {:d}'.format(iter))
 
         moho.coeffs = pyshtools.gravmag.BAtoHilmDH(ba, moho_grid2.data, nmax,
-                                                   pot.mass, r0,
+                                                   mass, r0,
                                                    (rho_m - rho_c), lmax=lmax,
                                                    filter_type=filter_type,
                                                    filter_deg=half,
@@ -259,12 +260,14 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
     d = topo.r0 - thickave
     rho_crust_ave = density.coeffs[0, 0, 0] * (1. - porosity)
 
+    mass = pot.gm / pyshtools.constant.G.value
+
     pot2 = pot.copy()
 
     for l in range(2, pot2.lmax + 1):
         pot2.coeffs[:, l, :l + 1] = pot.coeffs[:, l, :l + 1] * \
-                                   (pot.r_ref / topo.r0)**l
-    pot2.r_ref = topo.r0
+                                   (pot.r0 / topo.r0)**l
+    pot2.r0 = topo.r0
 
     topo_grid = topo.expand(grid='DH2', lmax=lmax)
     density_grid = density.expand(grid='DH2', lmax=lmax)
@@ -278,7 +281,7 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
             density_grid.data.min() / 1.e3))
 
     bc, r0 = pyshtools.gravmag.CilmPlusRhoHDH(
-        topo_grid.data, nmax, pot.mass, density_grid.data * (1. - porosity),
+        topo_grid.data, nmax, mass, density_grid.data * (1. - porosity),
         lmax=lmax_calc)
     ba = pot2.to_array(lmax=lmax_calc) - bc
 
@@ -288,24 +291,24 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
                            - 4. * np.pi * density.coeffs[:, l, :l + 1] \
                            * (1. - porosity) \
                            * (r0**3 - (d**3)*(d/r0)**l) \
-                           / (2 * l + 1) / (l + 3) / pot.mass
+                           / (2 * l + 1) / (l + 3) / mass
 
     moho = pyshtools.SHCoeffs.from_zeros(lmax=lmax_calc)
     moho.coeffs[0, 0, 0] = d
 
     for l in range(1, lmax_calc + 1):
         if filter_type == 0:
-            moho.coeffs[:, l, :l + 1] = ba[:, l, :l + 1] * pot.mass * \
+            moho.coeffs[:, l, :l + 1] = ba[:, l, :l + 1] * mass * \
                 (2 * l + 1) * ((r0 / d)**l) / \
                 (4. * np.pi * (rho_m - rho_crust_ave) * d**2)
         elif filter_type == 1:
             moho.coeffs[:, l, :l + 1] = pyshtools.gravmag.DownContFilterMA(
-                l, half, r0, d) * ba[:, l, :l + 1] * pot.mass * \
+                l, half, r0, d) * ba[:, l, :l + 1] * mass * \
                 (2 * l + 1) * ((r0 / d)**l) / \
                 (4. * np.pi * (rho_m - rho_crust_ave) * d**2)
         else:
             moho.coeffs[:, l, :l + 1] = pyshtools.gravmag.DownContFilterMC(
-                l, half, r0, d) * ba[:, l, :l + 1] * pot.mass * \
+                l, half, r0, d) * ba[:, l, :l + 1] * mass * \
                 (2 * l + 1) * ((r0 / d)**l) / \
                 (4.0 * np.pi * (rho_m - rho_crust_ave) * d**2)
 
@@ -320,7 +323,7 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
             temp_grid.data.min() / 1.e3))
 
     moho.coeffs = pyshtools.gravmag.BAtoHilmRhoHDH(
-        ba, moho_grid3.data, drho_grid.data, nmax, pot.mass, r0,
+        ba, moho_grid3.data, drho_grid.data, nmax, mass, r0,
         lmax=lmax, filter_type=filter_type, filter_deg=half,
         lmax_calc=lmax_calc)
 
@@ -364,7 +367,7 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
             print('Iteration {:d}'.format(iter))
 
         moho.coeffs = pyshtools.gravmag.BAtoHilmRhoHDH(
-            ba, moho_grid2.data, drho_grid.data, nmax, pot.mass, r0,
+            ba, moho_grid2.data, drho_grid.data, nmax, mass, r0,
             lmax=lmax, filter_type=filter_type, filter_deg=half,
             lmax_calc=lmax_calc)
 

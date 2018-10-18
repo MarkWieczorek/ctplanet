@@ -17,10 +17,10 @@ def main():
     lmax_grid = 359
     lmax = 6
 
-    omega = float(pyshtools.constant.omega_moon)
-    rem = float(pyshtools.constant.a_moon)
-    mass_earth = float(pyshtools.constant.mass_earth)
-    r0 = float(pyshtools.constant.r_moon)
+    omega = pyshtools.constant.omega_moon.value
+    rem = pyshtools.constant.a_moon.value
+    mass_earth = pyshtools.constant.mass_earth.value
+    r0 = pyshtools.constant.r_moon.value
 
     cthick = 34.e3  # 43.e3 or 34.0e3
     rho_crust = 2550.
@@ -45,22 +45,15 @@ def main():
     pot_file = "/Users/lunokhod/Moon/GRAIL/GravityModels/" + \
         "JGGRAIL_900C11A_SHA.TAB"
 
-    coeffs, lmaxp, header = pyshtools.shio.shread(pot_file, lmax=10,
-                                                  header=True)
-    r0_pot = float(header[0])*1.e3
-    gm = float(header[1])*1.e9
-
-    potential = pyshtools.SHCoeffs.from_array(coeffs)
-    potential.r_ref = r0_pot
-    potential.gm = gm
+    potential = pyshtools.SHGravCoeffs.from_file(pot_file, header_units='km')
 
     print("Mean planetary radius (km) = {:e}".format(r0 / 1.e3))
     print("Is/MR2 (solid Moon using mean radius) = {:e}".format(ismr2))
-    print("Lmax of Gravitational potential = {:d}".format(lmaxp))
+    print("Lmax of Gravitational potential = {:d}".format(potential.lmax))
     print("Reference radius of potential model (km) = {:e}"
-          .format(r0_pot/1.e3))
-    print("GM = {:e}".format(gm))
-    mass = gm / float(pyshtools.constant.grav_constant)
+          .format(potential.r0/1.e3))
+    print("GM = {:e}".format(potential.gm))
+    mass = potential.gm / pyshtools.constant.G.value
     print("Mass (kg) = {:e}".format(mass))
     print("Omega = {:e}".format(omega))
     print("Period (days) = {:e}".format(2. * np.pi / omega / 60. / 60. / 24.))
