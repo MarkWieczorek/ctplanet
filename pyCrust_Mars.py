@@ -112,7 +112,7 @@ def main():
               .format((r0_model - radius[i_lith]) / 1.e3))
 
     # --- Compute gravity contribution from hydrostatic density interfaces ---
-    rho_crust = 2900.
+
     thickave = 44.e3    # initial guess of average crustal thickness
     r_sigma = topo.r0 - thickave
 

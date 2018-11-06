@@ -32,25 +32,16 @@ def main():
     spec = 'Data/Mars-reference-interior-models/model_'
     interior_file = [spec + name for name in model_name]
 
-    lmax_calc = 90
-    lmax = lmax_calc * 4
-
-    potcoefs, lmaxp, header = pyshtools.shio.shread(gravfile, header=True,
-                                                    lmax=lmax)
-    potential = pyshtools.SHCoeffs.from_array(potcoefs)
-    potential.r_ref = float(header[0]) * 1.e3
-    potential.gm = float(header[1]) * 1.e9
-    potential.mass = potential.gm / float(pyshtools.constant.grav_constant)
+    potential = pyshtools.SHGravCoeffs.from_file(gravfile, header_units='km')
 
     print('Gravity file = {:s}'.format(gravfile))
-    print('Lmax of potential coefficients = {:d}'.format(lmaxp))
-    print('Reference radius (km) = {:f}'.format(potential.r_ref / 1.e3))
+    print('Lmax of potential coefficients = {:d}'.format(potential.lmax))
+    print('Reference radius (km) = {:f}'.format(potential.r0 / 1.e3))
     print('GM = {:e}'.format(potential.gm))
     print('Mass = {:e}'.format(potential.mass))
 
     model = 3
-    lmax_hydro = 15
-    omega = float(pyshtools.constant.omega_mars)
+    omega = pyshtools.constant.omega_mars.value
     print('Omega = {:e}'.format(omega))
 
     # --- read 1D reference interior model ---
@@ -85,21 +76,18 @@ def main():
     # --- Compute gravity contribution from hydrostatic density interfaces ---
 
     if True:
-        for i in range(1, 8):
-            # compute values for a planet that is completely fluid
-            fn = True
-            nmax = i
+        # compute values for a planet that is completely fluid
+        hlm_fluid, clm_fluid, mass_model = \
+            HydrostaticShape(radius, rho, omega, potential.gm, potential.r0)
 
-            hlm_fluid, clm_fluid, mass_model = \
-                HydrostaticShape(radius, rho, omega, potential.gm,
-                                 potential.r_ref, nmax=nmax,
-                                 finiteamplitude=fn)
+        print('--- Hydrostatic relief of surface ---')
+        print('h20 = {:e}\n'.format(hlm_fluid[n].coeffs[0, 2, 0]) +
+              'h40 = {:e}'.format(hlm_fluid[n].coeffs[0, 4, 0]))
 
-            print('--- Hydrostatic relief of surface ---')
-            print('nmax = {:d}'.format(nmax))
-            print('h20 = {:e}\n'.format(hlm_fluid[n].coeffs[0, 2, 0]) +
-                  'h40 = {:e}'.format(hlm_fluid[n].coeffs[0, 4, 0]))
-
+        hydro_surface = hlm_fluid[n].expand()
+        print('Elevation difference between pole and equator (km)'
+              ' {:e}'.format(hydro_surface.data.max()/1.e3 -
+                             hydro_surface.data.min()/1.e3))
 
 # ==== EXECUTE SCRIPT ====
 

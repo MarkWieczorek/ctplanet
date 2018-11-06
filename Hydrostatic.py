@@ -183,16 +183,14 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
                             (2./3.) * radius[i] * omega**2 * \
                             (1. - cp20[0, l, m] / np.sqrt(5.0))
                     elif j < i:
-                        a[i, j] = 4. * np.pi * g * drho[j] * \
-                            radius[j]**(l+2) / (2. * l + 1.) / \
-                            radius[i]**(l+1)
+                        a[i, j] = 4. * np.pi * g * drho[j] / (2. * l + 1.) \
+                            * radius[j] * (radius[j] / radius[i])**(l+1)
                     else:
-                        a[i, j] = 4. * np.pi * g * drho[j] * \
-                            radius[i]**l / (2. * l + 1.) / \
-                            radius[j]**(l-1)
+                        a[i, j] = 4. * np.pi * g * drho[j] / (2. * l + 1.) \
+                            * radius[i] * (radius[i] / radius[j])**(l-1)
 
-                a[i, ilith+1] = 4. * np.pi * g * radius[i]**l / \
-                    (2. * l + 1.) / r_sigma**(l-1)
+                a[i, ilith+1] = 4. * np.pi * g / (2. * l + 1.) \
+                     * radius[i] * (radius[i] / r_sigma)**(l-1)
 
                 if tides is True:
                     atides[0, i] = g * mp * radius[i] / rp**3 * (
@@ -203,11 +201,11 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
                         np.sqrt(12./5.) * cp22[1, l, m] / 2.)
 
             for j in range(1, ilith+1):
-                a[ilith+1, j] = 4. * np.pi * g * drho[j] * \
-                    radius[j]**(l+2) / (2. * l + 1.) / r_ref**(l+1)
+                a[ilith+1, j] = 4. * np.pi * g * drho[j] / (2. * l + 1.) \
+                    * radius[j] * (radius[j] / r_ref)**(l+1)
 
-            a[ilith+1, ilith+1] = 4. * np.pi * g * r_sigma**(l+2) / \
-                (2. * l + 1.) / r_ref**(l+1)
+            a[ilith+1, ilith+1] = 4. * np.pi * g / (2. * l + 1.)\
+                 * r_sigma * (r_sigma / r_ref)**(l+1)
 
             # --- do cosine term ---
 
@@ -228,9 +226,10 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
                 b[1:ilith+1] = b4[0, m, 1:ilith+1]
 
             for i in range(1, ilith+1):
-                b[i] -= gm * cminus[0, l, m] * radius[i]**l / r_surface**(l+1)
+                b[i] -= gm * cminus[0, l, m] * (radius[i] / r_surface)**l \
+                    / r_surface
             b[ilith+1] = gm * potential.coeffs[0, l, m] / r_ref - \
-                gm * cplus[0, l, m] * r_surface**l / r_ref**(l+1)
+                gm * cplus[0, l, m] * (r_surface / r_ref)**l / r_ref
 
             # solve the linear equation A h = b
             atemp = a.copy()
@@ -272,10 +271,10 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
                     b[1:ilith+1] = b4[1, m, 1:ilith+1]
 
                 for i in range(1, ilith+1):
-                    b[i] -= gm * cminus[1, l, m] * radius[i]**l / \
-                            r_surface**(l+1)
+                    b[i] -= gm * cminus[1, l, m] * (radius[i]/ r_surface)**l \
+                            / r_surface
                     b[ilith+1] = gm * potential.coeffs[1, l, m] / r_ref - \
-                        gm * cplus[1, l, m] * r_surface**l / r_ref**(l+1)
+                        gm * cplus[1, l, m] * (r_surface / r_ref)**l / r_ref
 
                 # solve the linear equation A h = b
                 atemp = a.copy()
