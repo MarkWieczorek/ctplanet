@@ -319,7 +319,8 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
     return hlm, clm_hydro, mass_model
 
 
-def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None):
+def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None,
+                     i_clm_hydro=None):
     """
     Calculate the shape of hydrostatic relief in a rotating planet or moon,
     along with the total gravitation potential. For the case of a moon in
@@ -328,7 +329,7 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None):
     Usage
     -----
     hlm, clm_hydro, mass = HydrostaticFlatteningLith(radius, density,
-        omega, gm, r_ref, [rp, mp])
+        omega, gm, r_ref, [rp, mp, i_clm_hydro])
 
     Returns
     -------
@@ -336,7 +337,9 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None):
         Array of SHCoeffs class instances of the spherical harmonic
         coefficients of the hydrostatic relief at each interface.
     clm_hydro : SHCoeffs class instance containing the gravitational potential
-        resulting from all hydrostatic interfaces.
+        resulting from all hydrostatic interfaces. If i_clm_hydro is specified,
+        then the potential will include only interfaces beneath index
+        i_clm_hydro.
     mass : float
         Total mass of the planet, assuming a spherical shape and the provided
         1D density profile.
@@ -362,6 +365,9 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None):
         and satellite.
     mp : float, optional, default = None
         The mass of the host planet, at a distance rp from the satellite.
+    i_clm_hydro : int, optional, default = None
+        If specified, calculate the gravitational potential clm_hydro resulting
+        from all interfaces below and including the radius index i_clm_hydro.
     """
     tides = False
     if rp is not None:
@@ -563,10 +569,14 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None):
                                 omega**2 * radius[i] * \
                                 hlm[i].coeffs[1, l, m] * p422022
 
-    # Calculate potential at r_ref resulting from all interfaces
+    # Calculate potential at r_ref resulting from all interfaces, 
+    # or only those beneath and including i_clm_hydro.
 
     coeffs = np.zeros((2, lmax+1, lmax+1))
-    for i in range(1, n+1):
+    if i_clm_hydro is None:
+        i_clm_hydro = n
+
+    for i in range(1, i_clm_hydro+1):
         for l in range(2, lmax+1):
             coeffs[:, l, :l+1] += hlm[i].coeffs[:, l, :l+1] * 4. * \
                 np.pi * drho[i] * radius[i]**2 * (radius[i] / r_ref)**l * \

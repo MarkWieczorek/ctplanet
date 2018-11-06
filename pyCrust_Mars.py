@@ -62,7 +62,9 @@ def main():
     lmax_hydro = 15
     t0_sigma = 5.  # maximum difference between minimum crustal thickness
     omega = pyshtools.constant.omega_mars.value
+
     d_lith = 150.e3
+    d_sigma = 45.e3
 
     t0 = 1.e3  # minimum crustal thickness
     model = 3  # identifier for the interior reference model
@@ -115,6 +117,7 @@ def main():
 
     thickave = 44.e3    # initial guess of average crustal thickness
     r_sigma = topo.r0 - thickave
+    rho_c = 2900.
 
     if True:
         # compute values for a planet that is completely fluid
@@ -128,7 +131,7 @@ def main():
                                               hlm_fluid[n].coeffs[0, 4, 0]))
 
     hlm, clm_hydro, mass_model = \
-        HydrostaticShapeLith(radius, rho, i_lith, potential, topo, rho_crust,
+        HydrostaticShapeLith(radius, rho, i_lith, potential, topo, rho_c,
                              r_sigma, omega, lmax_hydro)
 
     print('Total mass of model (kg) = {:e}'.format(mass_model))
@@ -158,8 +161,8 @@ def main():
         print('Crustal thickness at InSight landing sites (km) = {:f}'
               .format((topo.pad(lmax) - moho.pad(lmax))
                       .expand(lat=lat_insight, lon=lon_insight) / 1.e3))
-        tmin = thick_grid.data.min()
-        tmax = thick_grid.data.max()
+        tmin = thick_grid.min()
+        tmax = thick_grid.max()
         print('Minimum thickness (km) = {:e}'.format(tmin / 1.e3))
         print('Maximum thickness (km) = {:e}'.format(tmax / 1.e3))
         thickave += t0 - tmin

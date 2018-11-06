@@ -188,7 +188,7 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
         moho_grid3 = moho_grid2
         moho_grid2 = moho_grid
 
-        if abs(temp_grid.data).max() > 100.e3:
+        if abs(temp_grid.data).max() > 500.e3:
             print('Not converging')
             exit(1)
 
@@ -386,7 +386,7 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
         moho_grid3 = moho_grid2
         moho_grid2 = moho_grid
 
-        if abs(temp_grid.data).max() > 100.e3:
+        if abs(temp_grid.data).max() > 500.e3:
             print('Not converging')
             exit(1)
 
