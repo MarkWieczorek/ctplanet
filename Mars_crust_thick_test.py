@@ -164,7 +164,8 @@ def main():
     potential.coeffs[:, :lmax_hydro+1, :lmax_hydro+1] -= \
         clm_hydro.coeffs[:, :lmax_hydro+1, :lmax_hydro+1]
 
-    print('-- Constant density model --\nrho_c = {:f}'.format(rho_c))
+    print('-- Constant density model with hydrostatic interfaces beneath '
+          'lithosphere--\nrho_c = {:f}'.format(rho_c))
 
     tmin = 1.e9
     thickave = 44.e3    # initial guess of average crustal thickness
@@ -205,7 +206,8 @@ def main():
         clm_hydro.coeffs[:, :lmax_hydro+1, :lmax_hydro+1]
     potential.coeffs[:, :5, :5] -= clm_fluid.coeffs[:, :5, :5]
 
-    print('-- Constant density model --\nrho_c = {:f}'.format(rho_c))
+    print('-- Constant density model with hydrostatic interfaces of a fluid '
+          'planet--\nrho_c = {:f}'.format(rho_c))
 
     tmin = 1.e9
     thickave = 44.e3    # initial guess of average crustal thickness

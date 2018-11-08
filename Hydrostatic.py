@@ -115,7 +115,7 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
     sh20[0, 2, 0] = 1.  # Y20
     sh22[0, 2, 2] = 1.  # Y22
 
-    for l in range(2, lmax+1):
+    for l in range(1, lmax+1):
         for m in range(0, l+1):
             sh[0, l, m] = 1.
             coeffs = pyshtools.expand.SHMultiply(sh20, sh)
@@ -173,7 +173,7 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
 
     # Calculate matrix A and invert for relief.
 
-    for l in range(2, lmax+1):
+    for l in range(1, lmax+1):
         for m in range(0, lmax+1):
             for i in range(1, ilith+1):  # zero index not computed
                 for j in range(1, ilith+1):
@@ -308,7 +308,7 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
 
     coeffs = np.zeros((2, lmax+1, lmax+1))
     for i in range(1, ilith+1):
-        for l in range(2, lmax+1):
+        for l in range(1, lmax+1):
             coeffs[:, l, :l+1] += hlm[i].coeffs[:, l, :l+1] * 4. * \
                 np.pi * drho[i] * radius[i]**2 * (radius[i] / r_ref)**l * \
                 g / gm / (2. * l + 1.)

@@ -17,7 +17,7 @@ from Hydrostatic import HydrostaticShape
 
 def main():
 
-    d_lith = 100.e3
+    d_lith = 150.e3
     rho_crust = 2900.
     d_sigma = 45.e3
     lmax_hydro = 2

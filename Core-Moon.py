@@ -8,28 +8,29 @@ import numpy as np
 import pyshtools
 
 from Hydrostatic import HydrostaticShapeLith
+from Hydrostatic import HydrostaticShape
 
 # ==== MAIN FUNCTION ====
 
 
 def main():
 
-    lmax_grid = 359
-    lmax = 6
+    lmax_grid = 719
+    lmax = 20
 
     omega = pyshtools.constant.omega_moon.value
-    rem = pyshtools.constant.a_moon.value
-    mass_earth = pyshtools.constant.mass_earth.value
-    r0 = pyshtools.constant.r_moon.value
+    rem = pyshtools.constant.a_orbit_moon.value
+    mass_earth = pyshtools.constant.mass_egm2008.value
 
-    cthick = 34.e3  # 43.e3 or 34.0e3
+    cthick = 43.e3  # 43.e3 or 34.0e3
     rho_crust = 2550.
 
-    out_rc_fc = "rc_fc_34_2550.dat"
-    out_rc_rhoc = "rc_rhoc_34_2550.dat"
-    out_rc_beta = "rc_beta_34_2550.dat"
-    sh_core = "core_34.sh"
-    core_shape = "core_shape_330_34.dat"
+    out_rc_fc = "figs/rc_fc_43_2550.dat"
+    out_rc_rhoc = "figs/rc_rhoc_43_2550.dat"
+    out_rc_beta = "figs/rc_beta_43_2550.dat"
+    sh_core = "figs/core_43.sh"
+    core_shape_wo_d1 = "figs/core_shape_wo_d1_330_43.dat"
+    core_shape = "figs/core_shape_330_43.dat"
 
     rcore_int = 1.e3
     rcore_start = 250.e3
@@ -39,13 +40,17 @@ def main():
     rhocore_end = 8000.
     rhocore_int = 1.
 
-    ismr2 = 0.3927280  # Williams et al. (2014)
-    ismr2 = ismr2 * (1738.e3 / r0)**2
-
-    pot_file = "/Users/lunokhod/Moon/GRAIL/GravityModels/" + \
-        "JGGRAIL_900C11A_SHA.TAB"
+    pot_file = 'Data/JGGRAIL_900C11A_SHA.TAB'
+    topo_file = 'Data/LOLA1500p.sh'
 
     potential = pyshtools.SHGravCoeffs.from_file(pot_file, header_units='km')
+    topo = pyshtools.SHCoeffs.from_file(topo_file, lmax=900)
+    r0 = topo.coeffs[0, 0, 0]
+
+    r_sigma = r0 - cthick
+
+    ismr2 = 0.3927280  # Williams et al. (2014)
+    ismr2 = ismr2 * (1738.e3 / r0)**2
 
     print("Mean planetary radius (km) = {:e}".format(r0 / 1.e3))
     print("Is/MR2 (solid Moon using mean radius) = {:e}".format(ismr2))
@@ -118,9 +123,11 @@ def main():
 
                     hlm, clm_hydro, mass_model = \
                         HydrostaticShapeLith(radius, rho, i_lith,
-                                             potential, omega, lmax,
-                                             finiteamplitude=False,
+                                             potential, topo, rho_crust,
+                                             r_sigma, omega, lmax,
                                              rp=rem, mp=mass_earth)
+                    # set degree-1 terms to zero
+                    hlm[1].coeffs[:, 1, :] = 0.
 
                     a = hlm[1].expand(lat=0., lon=0., lmax_calc=lmax)
                     b = hlm[1].expand(lat=0., lon=90., lmax_calc=lmax)
@@ -136,8 +143,6 @@ def main():
                                     .format(r_core/1.e3, beta_core))
 
                     if r_core == 330.e3:
-                        hlm[i_core].to_file(sh_core)
-
                         print("Rcore (km) = {:e}".format(r_core/1.e3))
                         print("A (km) = {:e}".format(a/1.e3))
                         print("B (km) = {:e}".format(b/1.e3))
@@ -145,11 +150,51 @@ def main():
                         print("rho_core (kg/m3) = {:e}".format(rho[0]))
 
                         grid = hlm[i_core].expand(lmax=lmax_grid, grid='DH2')
-                        grid.to_file(core_shape)
+                        grid.to_file(core_shape_wo_d1)
                         print("Size of output grid = {:d}, {:d}"
                               .format(grid.nlat, grid.nlon))
                         print("Maximum = {:e}\nMinimum = {:e}"
-                              .format(grid.data.max(), grid.data.min()))
+                              .format(grid.max(), grid.min()))
+
+                        hlm, clm_hydro, mass_model = \
+                            HydrostaticShapeLith(radius, rho, i_lith,
+                                                 potential, topo, rho_crust,
+                                                 r_sigma, omega, lmax,
+                                                 rp=rem, mp=mass_earth)
+                        hlm_fluid, clm_fluid, mass_model = \
+                            HydrostaticShape(radius, rho, omega, potential.gm,
+                                             potential.r0,
+                                             rp=rem, mp=mass_earth)
+                        grid = hlm[i_core].expand(lmax=lmax_grid, grid='DH2')
+                        grid_fluid = hlm_fluid[i_core].expand(lmax=lmax_grid,
+                                                              grid='DH2')
+                        a_fluid = hlm_fluid[1].expand(lat=0., lon=0.)
+                        b_fluid = hlm_fluid[1].expand(lat=0., lon=90.)
+                        c_fluid = hlm_fluid[1].expand(lat=90., lon=0.)
+
+                        f_core_fluid = (((a_fluid+b_fluid)/2. - c_fluid)
+                                        / ((a_fluid + b_fluid) / 2.))
+                        beta_core_fluid = ((a_fluid**2 - b_fluid**2) /
+                                           (a_fluid**2 + b_fluid**2))
+                        print('f_core for a fluid planet = ', f_core_fluid)
+                        print('beta_core for a fluid planet = ',
+                              beta_core_fluid)
+
+                        diff = grid - grid_fluid
+                        print('Maximuim and miniumum core relief for '
+                              'a fluid planet (m) = ',
+                              grid_fluid.max(), grid_fluid.min())
+                        print('Maximuim and miniumum difference with respect '
+                              'to a fluid planet (m) = ',
+                              diff.max(), diff.min())
+                        hlm[i_core].to_file(sh_core)
+                        grid.to_file(core_shape)
+                        print("Maximum = {:e}\nMinimum = {:e}"
+                              .format(grid.max(), grid.min()))
+                        for l in range(0, 4):
+                            for m in range(0, l+1):
+                                print(l, m, hlm[i_core].coeffs[0, l, m],
+                                      hlm[i_core].coeffs[1, l, m])
 
                 diff_old = diff_new
 

@@ -97,9 +97,16 @@ def main():
             print('Actual depth of lithosphere in discretized model (km) = '
                   '{:f}'.format((r0_model - radius[i_lith]) / 1.e3))
             print('Radius (km) and Density of Core at CMB = ',
-                  radius[i_core], rho[i_core])
+                  radius[i_core] , rho[i_core])
 
     # --- Compute purely hydrostatic relief of all interfaces ---
+    if True:
+        for i in range(1, n+1):
+            hlm_fluid, clm_fluid, mass_model = HydrostaticShape(
+                radius, rho, omega, potential.gm, potential.r0, i_clm_hydro=i)
+            print('i = {:d}, r = {:f}, rho = {:f}, %C20 = {:f}'
+                  .format(i, radius[i], rho[i], clm_fluid.coeffs[0, 2, 0] /
+                          potential.coeffs[0, 2, 0] * 100))
 
     hlm_fluid, clm_fluid, mass_model = \
         HydrostaticShape(radius, rho, omega, potential.gm, potential.r0)
@@ -117,6 +124,15 @@ def main():
     hlm, clm_hydro, mass_model = \
         HydrostaticShapeLith(radius, rho, i_lith, potential, topo, rho_crust,
                              r_sigma, omega, lmax_hydro)
+    print('--- Core shape, with lithosphere ---')
+    for l in range(0, 5):
+        for m in range(0, l+1):
+            print(l, m, hlm[i_core].coeffs[0, l, m],
+                  hlm[i_core].coeffs[1, l, m], )
+
+    print('Max and min of degree-1 core shape =',
+          hlm[i_core].expand(lmax=1).max(),
+          hlm[i_core].expand(lmax=1).min())
 
     # --- Calculate relief, with respect to hydrostatic solution ---
     # --- at i_lith and i_core
