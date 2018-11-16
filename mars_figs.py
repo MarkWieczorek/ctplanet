@@ -100,7 +100,7 @@ def main():
                   radius[i_core] , rho[i_core])
 
     # --- Compute purely hydrostatic relief of all interfaces ---
-    if True:
+    if False:
         for i in range(1, n+1):
             hlm_fluid, clm_fluid, mass_model = HydrostaticShape(
                 radius, rho, omega, potential.gm, potential.r0, i_clm_hydro=i)
@@ -133,6 +133,11 @@ def main():
     print('Max and min of degree-1 core shape =',
           hlm[i_core].expand(lmax=1).max(),
           hlm[i_core].expand(lmax=1).min())
+
+    # Calculate moments of inertial of the core, assuming that A and B are in 
+    # the plane of the equator, and that C is aligned with the rotation axis.
+    i_bar = moi(radius, rho, i_core)
+    print('Normalized mean moment of inertia of the core = ', i_bar)
 
     # --- Calculate relief, with respect to hydrostatic solution ---
     # --- at i_lith and i_core
@@ -219,6 +224,28 @@ def main():
           (hlm2[i_core] - hlm[i_core]).expand().min(),
           (hlm2[i_core] - hlm[i_core]).expand().max())
 
+
+def moi(radius, rho, n):
+    """
+    Calculate the mean, normalized, moment of inertia up to index n.
+
+    The radius and density are discretized into shells as in the hydrostatic
+    flattening routines:
+        radius[0] = 0
+        radius[1] = radius of core
+        radius[n] = surface
+        rho[i] = density from radius[i] to radius[i+1]
+    """
+    moi_solid = 0.
+    mass = 4. * np.pi / 3. * rho[0] * radius[1]**3
+
+    for i in range(2, n+1):
+        mass += 4. * np.pi / 3. * rho[i-1] * (radius[i]**3 - radius[i-1]**3)
+
+        moi_solid += 8. * np.pi / 15. * rho[i-1] * (radius[i]**5 -
+                                                    radius[i-1]**5)
+
+    return moi_solid / mass / radius[n]**2
 
 # ==== EXECUTE SCRIPT ====
 

@@ -469,13 +469,11 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None,
                             (2./3.) * radius[i] * omega**2 * \
                             (1. - cp20[0, l, m] / np.sqrt(5.0))
                     elif j < i:
-                        a[i, j] = 4. * np.pi * g * drho[j] * \
-                            radius[j]**(l+2) / (2. * l + 1.) / \
-                            radius[i]**(l+1)
+                        a[i, j] = 4. * np.pi * g * drho[j] * radius[j] * \
+                            (radius[j] / radius[i])**(l+1) / (2. * l + 1.)
                     else:
-                        a[i, j] = 4. * np.pi * g * drho[j] * \
-                            radius[i]**l / (2. * l + 1.) / \
-                            radius[j]**(l-1)
+                        a[i, j] = 4. * np.pi * g * drho[j] * radius[i] * \
+                            (radius[i] / radius[j])**(l-1) / (2. * l + 1.)
 
                 if tides is True:
                     atides[0, i] = g * mp * radius[i] / rp**3 * (
@@ -581,6 +579,7 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None,
             coeffs[:, l, :l+1] += hlm[i].coeffs[:, l, :l+1] * 4. * \
                 np.pi * drho[i] * radius[i]**2 * (radius[i] / r_ref)**l * \
                 g / gm / (2. * l + 1.)
+    coeffs[0, 0, 0] = 1.
 
     clm_hydro = pyshtools.SHGravCoeffs.from_array(coeffs, gm=gm, r0=r_ref,
                                                   omega=omega)

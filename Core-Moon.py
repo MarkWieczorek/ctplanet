@@ -15,22 +15,22 @@ from Hydrostatic import HydrostaticShape
 
 def main():
 
-    lmax_grid = 719
     lmax = 20
+    lmax_grid = 719
 
     omega = pyshtools.constant.omega_moon.value
     rem = pyshtools.constant.a_orbit_moon.value
     mass_earth = pyshtools.constant.mass_egm2008.value
 
-    cthick = 43.e3  # 43.e3 or 34.0e3
+    cthick = 34.e3  # 43.e3 or 34.0e3
     rho_crust = 2550.
 
-    out_rc_fc = "figs/rc_fc_43_2550.dat"
-    out_rc_rhoc = "figs/rc_rhoc_43_2550.dat"
-    out_rc_beta = "figs/rc_beta_43_2550.dat"
-    sh_core = "figs/core_43.sh"
-    core_shape_wo_d1 = "figs/core_shape_wo_d1_330_43.dat"
-    core_shape = "figs/core_shape_330_43.dat"
+    out_rc_fc = "figs/rc_fc_34_2550.dat"
+    out_rc_rhoc = "figs/rc_rhoc_34_2550.dat"
+    out_rc_beta = "figs/rc_beta_34_2550.dat"
+    sh_core = "figs/core_34.sh"
+    core_shape_wo_d1 = "figs/core_shape_wo_d1_330_34.dat"
+    core_shape = "figs/core_shape_330_34.dat"
 
     rcore_int = 1.e3
     rcore_start = 250.e3
