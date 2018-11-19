@@ -27,10 +27,12 @@ def main():
     topofile = 'Data/MarsTopo719.shape'
     densityfile = 'Data/dichotomy_359.sh'
 
-    model_name = ['dwcold', 'dwhot_modif', 'dwhot_stairs', 'DWTh2Ref1',
-                  'DWTh2Ref2', 'eh70cold', '"eh70hot', 'Gudkova']
-    spec = 'Data/Mars-reference-interior-models/model_'
-    interior_file = [spec + name for name in model_name]
+    model_name = ['DWThot', 'DWThotCrust1', 'DWThotCrust1r', 'EH45Tcold',
+                  'EH45TcoldCrust1', 'EH45TcoldCrust1r', 'EH45ThotCrust2',
+                  'EH45ThotCrust2r', 'LFAK', 'SANAK', 'TAYAK', 'DWAK',
+                  'ZG_DW']
+    spec = 'Data/Mars-reference-interior-models/Smrekar/'
+    interior_file = [spec + name + '.deck' for name in model_name]
 
     lmax_calc = 90
     lmax = lmax_calc * 4
@@ -67,7 +69,7 @@ def main():
     d_sigma = 45.e3
 
     t0 = 1.e3  # minimum crustal thickness
-    model = 3  # identifier for the interior reference model
+    model = 10  # identifier for the interior reference model
 
     # --- read 1D reference interior model ---
 
@@ -82,7 +84,10 @@ def main():
                                'files')
         num = int(lines[2].split()[0])
         crust_index = int(lines[2].split()[3])
-        mantle_index = int(lines[2].split()[3])
+        core_index = int(lines[2].split()[2])
+        i_crust = crust_index - 1
+        i_core = core_index - 1
+
         radius = np.zeros(num)
         rho = np.zeros(num)
         for i in range(0, num):
@@ -106,8 +111,10 @@ def main():
 
         n = num - 1
         rho[n] = 0.  # the density above the surface is zero
-        rho_mantle = rho[crust_index-1]
+        rho_mantle = rho[i_crust]
+        rho_core = rho[i_core]
         print('Mantle density (kg/m3) = {:f}'.format(rho_mantle))
+        print('Core density (kg/m3) = {:f}'.format(rho_core))
 
         print('Assumed depth of lithosphere (km) = {:f}'.format(d_lith / 1.e3))
         print('Actual depth of lithosphere in discretized model (km) = {:f}'

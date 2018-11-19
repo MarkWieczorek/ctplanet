@@ -23,9 +23,15 @@ def main():
     topofile = 'Data/MarsTopo719.shape'
     densityfile = 'Data/dichotomy_359.sh'
 
-    interior_file = 'Data/Mars-reference-interior-models/Smrekar' + \
-        '/model4mvdTAYAKconv.dat'
-    i_crust = 84
+    model_name = ['DWThot', 'DWThotCrust1', 'DWThotCrust1r', 'EH45Tcold',
+                  'EH45TcoldCrust1', 'EH45TcoldCrust1r', 'EH45ThotCrust2',
+                  'EH45ThotCrust2r', 'LFAK', 'SANAK', 'TAYAK', 'DWAK',
+                  'ZG_DW']
+    spec = 'Data/Mars-reference-interior-models/Smrekar/'
+    interior_file = [spec + name + '.deck' for name in model_name]
+
+    model = 10
+
     d_lith = 150.e3
     d_sigma = 45.e3
 
@@ -64,21 +70,28 @@ def main():
 
     # --- read 1D reference interior model ---
 
-    print('=== Reading model {:s} ==='.format(interior_file))
-
-    with open(interior_file, 'r') as f:
+    with open(interior_file[model], 'r') as f:
         lines = f.readlines()
-        num = len(lines)
+        print(lines[0].strip())
+        data = lines[1].split()
+        if float(data[2]) != 1:
+            raise RuntimeError('Program not capable of reading polynomial ' +
+                               'files')
+        num = int(lines[2].split()[0])
+        crust_index = int(lines[2].split()[3])
+        core_index = int(lines[2].split()[2])
+        i_crust = crust_index - 1
+        i_core = core_index - 1
+
         radius = np.zeros(num)
         rho = np.zeros(num)
         for i in range(0, num):
-            data = lines[i].split()
+            data = lines[i+3].split()
             radius[i] = float(data[0])
             rho[i] = float(data[1])
 
         r0_model = radius[num-1]
         print('Surface radius of model (km) = {:f}'.format(r0_model / 1.e3))
-
         for i in range(0, num):
             if radius[i] <= (r0_model - d_lith) and \
                     radius[i+1] > (r0_model - d_lith):
@@ -93,13 +106,14 @@ def main():
 
         n = num - 1
         rho[n] = 0.  # the density above the surface is zero
+        rho_mantle = rho[i_crust]
+        rho_core = rho[i_core]
+        print('Mantle density (kg/m3) = {:f}'.format(rho_mantle))
+        print('Core density (kg/m3) = {:f}'.format(rho_core))
 
         print('Assumed depth of lithosphere (km) = {:f}'.format(d_lith / 1.e3))
-        print('Actual depth of lithosphere in discretized model (km) = '
-              '{:f}'.format((r0_model - radius[i_lith]) / 1.e3))
-
-    rho_mantle = rho[i_crust-1]
-    print('Mantle density (kg/m3) = {:f}'.format(rho_mantle))
+        print('Actual depth of lithosphere in discretized model (km) = {:f}'
+              .format((r0_model - radius[i_lith]) / 1.e3))
 
     # --- Compute gravity contribution from hydrostatic density interfaces ---
 

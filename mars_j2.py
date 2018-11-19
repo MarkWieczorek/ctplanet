@@ -47,10 +47,12 @@ def main():
     print('Reference radius (km) = {:f}\n'.format(topo.r0 / 1.e3))
 
     # --- read 1D reference interior model ---
-    model_name = ['dwcold', 'dwhot_modif', 'dwhot_stairs', 'DWTh2Ref1',
-                  'DWTh2Ref2', 'eh70cold', 'eh70hot', 'Gudkova']
-    spec = 'Data/Mars-reference-interior-models/model_'
-    interior_file = [spec + name for name in model_name]
+    model_name = ['DWThot', 'DWThotCrust1', 'DWThotCrust1r', 'EH45Tcold',
+                  'EH45TcoldCrust1', 'EH45TcoldCrust1r', 'EH45ThotCrust2',
+                  'EH45ThotCrust2r', 'LFAK', 'SANAK', 'TAYAK', 'DWAK',
+                  'ZG_DW']
+    spec = 'Data/Mars-reference-interior-models/Smrekar/'
+    interior_file = [spec + name + '.deck' for name in model_name]
 
     for file in interior_file:
         print('=== Reading model {:s} ==='.format(file))
@@ -63,8 +65,8 @@ def main():
                                    'files')
             num = int(lines[2].split()[0])
             crust_index = int(lines[2].split()[3])
-            mantle_index = int(lines[2].split()[2])
-            i_core = mantle_index - 1
+            core_index = int(lines[2].split()[2])
+            i_core = core_index - 1
             i_mantle = crust_index - 1
 
             radius = np.zeros(num)
@@ -94,10 +96,10 @@ def main():
 
             n = num - 1
             rho[n] = 0.  # the density above the surface is zero
-            rho_mantle = rho[crust_index-1]
-            rho_core = rho[mantle_index-1]
+            rho_mantle = rho[i_mantle]
+            rho_core = rho[i_core]
             print('Upper mantle density (kg/m3) = {:f}'.format(rho_mantle))
-            print('Upper core density (kg/m3) = {:f}'.format(rho_core))
+            print('Core density (kg/m3) = {:f}'.format(rho_core))
 
             print('Assumed depth of lithosphere (km) = {:f}'
                   .format(d_lith / 1.e3))
@@ -135,69 +137,6 @@ def main():
             rho = np.zeros(num)
             for i in range(0, num):
                 data = lines[i+4].split()
-                radius[i] = float(data[0])
-                rho[i] = float(data[1])
-
-            r0_model = radius[num-1]
-            print('Surface radius of model (km) = {:f}'
-                  .format(r0_model / 1.e3))
-
-            for i in range(0, num):
-                if radius[i] <= (r0_model - d_lith) and \
-                        radius[i+1] > (r0_model - d_lith):
-                    if radius[i] == (r0_model - d_lith):
-                        i_lith = i
-                    elif (r0_model - d_lith) - radius[i] <= radius[i+1] -\
-                            (r0_model - d_lith):
-                        i_lith = i
-                    else:
-                        i_lith = i + 1
-                    break
-
-            n = num - 1
-            rho[n] = 0.  # the density above the surface is zero
-
-            print('Assumed depth of lithosphere (km) = {:f}'
-                  .format(d_lith / 1.e3))
-            print('Actual depth of lithosphere in discretized model (km) = '
-                  '{:f}'.format((r0_model - radius[i_lith]) / 1.e3))
-
-            r_sigma = topo.r0 - d_sigma
-            hlm, clm_hydro, mass_model = \
-                HydrostaticShapeLith(radius, rho, i_lith, potential, topo,
-                                     rho_crust, r_sigma, omega, lmax_hydro)
-            percent = clm_hydro.coeffs[0, 2, 0] / potential.coeffs[0, 2, 0]*100
-            print('Percentage of h20 derived from hydrostatic mantle = '
-                  '{:f}'.format(percent))
-
-            if percent > pmax:
-                pmax = percent
-            if percent < pmin:
-                pmin = percent
-
-    print(pmin, pmax)
-
-    # --- read 1D reference interior model ---
-    # --- From Smrekar et al. 2018
-    model_dir = 'Data/Mars-reference-interior-models/Smrekar'
-    models = os.listdir(model_dir)
-    models.sort()
-
-    pmin = 100
-    pmax = 0
-
-    for file in models:
-        if os.path.splitext(file)[1] != '.dat':
-            continue
-
-        print('=== Reading model {:s} ==='.format(file))
-        with open(os.path.join(model_dir, file), 'r') as f:
-            lines = f.readlines()
-            num = len(lines)
-            radius = np.zeros(num)
-            rho = np.zeros(num)
-            for i in range(0, num):
-                data = lines[i].split()
                 radius[i] = float(data[0])
                 rho[i] = float(data[1])
 
