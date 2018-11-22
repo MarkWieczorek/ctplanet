@@ -20,7 +20,7 @@ def main():
     d_lith = 150.e3
     rho_crust = 2900.
     d_sigma = 45.e3
-    lmax_hydro = 4 # 90
+    lmax_hydro = 90
 
     gravfile = 'Data/gmm3_120_sha.tab'
     topofile = 'Data/MarsTopo719.shape'
@@ -149,7 +149,8 @@ def main():
 
     # Calculate moments of inertial of the core, assuming that A and B are in 
     # the plane of the equator, and that C is aligned with the rotation axis.
-    II, AA, BB, CC, mass, RR, vec = InertiaTensor(hlm, rho, i_core)
+    II, AA, BB, CC, mass, RR, vec = InertiaTensor(hlm, rho, i_core,
+                                                  quiet=False)
 
     # --- Calculate relief, with respect to hydrostatic solution ---
     # --- at i_lith and i_core

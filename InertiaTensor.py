@@ -10,9 +10,9 @@ import pyshtools as pyshtools
 
 # ==== InertiaTensor ====
 
-def InertiaTensor(hilm, rho, i_core, normalize=False):
+def InertiaTensor(hilm, rho, i_core, normalize=False, quiet=True):
     '''
-    Calculate the Inertia tensor given a radial density profile and shape of
+    Calculate the inertia tensor given a radial density profile and shape of
     each interface.
 
     Usage
@@ -37,15 +37,18 @@ def InertiaTensor(hilm, rho, i_core, normalize=False):
     ----------
     hilm : array of SHCoeffs class instances, size(i_core+1)
         Array of SHCoeffs class instances of the spherical harmonic
-        coefficients of the hydrostatic relief at each interface. hilm[0]
-        corresponds to r=0.
+        coefficients of the relief at each interface. hilm[0] corresponds to
+        r=0.
     rho : ndarray, size(i_core)
         Array of the densities of each layer, where index i corresponds to the
         density between interfaces i and i+1.
     i_core : int
         index corresponding to the top of the core.
-    normalize : bool, optional
-        If True, return moments normalized by MR^2
+    normalize : bool, optional, default = False
+        If True, return all moments normalized by MR^2
+    quiet : bool, optional, default = True
+        If False, print additional information, including the locations of the
+        axes of the principal moments and gravitational coefficients.
     '''
 
     # Determine the contribution to the mass, average moment of inertia
@@ -115,18 +118,26 @@ def InertiaTensor(hilm, rho, i_core, normalize=False):
     B = eig[1]
     C = eig[2]
 
-    print('A (lat, lon) = ', 90 - np.rad2deg(np.arccos(vec[0, 2])),
-          np.rad2deg(np.arctan2(vec[0, 1], vec[0, 0])))
-    print('B (lat, lon) = ', 90 - np.rad2deg(np.arccos(vec[1, 2])),
-          np.rad2deg(np.arctan2(vec[1, 1], vec[1, 0])))
-    print('C (lat, lon) = ', 90 - np.rad2deg(np.arccos(vec[2, 2])),
-          np.rad2deg(np.arctan2(vec[2, 1], vec[2, 0])))
-
-    print('C20 (unnorm) = ', -(C - (A + B)/2) / mass / r_core**2)
-    print('C21 (unnorm) = ', II[0, 2] / mass / r_core**2)
-    print('S21 (unnorm) = ', II[1, 2] / mass / r_core**2)
-    print('C22 (unnorm) = ', (B - A) / 4 / mass / r_core**2)
-    print('S22 (unnorm) = ', II[0, 1] / 2 / mass / r_core**2)
+    if quiet is False:
+        print('I / (MR^2) = ', II / mass / r_core**2)
+        print('A / (MR^2) = {:e}'.format(A / mass / r_core**2))
+        print('B / (MR^2) = {:e}'.format(B / mass / r_core**2))
+        print('C / (MR^2) = {:e}'.format(C / mass / r_core**2))
+        print('A (lat, lon) = ', 90. - np.rad2deg(np.arccos(vec[0, 2])),
+              np.rad2deg(np.arctan2(vec[0, 1], vec[0, 0])))
+        print('B (lat, lon) = ', 90. - np.rad2deg(np.arccos(vec[1, 2])),
+              np.rad2deg(np.arctan2(vec[1, 1], vec[1, 0])))
+        print('C (lat, lon) = ', 90. - np.rad2deg(np.arccos(vec[2, 2])),
+              np.rad2deg(np.arctan2(vec[2, 1], vec[2, 0])))
+        print('Mass (kg) = {:e}'.format(mass))
+        print('R core (m) = {:e}'.format(r_core))
+        # print('\nC20 (unnorm) = ', -(II[2, 2] - (II[0, 0] + II[1, 1])/2.)
+        #      / mass / r_core**2)
+        # print('C21 (unnorm) = ', II[0, 2] / mass / r_core**2)
+        # print('S21 (unnorm) = ', II[1, 2] / mass / r_core**2)
+        # print('C22 (unnorm) = ', (II[1, 1] - II[0, 0]) / 4.
+        #       / mass / r_core**2)
+        # print('S22 (unnorm) = ', II[0, 1] / 2. / mass / r_core**2)
 
     if normalize:
         return II / mass / r_core**2, A / mass / r_core**2, \
