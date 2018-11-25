@@ -20,7 +20,7 @@ def main():
     d_lith = 150.e3
     rho_crust = 2900.
     d_sigma = 45.e3
-    lmax_hydro = 90
+    lmax_hydro = 4 # 90
 
     gravfile = 'Data/gmm3_120_sha.tab'
     topofile = 'Data/MarsTopo719.shape'
@@ -132,6 +132,13 @@ def main():
     print('Elevation difference between pole and equator (km)'
           ' {:e}'.format(hydro_surface.max()/1.e3 - hydro_surface.min()/1.e3))
 
+    II, AA, BB, CC, mass, RR, vec = InertiaTensor(hlm_fluid, rho, i_core,
+                                                  quiet=False)
+    print('I = ', II)
+    print('A, B, C = ', AA, BB, CC)
+    print('mass of core (kg) = ', mass)
+    print('R core (m) = ', RR)
+
     # --- Compute relief along hydrostatic interfaces with a lithosphere ---
     r_sigma = topo.r0 - d_sigma
     hlm, clm_hydro, mass_model = \
@@ -151,6 +158,10 @@ def main():
     # the plane of the equator, and that C is aligned with the rotation axis.
     II, AA, BB, CC, mass, RR, vec = InertiaTensor(hlm, rho, i_core,
                                                   quiet=False)
+    print('I = ', II)
+    print('A, B, C = ', AA, BB, CC)
+    print('mass of core (kg) = ', mass)
+    print('R core (m) = ', RR)
 
     # --- Calculate relief, with respect to hydrostatic solution ---
     # --- at i_lith and i_core
