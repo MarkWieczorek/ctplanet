@@ -17,7 +17,8 @@ def InertiaTensor(hilm, rho, i_core, normalize=False, quiet=True):
 
     Usage
     -----
-    I, A, B, C, M, R, I_vectors = InertiaTensor(hilm, rho, i_core)
+    I, A, B, C, M, R, angles = InertiaTensor(hilm, rho, i_core,
+                                                [normalize, quiet])
 
     Returns
     -------
@@ -29,9 +30,9 @@ def InertiaTensor(hilm, rho, i_core, normalize=False, quiet=True):
         Mass of the core.
     R : float
         The core radius.
-    I_vectors : ndarray, size(3,3)
-        Matrix with each column containing the directions of the principal
-        moments A, B and C.
+    angles : ndarray, size(3,2)
+        Matrix with each row containing the latitude and longitude
+        coordinates (in degrees) of the principal moments A, B and C.
 
     Parameters
     ----------
@@ -119,18 +120,25 @@ def InertiaTensor(hilm, rho, i_core, normalize=False, quiet=True):
     C = eig[2]
 
     if quiet is False:
+        e = np.zeros((3, 2))
+        e[0, 0] = 90. - np.rad2deg(np.arccos(vec[0, 2]))
+        e[0, 1] = np.rad2deg(np.arctan2(vec[0, 1], vec[0, 0]))
+        e[1, 0] = 90. - np.rad2deg(np.arccos(vec[1, 2]))
+        e[1, 1] = np.rad2deg(np.arctan2(vec[1, 1], vec[1, 0]))
+        e[2, 0] = 90. - np.rad2deg(np.arccos(vec[2, 2]))
+        e[2, 1] = np.rad2deg(np.arctan2(vec[2, 1], vec[2, 0]))
+        print('Mass core (kg) = {:e}'.format(mass))
+        print('R core (m) = {:e}'.format(r_core))
         print('I / (MR^2) = ', II / mass / r_core**2)
         print('A / (MR^2) = {:e}'.format(A / mass / r_core**2))
         print('B / (MR^2) = {:e}'.format(B / mass / r_core**2))
         print('C / (MR^2) = {:e}'.format(C / mass / r_core**2))
-        print('A (lat, lon) = ', 90. - np.rad2deg(np.arccos(vec[0, 2])),
-              np.rad2deg(np.arctan2(vec[0, 1], vec[0, 0])))
-        print('B (lat, lon) = ', 90. - np.rad2deg(np.arccos(vec[1, 2])),
-              np.rad2deg(np.arctan2(vec[1, 1], vec[1, 0])))
-        print('C (lat, lon) = ', 90. - np.rad2deg(np.arccos(vec[2, 2])),
-              np.rad2deg(np.arctan2(vec[2, 1], vec[2, 0])))
-        print('Mass (kg) = {:e}'.format(mass))
-        print('R core (m) = {:e}'.format(r_core))
+        print('A (lat, lon) = ', e[0, 0], e[0, 1])
+        print('B (lat, lon) = ', e[1, 0], e[1, 1])
+        print('C (lat, lon) = ', e[2, 0], e[2, 1])
+        print('a (m) = ', hilm[i_core].expand(lat=e[0, 0], lon=e[0, 1]))
+        print('b (m) = ', hilm[i_core].expand(lat=e[1, 0], lon=e[1, 1]))
+        print('c (m) = ', hilm[i_core].expand(lat=e[2, 0], lon=e[2, 1]))
         # print('\nC20 (unnorm) = ', -(II[2, 2] - (II[0, 0] + II[1, 1])/2.)
         #      / mass / r_core**2)
         # print('C21 (unnorm) = ', II[0, 2] / mass / r_core**2)
