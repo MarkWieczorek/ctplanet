@@ -55,8 +55,8 @@ def main():
 
     print('Lmax of density coefficients = {:d}\n'.format(density.lmax))
 
-    lat_insight = 4.43
-    lon_insight = 135.84
+    lat_insight = 4.502384
+    lon_insight = 135.623447
 
     filter = 1
     half = 50
