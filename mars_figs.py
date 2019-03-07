@@ -20,7 +20,7 @@ def main():
     d_lith = 150.e3
     rho_crust = 2900.
     d_sigma = 45.e3
-    lmax_hydro = 90
+    lmax_hydro = 60
 
     gravfile = 'Data/gmm3_120_sha.tab'
     topofile = 'Data/MarsTopo719.shape'
@@ -135,6 +135,7 @@ def main():
               .format((r0_model - radius[i_lith]) / 1.e3))
 
     # --- Compute purely hydrostatic relief of all interfaces ---
+    print('\n=== Fluid planet ===')
     if False:
         for i in range(1, n+1):
             hlm_fluid, clm_fluid, mass_model = HydrostaticShape(
@@ -146,13 +147,18 @@ def main():
     hlm_fluid, clm_fluid, mass_model = \
         HydrostaticShape(radius, rho, omega, potential.gm, potential.r0)
 
-    print('--- Hydrostatic relief of surface ---')
+    print('--- Hydrostatic relief of surface for a fluid planet ---')
     print('h20 = {:e}\n'.format(hlm_fluid[n].coeffs[0, 2, 0]) +
           'h40 = {:e}'.format(hlm_fluid[n].coeffs[0, 4, 0]))
 
     hydro_surface = hlm_fluid[n].expand()
     print('Elevation difference between pole and equator (km)'
           ' {:e}'.format(hydro_surface.max()/1.e3 - hydro_surface.min()/1.e3))
+
+    print('--- Hydrostatic relief of core-mantle boundary for a fluid planet '
+          '---')
+    print('h20 = {:e}\n'.format(hlm_fluid[i_core].coeffs[0, 2, 0]) +
+          'h40 = {:e}'.format(hlm_fluid[i_core].coeffs[0, 4, 0]))
 
     II, AA, BB, CC, mass, RR, vec = InertiaTensor(hlm_fluid, rho, i_core,
                                                   quiet=False)
@@ -171,6 +177,7 @@ def main():
     print('R surface (m) = ', RR)
 
     # --- Compute relief along hydrostatic interfaces with a lithosphere ---
+    print('\n=== Planet with a lithosphere ===')
     r_sigma = topo.r0 - d_sigma
     hlm, clm_hydro, mass_model = \
         HydrostaticShapeLith(radius, rho, i_lith, potential, topo, rho_crust,
@@ -196,6 +203,8 @@ def main():
 
     # --- Calculate relief, with respect to hydrostatic solution ---
     # --- at i_lith and i_core
+    print('\n=== Difference between fluid planet and planet with a '
+          'lithosphere ===')
     diff_ilith = hlm[i_lith] - hlm_fluid[i_lith].pad(lmax=lmax_hydro)
     grid_ilith = diff_ilith.expand()
     print('Maximum and minimum difference at i_lith (km) =- ',
@@ -208,6 +217,7 @@ def main():
           grid_icore.max()/1.e3, grid_icore.min()/1.e3)
 
     # ---- Write data to files ---
+    print('\n=== Output gridded data for use with GMT ===')
     print('Output grid sizes = ', geoid.nlat, geoid.nlon)
 
     (geoid/1000).to_file('figs/Mars_geoid.dat')
@@ -231,6 +241,7 @@ def main():
         'figs/hydro_icore_diff.dat')
 
     # Sensitivity tests
+    print('\n=== Sensitivity tests ===')
     r_sigma = topo.r0
     hlm2, clm_hydro2, mass_model2 = \
         HydrostaticShapeLith(radius, rho, i_lith, potential, topo, rho_crust,

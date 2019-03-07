@@ -193,6 +193,8 @@ def main():
     (thick_grid/1.e3).plot(show=False, colorbar=True,
                            fname='Thick-Mars-without-hydro.png')
 
+    print('Thickness at north pole (km) = ', thick_grid.data[0, 0] / 1.e3)
+
     # --- Constant density model with hydrostatic interfaces beneath
     # --- lithosphere
 
@@ -228,6 +230,7 @@ def main():
                             fname='Thick-Mars-with-hydro-lith.png')
     (thick2_grid/1.e3 - thick_grid/1.e3).plot(
         show=False, colorbar=True, fname='Thick-Mars-diff-hydro-lith.png')
+    print('Thickness at north pole (km) = ', thick2_grid.data[0, 0] / 1.e3)
     min = (thick2_grid/1.e3 - thick_grid/1.e3).min()
     max = (thick2_grid/1.e3 - thick_grid/1.e3).max()
     print('Minimum and maximum difference (km) = ', min, max)
@@ -268,6 +271,7 @@ def main():
 
     (thick3_grid/1.e3).plot(show=False, colorbar=True,
                             fname='Thick-Mars-with-fluid.png')
+    print('Thickness at north pole (km) = ', thick3_grid.data[0, 0] / 1.e3)
     (thick2_grid/1.e3 - thick3_grid/1.e3).plot(
         show=False, colorbar=True, fname='Thick-Mars-diff-lith-fluid.png')
     min = (thick2_grid/1.e3 - thick3_grid/1.e3).min()
