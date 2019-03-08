@@ -152,3 +152,50 @@ def InertiaTensor(hilm, rho, i_core, normalize=False, quiet=True):
             B / mass / r_core**2, C / mass / r_core**2, mass, r_core, vec
     else:
         return II, A, B, C, mass, r_core, vec
+
+
+# === moi : calculate the mean normalized moment of inertia
+
+def moi(radius, rho, n, normalized=True):
+    """
+    Calculate the mean, normalized, moment of inertia up to index n.
+
+    x = moi(radius, rho, n, [normalized])
+
+    Returns
+    -------
+    x : float
+        The mean moment of inertia computed using a 1-D density profile. If
+        normalized is True, the moment of inertial will be normalized by
+        M R^2.
+
+    Parameters
+    ----------
+    radius : ndarray, size (n+1)
+        A vector of radii, where radius[0] is the center of the planet and
+        radius[n] is the surface.
+    rho : ndarray, size (n+1)
+        A vector of densities of the layers, where rho[i] is the density
+        between radius[i] and radius[i+1]. The density above the surface,
+        rho[n], is set to zero. The density of the base of the crust is
+        rho[i_crust], the density of the upper mantle is rho[i_crust-1], and
+        the density if the upper core is rho[i_core-1].
+    n : integer
+        Maximum indice of the radius to use when computing the moment of
+        inertia.
+    normalized : bool, optional, default = True
+        If True, return the mean moment of inertia normalized by M R^2, where
+        R is radius[n] and M is the mass below radius[n].
+    """
+    II = 0.
+    mass = 4. * np.pi / 3. * rho[0] * radius[1]**3
+
+    for i in range(2, n+1):
+        mass += 4. * np.pi / 3. * rho[i-1] * (radius[i]**3 - radius[i-1]**3)
+
+        II += 8. * np.pi / 15. * rho[i-1] * (radius[i]**5 - radius[i-1]**5)
+
+    if normalized:
+        return II / mass / radius[n]**2
+    else:
+        return II
