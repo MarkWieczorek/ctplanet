@@ -10,15 +10,15 @@ import pyshtools as pyshtools
 
 # ==== InertiaTensor ====
 
-def InertiaTensor(hilm, rho, i_core, normalize=False, quiet=True):
+def InertiaTensor_from_shape(hilm, rho, i_core, normalize=False, quiet=True):
     '''
     Calculate the inertia tensor given a radial density profile and shape of
     each interface.
 
     Usage
     -----
-    I, A, B, C, M, R, angles = InertiaTensor(hilm, rho, i_core,
-                                                [normalize, quiet])
+    I, A, B, C, M, R, angles = InertiaTensor_from_shape(hilm, rho, i_core,
+                                                        [normalize, quiet])
 
     Returns
     -------
@@ -48,7 +48,7 @@ def InertiaTensor(hilm, rho, i_core, normalize=False, quiet=True):
     normalize : bool, optional, default = False
         If True, return all moments normalized by MR^2
     quiet : bool, optional, default = True
-        If False, print additional information, including the locations of the
+        If False, print additional information, including the directions of the
         axes of the principal moments and gravitational coefficients.
     '''
 
@@ -152,6 +152,111 @@ def InertiaTensor(hilm, rho, i_core, normalize=False, quiet=True):
             B / mass / r_core**2, C / mass / r_core**2, mass, r_core, vec
     else:
         return II, A, B, C, mass, r_core, vec
+
+
+# === Compute the three moments of inertia given C and the gravity coefficients
+
+def InertiaTensor_from_C(C, potential, normalize=False, r_norm=None,
+                         quiet=True):
+    '''
+    Calculate the inertia tensor given the polar moment of inertia and the
+    gravitational potential coefficients.
+
+    Usage
+    -----
+    I, A, B, C, angles = InertiaTensor_from_C(C, potential, [normalize, r_norm,
+                                                             quiet])
+
+    Returns
+    -------
+    I : ndarray, size(3, 3)
+        The inertia tensor.
+    A, B, C : float
+        The principal moments of inertia, with A<B<C.
+    angles : ndarray, size(3,2)
+        Matrix with each row containing the latitude and longitude
+        coordinates (in degrees) of the principal moments A, B and C.
+
+    Parameters
+    ----------
+    C : float
+        The polar moment of inertia, which is assumed to be equal to the
+        I33 component of the inertia tensor.
+    potential : SHGravCoeffs
+        An SHGravCoeffs instance containing the gravitational potential
+        coefficients.
+    normalize : bool, optional, default = False
+        If True, return all moments normalized by MR^2
+    r_norm : float, optional default = None
+        If specified, and if normalize is True, use this radius to normalize
+        all output moments of inertia. If normalize is False, then r_norm will
+        be used when printing the normalized moments to screen when quiet is
+        False.
+    quiet : bool, optional, default = True
+        If False, print additional information, including the principal and
+        normalized principal moments of inertial, and the directions of the
+        axes of the principal moments.
+
+    Description
+    -----------
+    This routine assumes that the polar moment of inertia C is equal to the
+    I33 term of the inertia tensor. This is equivalent to assuming that the
+    coordinate system defining the gravitational potential is aligned with
+    the principal moment C. As such, the gravitational potential terms of order
+    2 and degree 1 should be identically zero. If they are not, the returned
+    value of the largest principal moment will differ slightly from the input
+    value, and the difference provides an estimate of the error associated with
+    the assumption that C=I33.
+    '''
+
+    if r_norm is None:
+        r_norm = potential.r0
+
+    mass = potential.mass
+    r0 = potential.r0
+
+    clm_unnorm = potential.to_array(normalization='unnorm', csphase=1)
+
+    I33 = C
+    I22 = mass * r0**2 * (clm_unnorm[0, 2, 0] + 2 * clm_unnorm[0, 2, 2]) \
+        + I33
+    I11 = mass * r0**2 * (clm_unnorm[0, 2, 0] - 2 * clm_unnorm[0, 2, 2]) \
+        + I33
+    I12 = - 2 * clm_unnorm[1, 2, 2] * mass * r0**2
+    I13 = - clm_unnorm[0, 2, 1] * mass * r0**2
+    I23 = - clm_unnorm[1, 2, 1] * mass * r0**2
+
+    II = np.array([[I11, I12, I13], [I12, I22, I23], [I13, I23, I33]])
+
+    eig, vec = eigh(II)
+    AA = eig[0]
+    BB = eig[1]
+    CC = eig[2]
+
+    if quiet is False:
+        e = np.zeros((3, 2))
+        e[0, 0] = 90. - np.rad2deg(np.arccos(vec[0, 2]))
+        e[0, 1] = np.rad2deg(np.arctan2(vec[0, 1], vec[0, 0]))
+        e[1, 0] = 90. - np.rad2deg(np.arccos(vec[1, 2]))
+        e[1, 1] = np.rad2deg(np.arctan2(vec[1, 1], vec[1, 0]))
+        e[2, 0] = 90. - np.rad2deg(np.arccos(vec[2, 2]))
+        e[2, 1] = np.rad2deg(np.arctan2(vec[2, 1], vec[2, 0]))
+
+        print('I / (MR^2) = ', II / mass / r_norm**2)
+        print('A / (MR^2) = {:e}'.format(AA / mass / r_norm**2))
+        print('B / (MR^2) = {:e}'.format(BB / mass / r_norm**2))
+        print('C / (MR^2) = {:e}'.format(CC / mass / r_norm**2))
+        print('I_ave / (MR^2) = {:e}'.format(II.trace() / 3 / mass /
+                                             r_norm**2))
+        print('A (lat, lon) = ', e[0, 0], e[0, 1])
+        print('B (lat, lon) = ', e[1, 0], e[1, 1])
+        print('C (lat, lon) = ', e[2, 0], e[2, 1])
+
+    if normalize:
+        return II / mass / r_norm**2, AA / mass / r_norm**2, \
+            BB / mass / r_norm**2, CC / mass / r_norm**2, vec
+    else:
+        return II, AA, BB, CC, vec
 
 
 # === moi : calculate the mean normalized moment of inertia

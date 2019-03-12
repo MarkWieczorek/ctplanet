@@ -7,10 +7,9 @@ import numpy as np
 
 import pyshtools
 
-import pyMoho
 from Hydrostatic import HydrostaticShapeLith
 from Hydrostatic import HydrostaticShape
-from InertiaTensor import InertiaTensor
+from InertiaTensor import InertiaTensor_from_shape
 from InertiaTensor import moi
 from ReadRefModel import ReadRefModel
 
@@ -22,7 +21,7 @@ def main():
     d_lith = 150.e3
     rho_crust = 2900.
     d_sigma = 45.e3
-    lmax_hydro = 60
+    lmax_hydro = 90
 
     gravfile = 'Data/gmm3_120_sha.tab'
     topofile = 'Data/MarsTopo719.shape'
@@ -104,8 +103,9 @@ def main():
           'h40 = {:e}'.format(hlm_fluid[i_core].coeffs[0, 4, 0]))
 
     print('Moments of hydrostatic core')
-    II, AA, BB, CC, mass, RR, vec = InertiaTensor(hlm_fluid, rho, i_core,
-                                                  quiet=False)
+    II, AA, BB, CC, mass, RR, vec = InertiaTensor_from_shape(hlm_fluid, rho,
+                                                             i_core,
+                                                             quiet=False)
     print('I = ', II)
     print('A, B, C = ', AA, BB, CC)
     print('A, B, C / (mass_mars r0^2) = ', (AA, BB, CC) / mass_mars /
@@ -114,8 +114,8 @@ def main():
     print('R core (m) = ', RR)
 
     print('Moments of hydrostatic planet')
-    II, AA, BB, CC, mass, RR, vec = InertiaTensor(hlm_fluid, rho, n,
-                                                  quiet=False)
+    II, AA, BB, CC, mass, RR, vec = InertiaTensor_from_shape(hlm_fluid, rho, n,
+                                                             quiet=False)
     print('I = ', II)
     print('A, B, C = ', AA, BB, CC)
     print('A, B, C / (mass_mars r0^2) = ', (AA, BB, CC) / mass_mars /
@@ -139,8 +139,8 @@ def main():
           hlm[i_core].expand(lmax=1).max(),
           hlm[i_core].expand(lmax=1).min())
 
-    II, AA, BB, CC, mass, RR, vec = InertiaTensor(hlm, rho, i_core,
-                                                  quiet=False)
+    II, AA, BB, CC, mass, RR, vec = InertiaTensor_from_shape(hlm, rho, i_core,
+                                                             quiet=False)
     print('I = ', II)
     print('A, B, C = ', AA, BB, CC)
     print('A, B, C / (mass_mars r0^2) = ', (AA, BB, CC) / mass_mars /
