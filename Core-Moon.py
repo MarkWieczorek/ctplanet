@@ -9,7 +9,7 @@ import pyshtools
 
 from Hydrostatic import HydrostaticShapeLith
 from Hydrostatic import HydrostaticShape
-from InertiaTensor import InertiaTensor
+from InertiaTensor import InertiaTensor_from_shape
 
 # ==== MAIN FUNCTION ====
 
@@ -150,8 +150,8 @@ def main():
                         print("C (km) = {:e}".format(c/1.e3))
                         print("rho_core (kg/m3) = {:e}".format(rho[0]))
 
-                        II, AA, BB, CC, mass, RR, vec = \
-                            InertiaTensor(hlm, rho, 1, quiet=False)
+                        II, AA, BB, CC, mass_model, RR, vec = \
+                            InertiaTensor_from_shape(hlm, rho, 1, quiet=False)
 
                         grid = hlm[i_core].expand(lmax=lmax_grid, grid='DH2')
                         grid.to_file(core_shape_wo_d1)

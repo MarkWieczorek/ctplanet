@@ -215,7 +215,7 @@ def InertiaTensor_from_C(C, potential, normalize=False, r_norm=None,
     mass = potential.mass
     r0 = potential.r0
 
-    clm_unnorm = potential.to_array(normalization='unnorm', csphase=1)
+    clm_unnorm = potential.to_array(normalization='unnorm', csphase=1, lmax=2)
 
     I33 = C
     I22 = mass * r0**2 * (clm_unnorm[0, 2, 0] + 2 * clm_unnorm[0, 2, 2]) \
@@ -243,11 +243,15 @@ def InertiaTensor_from_C(C, potential, normalize=False, r_norm=None,
         e[2, 1] = np.rad2deg(np.arctan2(vec[2, 1], vec[2, 0]))
 
         print('I / (MR^2) = ', II / mass / r_norm**2)
-        print('A / (MR^2) = {:e}'.format(AA / mass / r_norm**2))
+        print('\nA / (MR^2) = {:e}'.format(AA / mass / r_norm**2))
         print('B / (MR^2) = {:e}'.format(BB / mass / r_norm**2))
         print('C / (MR^2) = {:e}'.format(CC / mass / r_norm**2))
-        print('I_ave / (MR^2) = {:e}'.format(II.trace() / 3 / mass /
-                                             r_norm**2))
+        print('I_ave / (MR^2) = {:e}\n'.format(II.trace() / 3 / mass /
+                                               r_norm**2))
+        print('A  = {:e}'.format(AA))
+        print('B = {:e}'.format(BB))
+        print('C = {:e}'.format(CC))
+        print('I_ave = {:e}\n'.format(II.trace() / 3))
         print('A (lat, lon) = ', e[0, 0], e[0, 1])
         print('B (lat, lon) = ', e[1, 0], e[1, 1])
         print('C (lat, lon) = ', e[2, 0], e[2, 1])
