@@ -42,7 +42,10 @@ def main():
 
     J2 = - potential.to_array(normalization='unnorm')[0, 2, 0]
     print('J2 = {:e}'.format(J2))
-    phi0dot = -7608.3 # +- 2.1 mas / yr (Konopliv et al. 2016)
+    phidot = -7608.3  # +- 2.1 mas / yr (Konopliv et al. 2016)
+    phidotp = -0.2  # planetary torque correction, from Konopliv et al. 2011
+    phidotg = 6.7  # relativistic correction, from Konopliv et al. 2011
+    phi0dot = phidot - phidotp - phidotg
     print('Phi0-dot, mas/yr = {:f}'.format(phi0dot))
     phi0dot *= np.pi / 180 / 1000 / 60 / 60 / 365.25 / 24 / 60 / 60
 
