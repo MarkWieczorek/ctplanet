@@ -8,9 +8,7 @@ import os
 
 import pyshtools
 
-import pyMoho
 from Hydrostatic import HydrostaticShapeLith
-from Hydrostatic import HydrostaticShape
 
 # ==== MAIN FUNCTION ====
 
@@ -36,7 +34,6 @@ def main():
     print('Mass = {:e}'.format(potential.mass))
     print('Omega = {:e}'.format(potential.omega))
 
-    lmax_calc = 90
     lmax = 359
 
     topo = pyshtools.SHCoeffs.from_file(topofile, lmax=lmax)
@@ -61,8 +58,8 @@ def main():
             print(lines[0].strip())
             data = lines[1].split()
             if float(data[2]) != 1:
-                raise RuntimeError('Program not capable of reading polynomial ' +
-                                   'files')
+                raise RuntimeError('Program not capable of reading '
+                                   'polynomial files')
             num_file = int(lines[2].split()[0])
             crust_index_file = int(lines[2].split()[3])
             core_index_file = int(lines[2].split()[2])
@@ -99,7 +96,8 @@ def main():
             rho = rho[:n+1]
             r0_model = radius[n]
 
-            print('Surface radius of model (km) = {:f}'.format(r0_model / 1.e3))
+            print('Surface radius of model (km) = {:f}'
+                  .format(r0_model / 1.e3))
             for i in range(0, n+1):
                 if radius[i] <= (r0_model - d_lith) and \
                         radius[i+1] > (r0_model - d_lith):
@@ -119,8 +117,10 @@ def main():
             print('Core density (kg/m3) = {:f}'.format(rho_core))
             print('Core radius (km) = {:f}'.format(radius[i_core]/1.e3))
 
-            print('Assumed depth of lithosphere (km) = {:f}'.format(d_lith / 1.e3))
-            print('Actual depth of lithosphere in discretized model (km) = {:f}'
+            print('Assumed depth of lithosphere (km) = {:f}'
+                  .format(d_lith / 1.e3))
+            print('Actual depth of lithosphere in discretized '
+                  'model (km) = {:f}'
                   .format((r0_model - radius[i_lith]) / 1.e3))
 
             r_sigma = topo.r0 - d_sigma
@@ -130,7 +130,6 @@ def main():
             print('Percentage of h20 derived from hydrostatic mantle = '
                   '{:f}'.format(clm_hydro.coeffs[0, 2, 0] /
                                 potential.coeffs[0, 2, 0]*100))
-
 
     # --- read 1D reference interior model ---
     # --- From Rivoldini
@@ -149,7 +148,6 @@ def main():
         with open(os.path.join(model_dir, file), 'r') as f:
             lines = f.readlines()
             num = len(lines) - 4
-            num_dis = num
             radius = np.zeros(num)
             rho = np.zeros(num)
             for i in range(0, num):

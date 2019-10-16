@@ -5,8 +5,6 @@ and shape of all interfaces.
 import numpy as np
 from scipy.linalg import eigh
 
-import pyshtools as pyshtools
-
 
 # ==== InertiaTensor ====
 

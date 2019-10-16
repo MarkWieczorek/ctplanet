@@ -154,7 +154,7 @@ def main():
                                               hlm_fluid[n].coeffs[0, 4, 0]))
         print('% of J2 arising from beneath lithosphere = {:f}'
               .format(clm_fluid.coeffs[0, 2, 0]
-              /potential.coeffs[0, 2, 0] * 100.))
+                      / potential.coeffs[0, 2, 0] * 100.))
 
     hlm, clm_hydro, mass_model = \
         HydrostaticShapeLith(radius, rho, i_lith, potential, topo, rho_c,

@@ -10,7 +10,6 @@ import pyshtools
 from Hydrostatic import HydrostaticShapeLith
 from Hydrostatic import HydrostaticShape
 from InertiaTensor import InertiaTensor_from_shape
-from InertiaTensor import moi
 from ReadRefModel import ReadRefModel
 
 # ==== MAIN FUNCTION ====

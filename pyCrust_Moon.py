@@ -27,8 +27,8 @@ import pyMoho
 
 def main():
 
-    lmax = 900 # determines spatial resolution of grids
-    lmax_calc = 600 # maximum degree to use in calculations
+    lmax = 900  # determines spatial resolution of grids
+    lmax_calc = 600  # maximum degree to use in calculations
 
     gravfile = 'Data/JGGRAIL_900C11A_SHA.TAB'
     topofile = 'Data/LOLA1500p.sh'
@@ -49,7 +49,7 @@ def main():
     print('Reference radius (m) = {:e}\n'.format(topo.r0))
 
     density = pyshtools.SHCoeffs.from_file(densityfile, lmax=lmax)
-    rho_c0 = density.coeffs[0, 0, 0] # average grain density
+    rho_c0 = density.coeffs[0, 0, 0]  # average grain density
 
     print('Average grain density of crust (kg/m3) = {:e}'.format(rho_c0))
     print('Lmax of density coefficients = {:d}\n'.format(density.lmax))

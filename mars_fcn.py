@@ -49,13 +49,13 @@ def main():
     print('Phi0-dot, mas/yr = {:f}'.format(phi0dot))
     phi0dot *= np.pi / 180 / 1000 / 60 / 60 / 365.25 / 24 / 60 / 60
 
-    e_mars = 0.09341 # Konopliv et al. 2011
+    e_mars = 0.09341  # Konopliv et al. 2011
     print('e_mars = {:f}'.format(e_mars))
-    obliquity = 25.1893823 # degrees, Konopliv et al. 2016
+    obliquity = 25.1893823  # degrees, Konopliv et al. 2016
     print('obliquity, degrees = {:f}'.format(obliquity))
     obliquity *= np.pi / 180
 
-    n0 = 191.408 # degrees per year, Konopliv et al. 2011
+    n0 = 191.408  # degrees per year, Konopliv et al. 2011
     print('n0, degrees/yr = {:f}'.format(n0))
     n0 *= np.pi / 180 / 24 / 60 / 60 / 365.25
 

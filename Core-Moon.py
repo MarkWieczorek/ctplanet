@@ -30,6 +30,7 @@ def main():
     out_rc_rhoc = "figs/rc_rhoc_34_2550.dat"
     out_rc_beta = "figs/rc_beta_34_2550.dat"
     sh_core = "figs/core_34.sh"
+    sh_core_fluid = "figs/core_fluid_34.sh"
     core_shape_wo_d1 = "figs/core_shape_wo_d1_330_34.dat"
     core_shape = "figs/core_shape_330_34.dat"
 
@@ -176,6 +177,12 @@ def main():
                         b_fluid = hlm_fluid[1].expand(lat=0., lon=90.)
                         c_fluid = hlm_fluid[1].expand(lat=90., lon=0.)
 
+                        grid_fluid_surface = hlm_fluid[3].expand(
+                            lmax=lmax_grid, grid='DH2')
+                        print("Surface relief: Maximum = {:}, Minimum = {:}"
+                              .format(grid_fluid_surface.max(),
+                                      grid_fluid_surface.min()))
+
                         f_core_fluid = (((a_fluid+b_fluid)/2. - c_fluid)
                                         / ((a_fluid + b_fluid) / 2.))
                         beta_core_fluid = ((a_fluid**2 - b_fluid**2) /
@@ -192,6 +199,7 @@ def main():
                               'to a fluid planet (m) = ',
                               diff.max(), diff.min())
                         hlm[i_core].to_file(sh_core)
+                        hlm_fluid[i_core].to_file(sh_core_fluid)
                         grid.to_file(core_shape)
                         print("Maximum = {:e}\nMinimum = {:e}"
                               .format(grid.max(), grid.min()))

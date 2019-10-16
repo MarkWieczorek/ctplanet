@@ -11,19 +11,14 @@ boundary. The average crustal thickness is iterated in order to obtain
 a specified minimum crustal thickness.
 """
 import numpy as np
-
 import pyshtools
 
-import pyMoho
-from Hydrostatic import HydrostaticShapeLith
 from Hydrostatic import HydrostaticShape
 
 # ==== MAIN FUNCTION ====
 
 
 def main():
-
-
 
     model_name = ['PREM.dat']
     spec = 'Data/'
@@ -40,7 +35,6 @@ def main():
     print('Omega = {:e}'.format(omega))
 
     model = 0
-    lmax_hydro = 15
 
     # --- read 1D reference interior model ---
 

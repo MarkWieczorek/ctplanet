@@ -190,7 +190,7 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
                             * radius[i] * (radius[i] / radius[j])**(l-1)
 
                 a[i, ilith+1] = 4. * np.pi * g / (2. * l + 1.) \
-                     * radius[i] * (radius[i] / r_sigma)**(l-1)
+                    * radius[i] * (radius[i] / r_sigma)**(l-1)
 
                 if tides is True:
                     atides[0, i] = g * mp * radius[i] / rp**3 * (
@@ -205,7 +205,7 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
                     * radius[j] * (radius[j] / r_ref)**(l+1)
 
             a[ilith+1, ilith+1] = 4. * np.pi * g / (2. * l + 1.)\
-                 * r_sigma * (r_sigma / r_ref)**(l+1)
+                * r_sigma * (r_sigma / r_ref)**(l+1)
 
             # --- do cosine term ---
 
@@ -271,7 +271,7 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
                     b[1:ilith+1] = b4[1, m, 1:ilith+1]
 
                 for i in range(1, ilith+1):
-                    b[i] -= gm * cminus[1, l, m] * (radius[i]/ r_surface)**l \
+                    b[i] -= gm * cminus[1, l, m] * (radius[i] / r_surface)**l \
                             / r_surface
                     b[ilith+1] = gm * potential.coeffs[1, l, m] / r_ref - \
                         gm * cplus[1, l, m] * (r_surface / r_ref)**l / r_ref
@@ -567,7 +567,7 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None,
                                 omega**2 * radius[i] * \
                                 hlm[i].coeffs[1, l, m] * p422022
 
-    # Calculate potential at r_ref resulting from all interfaces, 
+    # Calculate potential at r_ref resulting from all interfaces,
     # or only those beneath and including i_clm_hydro.
 
     coeffs = np.zeros((2, lmax+1, lmax+1))

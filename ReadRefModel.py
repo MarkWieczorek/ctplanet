@@ -3,8 +3,6 @@ Read the reference interior model file.
 '''
 import numpy as np
 
-import pyshtools as pyshtools
-
 
 # ==== ReadRefModel ====
 
@@ -116,7 +114,7 @@ def ReadRefModel(filename, depth=None, quiet=True):
                         i_depth = i + 1
                     break
 
-        if quiet is not False:
+        if quiet is False:
             print('Surface radius of model (km) = {:f}'
                   .format(r0_model / 1.e3))
             print('Mantle density (kg/m3) = {:f}'.format(rho_mantle))
