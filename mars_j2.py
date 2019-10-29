@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Create images related to Mars for the Hydrostatic flattening paper with a
-lithosphere
+Compute the contribution to the gravitational J2 of Mars from hydrostatic
+interfaces beneath the lithosphere.
 """
 import numpy as np
 import os

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Create images related to Mars for the Hydrostatic flattening paper with a
-lithosphere
+Create images related to Mars in Wieczorek et al. (2019)
 """
 import numpy as np
 
@@ -24,7 +23,6 @@ def main():
 
     gravfile = 'Data/gmm3_120_sha.tab'
     topofile = 'Data/MarsTopo719.shape'
-    densityfile = 'Data/dichotomy_359.sh'
 
     model_name = ['DWThot', 'DWThotCrust1', 'DWThotCrust1r', 'EH45Tcold',
                   'EH45TcoldCrust1', 'EH45TcoldCrust1r', 'EH45ThotCrust2',

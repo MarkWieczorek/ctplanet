@@ -10,8 +10,6 @@ includes the effect of different densities on either side of the dichotomy
 boundary. The average crustal thickness is iterated in order to obtain
 a specified minimum crustal thickness.
 """
-import numpy as np
-
 import pyshtools
 
 import pyMoho
@@ -67,7 +65,6 @@ def main():
     omega = pyshtools.constant.omega_mars.value
 
     d_lith = 150.e3
-    d_sigma = 45.e3
 
     t0 = 1.e3  # minimum crustal thickness
     model = 10  # identifier for the interior reference model

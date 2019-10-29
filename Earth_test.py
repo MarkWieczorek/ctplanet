@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
 """
-pyCrust_Mars
+Earth_test
 
-Create a crustal thickness map of Mars from gravity and topography.
-
-This script generates two different crustal thickness maps. The first assumes
-that the density of both the crust and mantle are constant, whereas the second
-includes the effect of different densities on either side of the dichotomy
-boundary. The average crustal thickness is iterated in order to obtain
-a specified minimum crustal thickness.
+Compute hydrostatic shape of Earth using PREM.
 """
 import numpy as np
 import pyshtools
@@ -24,10 +18,10 @@ def main():
     spec = 'Data/'
     interior_file = [spec + name for name in model_name]
 
-    r_ref = float(pyshtools.constant.r0_pot_earth)
-    gm = float(pyshtools.constant.gm_earth)
-    mass = float(pyshtools.constant.mass_earth)
-    omega = float(pyshtools.constant.wgs84_omega)
+    r_ref = pyshtools.constant.a_wgs84.value
+    gm = pyshtools.constant.gm_wgs84.value
+    mass = gm / pyshtools.constant.G.value
+    omega = pyshtools.constant.omega_wgs84.value
 
     print('Reference radius (km) = {:f}'.format(r_ref / 1.e3))
     print('GM = {:e}'.format(gm))
@@ -67,26 +61,17 @@ def main():
 
     # --- Compute gravity contribution from hydrostatic density interfaces ---
 
-    if True:
-        for i in range(1, 8):
-            # compute values for a planet that is completely fluid
-            fn = True
-            nmax = i
+    hlm_fluid, clm_fluid, mass_model = HydrostaticShape(radius, rho, omega,
+                                                        gm, r_ref)
 
-            hlm_fluid, clm_fluid, mass_model = \
-                HydrostaticShape(radius, rho, omega, gm,
-                                 r_ref, nmax=nmax,
-                                 finiteamplitude=fn, kmax=4)
-
-            hlm_surf_unnorm = hlm_fluid[n].convert(normalization='unnorm')
-            print('--- Hydrostatic relief of surface ---')
-            print('nmax = {:d}'.format(nmax))
-            print('h20 = {:e}\n'.format(hlm_fluid[n].coeffs[0, 2, 0]) +
-                  'h40 = {:e}'.format(hlm_fluid[n].coeffs[0, 4, 0]))
-            print('h20 (unnorm)= {:e}\n'
-                  .format(hlm_surf_unnorm.coeffs[0, 2, 0]/r0_model) +
-                  'h40 (unnorm)= {:e}'
-                  .format(hlm_surf_unnorm.coeffs[0, 4, 0]/r0_model))
+    hlm_surf_unnorm = hlm_fluid[n].convert(normalization='unnorm')
+    print('--- Hydrostatic relief of surface ---')
+    print('h20 = {:e}\n'.format(hlm_fluid[n].coeffs[0, 2, 0]) +
+          'h40 = {:e}'.format(hlm_fluid[n].coeffs[0, 4, 0]))
+    print('h20 (unnorm)= {:e}\n'
+          .format(hlm_surf_unnorm.coeffs[0, 2, 0]/r0_model) +
+          'h40 (unnorm)= {:e}'
+          .format(hlm_surf_unnorm.coeffs[0, 4, 0]/r0_model))
 
     print(mass, mass_model)
 

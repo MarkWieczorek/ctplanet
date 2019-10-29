@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-    Calculate the hydrostatic shape of the core of the Moon.
+    Calculate the hydrostatic shape of Ceres.
 
 """
 import numpy as np

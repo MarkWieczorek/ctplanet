@@ -9,7 +9,6 @@ The script assumes that the density of both the crust and mantle are constant.
 The average crustal thickness is iterated in order to fit the specified
 thickness at the InSight landing site.
 """
-import numpy as np
 import matplotlib.pyplot as plt
 
 import pyshtools

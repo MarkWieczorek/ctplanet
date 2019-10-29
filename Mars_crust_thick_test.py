@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-pyCrust_Mars
+Mars_crust_thick_test
 
 Create a crustal thickness map of Mars from gravity and topography and compare
-how results change if hydrostatic interfaces are not taken into account..
+how results change if hydrostatic interfaces are not taken into account.
 
 """
 import numpy as np
@@ -21,7 +21,6 @@ def main():
 
     gravfile = 'Data/gmm3_120_sha.tab'
     topofile = 'Data/MarsTopo719.shape'
-    densityfile = 'Data/dichotomy_359.sh'
 
     model_name = ['DWThot', 'DWThotCrust1', 'DWThotCrust1r', 'EH45Tcold',
                   'EH45TcoldCrust1', 'EH45TcoldCrust1r', 'EH45ThotCrust2',
@@ -33,7 +32,6 @@ def main():
     model = 10
 
     d_lith = 150.e3
-    d_sigma = 45.e3
 
     potential = pyshtools.SHGravCoeffs.from_file(gravfile, header_units='km')
 
