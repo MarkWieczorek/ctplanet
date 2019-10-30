@@ -2,14 +2,15 @@
 """
 Create images related to Mars in Wieczorek et al. (2019)
 """
+import os
 import numpy as np
 
 import pyshtools
 
-from Hydrostatic import HydrostaticShapeLith
-from Hydrostatic import HydrostaticShape
-from InertiaTensor import InertiaTensor_from_shape
-from ReadRefModel import ReadRefModel
+from pycrust import HydrostaticShapeLith
+from pycrust import HydrostaticShape
+from pycrust import InertiaTensor_from_shape
+from pycrust import ReadRefModel
 
 # ==== MAIN FUNCTION ====
 
@@ -35,6 +36,11 @@ def main():
     omega = pyshtools.constant.omega_mars.value
     potential.omega = omega
     mass_mars = np.float_(potential.mass)
+
+    try:
+        os.mkdir('figs')
+    except:
+        pass
 
     print('Gravity file = {:s}'.format(gravfile))
     print('Lmax of potential coefficients = {:d}'.format(potential.lmax))

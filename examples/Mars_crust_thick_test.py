@@ -6,13 +6,14 @@ Create a crustal thickness map of Mars from gravity and topography and compare
 how results change if hydrostatic interfaces are not taken into account.
 
 """
+import os
 import numpy as np
 
 import pyshtools
 
-import pyMoho
-from Hydrostatic import HydrostaticShapeLith
-from Hydrostatic import HydrostaticShape
+from pycrust import pyMoho
+from pycrust import HydrostaticShapeLith
+from pycrust import HydrostaticShape
 
 # ==== MAIN FUNCTION ====
 
@@ -38,6 +39,11 @@ def main():
     lmax_calc = 90
     lmax = lmax_calc * 4
     lmax_grid = 719
+
+    try:
+        os.mkdir('figs')
+    except:
+        pass
 
     print('Gravity file = {:s}'.format(gravfile))
     print('Lmax of potential coefficients = {:d}'.format(potential.lmax))
@@ -172,9 +178,9 @@ def main():
     while abs(tmin - t0) > t0_sigma:
         # iterate to fit assumed minimum crustal thickness
 
-        moho = pyMoho.pyMoho(potential, topo, lmax, rho_c, rho_mantle,
-                             thickave, filter_type=filter, half=half,
-                             lmax_calc=lmax_calc, nmax=nmax, quiet=True)
+        moho = pyMoho(potential, topo, lmax, rho_c, rho_mantle,
+                      thickave, filter_type=filter, half=half,
+                      lmax_calc=lmax_calc, nmax=nmax, quiet=True)
 
         thick_grid = (topo.pad(lmax_grid)
                       - moho.pad(lmax_grid)).expand(grid='DH2')
@@ -189,7 +195,7 @@ def main():
         thickave += t0 - tmin
 
     (thick_grid/1.e3).plot(show=False, colorbar=True,
-                           fname='Thick-Mars-without-hydro.png')
+                           fname='figs/Thick-Mars-without-hydro.png')
 
     print('Thickness at north pole (km) = ', thick_grid.data[0, 0] / 1.e3)
 
@@ -208,9 +214,9 @@ def main():
     while abs(tmin - t0) > t0_sigma:
         # iterate to fit assumed minimum crustal thickness
 
-        moho = pyMoho.pyMoho(potential, topo, lmax, rho_c, rho_mantle,
-                             thickave, filter_type=filter, half=half,
-                             lmax_calc=lmax_calc, nmax=nmax, quiet=True)
+        moho = pyMoho(potential, topo, lmax, rho_c, rho_mantle,
+                      thickave, filter_type=filter, half=half,
+                      lmax_calc=lmax_calc, nmax=nmax, quiet=True)
 
         thick2_grid = (topo.pad(lmax_grid)
                        - moho.pad(lmax_grid)).expand(grid='DH2')
@@ -225,9 +231,9 @@ def main():
         thickave += t0 - tmin
 
     (thick2_grid/1.e3).plot(show=False, colorbar=True,
-                            fname='Thick-Mars-with-hydro-lith.png')
+                            fname='figs/Thick-Mars-with-hydro-lith.png')
     (thick2_grid/1.e3 - thick_grid/1.e3).plot(
-        show=False, colorbar=True, fname='Thick-Mars-diff-hydro-lith.png')
+        show=False, colorbar=True, fname='figs/Thick-Mars-diff-hydro-lith.png')
     print('Thickness at north pole (km) = ', thick2_grid.data[0, 0] / 1.e3)
     min = (thick2_grid/1.e3 - thick_grid/1.e3).min()
     max = (thick2_grid/1.e3 - thick_grid/1.e3).max()
@@ -251,9 +257,9 @@ def main():
     while abs(tmin - t0) > t0_sigma:
         # iterate to fit assumed minimum crustal thickness
 
-        moho = pyMoho.pyMoho(potential, topo, lmax, rho_c, rho_mantle,
-                             thickave, filter_type=filter, half=half,
-                             lmax_calc=lmax_calc, nmax=nmax, quiet=True)
+        moho = pyMoho(potential, topo, lmax, rho_c, rho_mantle,
+                      thickave, filter_type=filter, half=half,
+                      lmax_calc=lmax_calc, nmax=nmax, quiet=True)
 
         thick3_grid = (topo.pad(lmax_grid)
                        - moho.pad(lmax_grid)).expand(grid='DH2')
@@ -268,10 +274,10 @@ def main():
         thickave += t0 - tmin
 
     (thick3_grid/1.e3).plot(show=False, colorbar=True,
-                            fname='Thick-Mars-with-fluid.png')
+                            fname='figs/Thick-Mars-with-fluid.png')
     print('Thickness at north pole (km) = ', thick3_grid.data[0, 0] / 1.e3)
     (thick2_grid/1.e3 - thick3_grid/1.e3).plot(
-        show=False, colorbar=True, fname='Thick-Mars-diff-lith-fluid.png')
+        show=False, colorbar=True, fname='figs/Thick-Mars-diff-lith-fluid.png')
     min = (thick2_grid/1.e3 - thick3_grid/1.e3).min()
     max = (thick2_grid/1.e3 - thick3_grid/1.e3).max()
     print('Minimum and maximum difference (km) = ', min, max)

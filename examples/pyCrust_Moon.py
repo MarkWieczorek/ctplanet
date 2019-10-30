@@ -16,9 +16,11 @@ Wieczorek, M. A., G. A. Neumann, F. Nimmo, W. S. Kiefer, G. J. Taylor,
     J. G. Williams, M. T. Zuber (2013), The crust of the Moon as seen by GRAIL,
     Science, 339, 671-675, doi:10.1126/science.1231530, 2013.
 """
+import os
 import pyshtools
 
-import pyMoho
+from pycrust import pyMoho
+from pycrust import pyMohoRho
 
 # ==== MAIN FUNCTION ====
 
@@ -33,6 +35,11 @@ def main():
     densityfile = 'Data/density_no_mare_n3000_f3050_719.sh'
 
     pot = pyshtools.SHGravCoeffs.from_file(gravfile, header_units='km')
+
+    try:
+        os.mkdir('figs')
+    except:
+        pass
 
     print('Gravity file = {:s}'.format(gravfile))
     print('Lmax of potential coefficients = {:d}'.format(pot.lmax))
@@ -71,13 +78,13 @@ def main():
     rho_c = rho_c0 * (1. - porosity)  # assumed constant density
     print('Bulk density of the crust(kg/m3)= {:e}'.format(rho_c*100))
 
-    moho = pyMoho.pyMoho(pot, topo, lmax, rho_c, rho_m, thickave,
-                         filter_type=filter, half=half, lmax_calc=lmax_calc,
-                         quiet=False, delta_max=25.)
+    moho = pyMoho(pot, topo, lmax, rho_c, rho_m, thickave,
+                  filter_type=filter, half=half, lmax_calc=lmax_calc,
+                  quiet=False, delta_max=25.)
 
     thick_grid = (topo.pad(lmax) - moho.pad(lmax)).expand(grid='DH2')
-    thick_grid.plot(show=False, fname='Thick-Moon-1.png')
-    moho.plot_spectrum(show=False, fname='Moho-spectrum-Moon-1.png')
+    thick_grid.plot(show=False, fname='figs/Thick-Moon-1.png')
+    moho.plot_spectrum(show=False, fname='figs/Moho-spectrum-Moon-1.png')
 
     print('Crustal thickness at Apollo 12/14 landing sites (km) = {:e}'
           .format((topo.pad(lmax) - moho.pad(lmax))
@@ -86,13 +93,13 @@ def main():
     # Model with variable density
     print('\n=== Variable density crust ===')
 
-    moho = pyMoho.pyMohoRho(pot, topo, density, porosity, lmax, rho_m,
-                            thickave, filter_type=filter, half=half,
-                            lmax_calc=lmax_calc, quiet=False, delta_max=25.)
+    moho = pyMohoRho(pot, topo, density, porosity, lmax, rho_m,
+                     thickave, filter_type=filter, half=half,
+                     lmax_calc=lmax_calc, quiet=False, delta_max=25.)
 
     thick_grid = (topo-moho.pad(topo.lmax)).expand(grid='DH2')
-    thick_grid.plot(show=False, fname='Thick-Moon-2.png')
-    moho.plot_spectrum(show=False, fname='Moho-spectrum-Moon-2.png')
+    thick_grid.plot(show=False, fname='figs/Thick-Moon-2.png')
+    moho.plot_spectrum(show=False, fname='figs/Moho-spectrum-Moon-2.png')
 
     print('Crustal thickness at Apollo 12/14 landing sites (km) = {:e}'.format(
         (topo-moho.pad(topo.lmax)).expand(lat=a_12_14_lat,

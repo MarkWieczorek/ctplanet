@@ -1,17 +1,16 @@
-# pyCrust
-Create a crustal thickness map of a planet from gravity and topography.
+# pycrust
+Create crustal thickness maps of planets from gravity and topography.
 
 ## Description
-The repo pyCrust provides several functions for generating crustal thickness maps of a planet from gravity and topography data, and the calculation of hydrostatic relief along density interfaces beneath the lithosphere.
+pycrust provides several functions and example scripts for generating crustal thickness maps of a planet from gravity and topography data, and the calculation of hydrostatic relief along density interfaces beneath the lithosphere.
 
-### Modules
-#### pyMoho.py
+### Methods
 `pyMoho`                Calculate relief using a constant density crust and
                         mantle.
 
 `pyMohoRho`             Calculate relief using a constant density mantle and a
                         variable density crust.
-#### Hydrostatic.py
+
 `HydrostaticShapeLith`  Calculate the relief of hydrostatic interfaces beneath
                         the lithosphere along with the predicted gravity,
                         taking into account rotation and/or tides using the
@@ -21,7 +20,7 @@ The repo pyCrust provides several functions for generating crustal thickness map
                         predicted gravity of a rotating hydrostatic planet
                         using the approach of *Wieczorek et al.* (2019).
 
-#### InertiaTensor.py
+
 `InertiaTensor_from_shape`  Calculate the inertia tensor given a radial density
                             profile and shape of each interface.
 
@@ -32,7 +31,7 @@ The repo pyCrust provides several functions for generating crustal thickness map
 `moi`                       Calculate the mean, normalized, moment of inertia
                             up to index n.
 
-#### ReadRefModel
+
 `ReadRefModel`   Read the reference interior model file.
 
 ### Example scripts
@@ -77,21 +76,15 @@ The repo pyCrust provides several functions for generating crustal thickness map
 
 ## How to install and run pyCrust
 
-First, you will need to install [pyshtools](https://github.com/SHTOOLS/SHTOOLS), version 4.3 or greater, using one of the two commands
+Download the pyCrust repository and install using pip
 ```bash
-    pip install pyshtools
-    pip install --upgrade pyshtools  # to update a pre-existing installation
-```
-
-Next, download the pyCrust repository
-```bash
-    git clone
-    https://github.com/MarkWieczorek/pycrust.git
+    git clone https://github.com/MarkWieczorek/pycrust.git
+    pip install .
 ```
 
 To execute a script
 ```bash
-    cd pycrust
+    cd examples
     python pyCrust_Moon.py
 ```
 

@@ -10,12 +10,14 @@ includes the effect of different densities on either side of the dichotomy
 boundary. The average crustal thickness is iterated in order to obtain
 a specified minimum crustal thickness.
 """
+import os
 import pyshtools
 
-import pyMoho
-from Hydrostatic import HydrostaticShapeLith
-from Hydrostatic import HydrostaticShape
-from ReadRefModel import ReadRefModel
+from pycrust import pyMoho
+from pycrust import pyMohoRho
+from pycrust import HydrostaticShapeLith
+from pycrust import HydrostaticShape
+from pycrust import ReadRefModel
 
 # ==== MAIN FUNCTION ====
 
@@ -37,6 +39,11 @@ def main():
     lmax = lmax_calc * 4
 
     potential = pyshtools.SHGravCoeffs.from_file(gravfile, header_units='km')
+
+    try:
+        os.mkdir('figs')
+    except:
+        pass
 
     print('Gravity file = {:s}'.format(gravfile))
     print('Lmax of potential coefficients = {:d}'.format(potential.lmax))
@@ -118,9 +125,9 @@ def main():
     while abs(tmin - t0) > t0_sigma:
         # iterate to fit assumed minimum crustal thickness
 
-        moho = pyMoho.pyMoho(potential, topo, lmax, rho_c, rho_mantle,
-                             thickave, filter_type=filter, half=half,
-                             lmax_calc=lmax_calc, nmax=nmax, quiet=True)
+        moho = pyMoho(potential, topo, lmax, rho_c, rho_mantle,
+                      thickave, filter_type=filter, half=half,
+                      lmax_calc=lmax_calc, nmax=nmax, quiet=True)
 
         thick_grid = (topo.pad(lmax) - moho.pad(lmax)).expand(grid='DH2')
         print('Average crustal thickness (km) = {:f}'.format(thickave / 1.e3))
@@ -133,8 +140,8 @@ def main():
         print('Maximum thickness (km) = {:e}'.format(tmax / 1.e3))
         thickave += t0 - tmin
 
-    thick_grid.plot(show=False, fname='Thick-Mars-1.png')
-    moho.plot_spectrum(show=False, fname='Moho-spectrum-Mars-1.png')
+    thick_grid.plot(show=False, fname='figs/Thick-Mars-1.png')
+    moho.plot_spectrum(show=False, fname='figs/Moho-spectrum-Mars-1.png')
 
     # --- Model with variable density ---
 
@@ -155,10 +162,10 @@ def main():
     while abs(tmin - t0) > t0_sigma:
         # iterate to fit assumed minimum crustal thickness
 
-        moho = pyMoho.pyMohoRho(potential, topo, density, porosity, lmax,
-                                rho_mantle, thickave, filter_type=filter,
-                                half=half, lmax_calc=lmax_calc, quiet=True,
-                                nmax=nmax)
+        moho = pyMohoRho(potential, topo, density, porosity, lmax,
+                         rho_mantle, thickave, filter_type=filter,
+                         half=half, lmax_calc=lmax_calc, quiet=True,
+                         nmax=nmax)
 
         thick_grid = (topo.pad(lmax) - moho.pad(lmax)).expand(grid='DH2')
         print('Average crustal thickness (km) = {:e}'.format(thickave / 1.e3))
@@ -171,8 +178,8 @@ def main():
         print('Maximum thickness (km) = {:e}'.format(tmax / 1.e3))
         thickave += t0 - tmin
 
-    thick_grid.plot(show=False, fname='Thick-Mars-2.png')
-    moho.plot_spectrum(show=False, fname='Moho-spectrum-Mars-2.png')
+    thick_grid.plot(show=False, fname='figs/Thick-Mars-2.png')
+    moho.plot_spectrum(show=False, fname='figs/Moho-spectrum-Mars-2.png')
 
 
 # ==== EXECUTE SCRIPT ====

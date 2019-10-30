@@ -4,7 +4,7 @@ Compute the free core nutation period of Mars.
 """
 import numpy as np
 import pyshtools
-from InertiaTensor import InertiaTensor_from_C
+from pycrust import InertiaTensor_from_C
 
 
 # ==== MAIN FUNCTION ====

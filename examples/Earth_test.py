@@ -7,7 +7,7 @@ Compute hydrostatic shape of Earth using PREM.
 import numpy as np
 import pyshtools
 
-from Hydrostatic import HydrostaticShape
+from pycrust import HydrostaticShape
 
 # ==== MAIN FUNCTION ====
 

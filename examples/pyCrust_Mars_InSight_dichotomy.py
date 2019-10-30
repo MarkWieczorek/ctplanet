@@ -9,13 +9,14 @@ The script assumes that the density of both the crust and mantle are constant.
 The average crustal thickness is iterated in order to fit the specified
 thickness at the InSight landing site.
 """
+import os
 import matplotlib.pyplot as plt
 
 import pyshtools
 
-import pyMoho
-from Hydrostatic import HydrostaticShapeLith
-from ReadRefModel import ReadRefModel
+from pycrust import pyMohoRho
+from pycrust import HydrostaticShapeLith
+from pycrust import ReadRefModel
 
 # ==== MAIN FUNCTION ====
 
@@ -37,6 +38,11 @@ def main():
     lmax = lmax_calc * 4
 
     potential = pyshtools.SHGravCoeffs.from_file(gravfile, header_units='km')
+
+    try:
+        os.mkdir('InSight/dichotomy')
+    except:
+        pass
 
     print('Gravity file = {:s}'.format(gravfile))
     print('Lmax of potential coefficients = {:d}'.format(potential.lmax))
@@ -138,13 +144,13 @@ def main():
                 while abs(t_insight_ref - t_insight) > t_sigma:
                     # iterate to fit assumed minimum crustal thickness
 
-                    moho = pyMoho.pyMohoRho(pot_lith, topo, density,
-                                            porosity, lmax,
-                                            rho_mantle, thickave,
-                                            filter_type=filter,
-                                            half=half, lmax_calc=lmax_calc,
-                                            quiet=True,
-                                            nmax=nmax)
+                    moho = pyMohoRho(pot_lith, topo, density,
+                                     porosity, lmax,
+                                     rho_mantle, thickave,
+                                     filter_type=filter,
+                                     half=half, lmax_calc=lmax_calc,
+                                     quiet=True,
+                                     nmax=nmax)
 
                     thick_grid = (topo.pad(lmax) -
                                   moho.pad(lmax)).expand(grid='DH2')

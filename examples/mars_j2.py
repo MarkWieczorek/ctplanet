@@ -8,7 +8,7 @@ import os
 
 import pyshtools
 
-from Hydrostatic import HydrostaticShapeLith
+from pycrust import HydrostaticShapeLith
 
 # ==== MAIN FUNCTION ====
 

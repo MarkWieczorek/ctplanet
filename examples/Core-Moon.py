@@ -3,13 +3,14 @@
     Calculate the hydrostatic shape of the core of the Moon.
 
 """
+import os
 import numpy as np
 
 import pyshtools
 
-from Hydrostatic import HydrostaticShapeLith
-from Hydrostatic import HydrostaticShape
-from InertiaTensor import InertiaTensor_from_shape
+from pycrust import HydrostaticShapeLith
+from pycrust import HydrostaticShape
+from pycrust import InertiaTensor_from_shape
 
 # ==== MAIN FUNCTION ====
 
@@ -25,6 +26,11 @@ def main():
 
     cthick = 34.e3  # 43.e3 or 34.0e3
     rho_crust = 2550.
+
+    try:
+        os.mkdir('figs')
+    except:
+        pass
 
     out_rc_fc = "figs/rc_fc_34_2550.dat"
     out_rc_rhoc = "figs/rc_rhoc_34_2550.dat"
