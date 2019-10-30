@@ -16,7 +16,7 @@ except(IOError, ImportError):
 
 version = 0.1
 
-install_requires = ['pyshtools>=4.3']
+install_requires = ['pyshtools>=4.5']
 
 setup(name='pycrust',
       version=version,
