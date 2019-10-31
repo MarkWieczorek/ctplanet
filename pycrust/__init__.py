@@ -32,11 +32,6 @@ Notes
 
 """
 from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
-
-__author__ = 'Mark Wieczorek'
-
 
 from .pyMoho import pyMoho
 from .pyMoho import pyMohoRho
@@ -50,6 +45,10 @@ from .InertiaTensor import moi
 
 from .ReadRefModel import ReadRefModel
 
+__version__ = get_versions()['version']
+del get_versions
+
+__author__ = 'Mark Wieczorek'
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['pyMoho', 'pyMohoRho', 'HydrostaticShapeLith', 'HydrostaticShape',

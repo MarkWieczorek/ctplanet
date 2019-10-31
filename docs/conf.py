@@ -1,5 +1,4 @@
 import datetime
-import sphinx_rtd_theme
 import pycrust
 
 # Project information
@@ -7,14 +6,13 @@ year = datetime.date.today().year
 project = 'pycrust'
 copyright = "2018-{}, The pyCrust Developers".format(year)
 author = 'Mark A. Wieczorek'
-version = pycrust.__version__
+version = pycrust.__version__.split(sep='-')[0]  # use version of last tag
 
 
 # General configuration
 extensions = ['sphinx_rtd_theme',
               'sphinx.ext.autodoc',
-              'sphinx.ext.napoleon'
-]
+              'sphinx.ext.napoleon']
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
