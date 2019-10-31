@@ -2,7 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup, find_packages
+import versioneer
 
+versioneer.versionfile_source = 'pycrust/_version.py'
+versioneer.versionfile_build = 'pycrust/_version.py'
+versioneer.tag_prefix = ''
+versioneer.parentdir_prefix = 'pycrust-'
 
 # Convert markdown README.md to restructured text (.rst) for PyPi
 try:
@@ -14,12 +19,11 @@ except(IOError, ImportError):
           'formatted correctly. ***')
     long_description = open('README.md').read()
 
-version = 0.1
-
 install_requires = ['pyshtools>=4.5']
 
 setup(name='pycrust',
-      version=version,
+      version=versioneer.get_version(),
+      cmdclass=versioneer.get_cmdclass(),
       description='Create a crustal thickness map of a planet',
       long_description=long_description,
       url='https://github.com/MarkWieczorek/pyCrust',
