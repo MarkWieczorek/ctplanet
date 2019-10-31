@@ -10,11 +10,6 @@ def ReadRefModel(filename, depth=None, quiet=True):
     '''
     Read the reference interior model file.
 
-    Usage
-    -----
-    radius, rho, i_crust, i_core, [i_depth] = ReadRefModel(filename,
-                                                           [depth, quiet])
-
     Returns
     -------
     radius : ndarray, size (n+1)
@@ -44,8 +39,8 @@ def ReadRefModel(filename, depth=None, quiet=True):
     quiet : bool, optional, default = True
         If False, print summary information about the model.
 
-    Description
-    -----------
+    Notes
+    -----
     This routine reads in a "deck" Mars reference interior model for use in
     the routine HydrostaticShapeLith. Note that the latter routine requires the
     density to be a specified constant value between two radii, whereas the

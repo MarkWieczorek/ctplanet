@@ -1,12 +1,6 @@
 '''
 Functions for calculating the relief along the crust-mantle interface of
 a planet using gravity and topography.
-
-pyMoho      Calculate relief using a constant density crust and mantle.
-pyMohoRho   Calculate relief using a constant density mantle and a variable
-            density crust.
-
-Requires pyshtools version 4.1 or later.
 '''
 import numpy as np
 
@@ -22,15 +16,10 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
     Calculate the relief along the crust-mantle interface assuming a
     constant density crust and mantle.
 
-    Usage
-    -----
-    moho = pyMoho(pot, topo, lmax, rho_c, rho_m, thickave,
-                  [filter_type, half, nmax, delta_max, lmax_calc])
-
     Returns
     -------
-    moho : SHCoeffs class instance containing the radius of the
-           crust-mantle interface.
+    moho : SHCoeffs class instance
+        The radius of the crust-mantle interface.
 
     Parameters
     ----------
@@ -205,15 +194,10 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
     Calculate the relief along the crust-mantle interface assuming a
     constant density mantle and a laterally varying crustal density.
 
-    Usage
-    -----
-    moho = pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
-                     [filter_type, half, nmax, delta_max, lmax_calc])
-
     Returns
     -------
-    moho : SHCoeffs class instance containing the radius of the
-           crust-mantle interface.
+    moho : SHCoeffs class instance
+        The radius of the crust-mantle interface.
 
     Parameters
     ----------

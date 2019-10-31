@@ -1,9 +1,6 @@
 '''
 Functions for calculating the shape of hydrostatic density interfaces and their
 gravitational potential in a planet with a non-hydrostatic lithosphere.
-
-    HydrostaticShapeLith
-    HydrostaticShape
 '''
 import numpy as np
 import scipy.linalg.lapack as lapack
@@ -20,11 +17,6 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
     a non-hydrostatic lithosphere, along with the total gravitation potential
     of the hydrostatic interfaces. For the case of a moon in synchronous
     rotation, optionally include the tidal potential.
-
-    Usage
-    -----
-    hlm, clm_hydro, mass = HydrostaticFlatteningLith(radius, rho, ilith,
-        potential, topo, omega, lmax, [rp, mp, nmax])
 
     Returns
     -------
@@ -325,11 +317,6 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None,
     Calculate the shape of hydrostatic relief in a rotating planet or moon,
     along with the total gravitation potential. For the case of a moon in
     synchronous rotation, optionally include the tidal potential.
-
-    Usage
-    -----
-    hlm, clm_hydro, mass = HydrostaticFlatteningLith(radius, density,
-        omega, gm, r_ref, [rp, mp, i_clm_hydro])
 
     Returns
     -------

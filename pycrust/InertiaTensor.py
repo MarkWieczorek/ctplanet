@@ -13,11 +13,6 @@ def InertiaTensor_from_shape(hilm, rho, i_core, normalize=False, quiet=True):
     Calculate the inertia tensor given a radial density profile and shape of
     each interface.
 
-    Usage
-    -----
-    I, A, B, C, M, R, angles = InertiaTensor_from_shape(hilm, rho, i_core,
-                                                        [normalize, quiet])
-
     Returns
     -------
     I : ndarray, size(3, 3)
@@ -160,11 +155,6 @@ def InertiaTensor_from_C(C, potential, normalize=False, r_norm=None,
     Calculate the inertia tensor given the polar moment of inertia and the
     gravitational potential coefficients.
 
-    Usage
-    -----
-    I, A, B, C, angles = InertiaTensor_from_C(C, potential, [normalize, r_norm,
-                                                             quiet])
-
     Returns
     -------
     I : ndarray, size(3, 3)
@@ -195,8 +185,8 @@ def InertiaTensor_from_C(C, potential, normalize=False, r_norm=None,
         normalized principal moments of inertial, and the directions of the
         axes of the principal moments.
 
-    Description
-    -----------
+    Notes
+    -----
     This routine assumes that the polar moment of inertia C is equal to the
     I33 term of the inertia tensor. This is equivalent to assuming that the
     coordinate system defining the gravitational potential is aligned with
@@ -266,8 +256,6 @@ def InertiaTensor_from_C(C, potential, normalize=False, r_norm=None,
 def moi(radius, rho, n, normalized=True):
     """
     Calculate the mean, normalized, moment of inertia up to index n.
-
-    x = moi(radius, rho, n, [normalized])
 
     Returns
     -------

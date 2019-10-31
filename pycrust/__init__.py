@@ -6,7 +6,7 @@ pycrust provides several functions for generating crustal thickness maps of a
 planet from gravity and topography data, and the calculation of hydrostatic
 relief along density interfaces beneath the lithosphere.
 
-Contents
+Notes
 
     pyMoho                    Calculate relief using a constant density crust
                               and mantle.

@@ -1,46 +1,60 @@
 Examples
 ========
 
-The following example scripts can be found in the directory `examples`
+The following example scripts can be found in the directory `examples`:
 
-``pyCrust_Moon``
+``pyCrust_Moon.py``
 
-A script that demonstrates how to calculate thethickenss of the lunar crust using either a constant or variable density crust. The latter can be used to reproduce the results presented in *Wieczorek et al.* (2013).
+    A script that demonstrates how to calculate thethickenss of the lunar crust
+    using either a constant or variable density crust. The latter can be used
+    to reproduce the results presented in *Wieczorek et al.* (2013).
 
-``pyCrust_Mars``
+``pyCrust_Mars.py``
 
-A script that demonstrates how to calculate the thickenss of the Martian crust using either a constant or variable density crust. For the variable density crust, the density is assumed to change discontinuously across the dichotomy boundary.
+    A script that demonstrates how to calculate the thickenss of the Martian
+    crust using either a constant or variable density crust. For the variable
+    density crust, the density is assumed to change discontinuously across the
+    dichotomy boundary.
 
-``Mars_crust_thick_test``
+``Mars_crust_thick_test.py``
 
-Create a crustal thickness map of Mars from gravity and topography and compare how results change if hydrostatic interfaces are not taken into account.
+    Create a crustal thickness map of Mars from gravity and topography and
+    compare how results change if hydrostatic interfaces are not taken into
+    account.
 
-``pyCrust_Mars_InSight``
+``pyCrust_Mars_InSight.py``
 
-Create a crustal thickness map of Mars from gravity and topography, using the InSight crustal thickness constraint.
+    Create a crustal thickness map of Mars from gravity and topography, using
+    the InSight crustal thickness constraint.
 
-``pyCrust_Mars_InSight_dichotomy``
+``pyCrust_Mars_InSight_dichotomy.py``
 
-Create a crustal thickness map of Mars from gravity and topography, using the InSight crustal thickness constraint and different densities across the dichotomy boundary.
+    Create a crustal thickness map of Mars from gravity and topography, using
+    the InSight crustal thickness constraint and different densities across
+    the dichotomy boundary.
 
-``mars_fcn``
+``mars_fcn.py``
 
-Compute the free core nutation period of Mars.
+    Compute the free core nutation period of Mars.
 
-``mars_figs``
+``mars_figs.py``
 
-Create images related to Mars in *Wieczorek et al.* (2019).
+    Create images related to Mars in *Wieczorek et al.* (2019).
 
-``mars_j2`` Compute the contribution to the gravitational J2 of Mars from hydrostatic interfaces beneath the lithosphere.
+``mars_j2.py``
 
-``Core-Moon``
+    Compute the contribution to the gravitational J2 of Mars from hydrostatic
+    interfaces beneath the lithosphere.
 
-Calculate the hydrostatic relief of the lunar core accounting for the non-hydrostatic potential that comes from the lithosphere.
+``Core-Moon.py``
 
-``Earth_test``
+    Calculate the hydrostatic relief of the lunar core accounting for the
+    non-hydrostatic potential that comes from the lithosphere.
 
-Compute hydrostatic relief of Earth using PREM.
+``Earth_test.py``
 
-``ceres``
+    Compute hydrostatic relief of Earth using PREM.
 
-Calculate the hydrostatic shape of Ceres.
+``ceres.py``
+
+    Calculate the hydrostatic shape of Ceres.

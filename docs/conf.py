@@ -13,13 +13,14 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
+import datetime
 import sphinx_rtd_theme
 
 
 # -- Project information -----------------------------------------------------
-
+year = datetime.date.today().year
 project = 'pycrust'
-copyright = '2019, Mark A. Wieczorek'
+copyright = "2018-{}, The pyCrust Developers".format(year)
 author = 'Mark A. Wieczorek'
 
 # The full version, including alpha/beta/rc tags
@@ -31,7 +32,9 @@ release = '0.1'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx_rtd_theme'
+extensions = ['sphinx_rtd_theme',
+              'sphinx.ext.autodoc',
+              'sphinx.ext.napoleon'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -49,6 +52,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 html_theme = 'sphinx_rtd_theme'
+html_theme_options = {"display_version": True}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
