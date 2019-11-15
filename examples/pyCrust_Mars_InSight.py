@@ -114,9 +114,6 @@ def main():
                                                       lmax=lmax_calc)
         pot_porosity += pot_lower.change_ref(r0=potential.r0)
 
-        pot_porosity_correction = pyshtools.SHGravCoeffs.from_zeros(
-            lmax_calc, potential.gm, potential.r0)
-
     for model in range(len(model_name)):
         print('Working on model : {:s}'.format(model_name[model]))
 
@@ -164,6 +161,9 @@ def main():
             thickave = 44.e3    # initial guess of average crustal thickness
 
             pot_temp = pot_lith.copy()
+            pot_porosity_correction = pyshtools.SHGravCoeffs.from_zeros(
+                lmax_calc, potential.gm, potential.r0)
+
             while abs(t_insight_ref - t_insight) > t_sigma:
                 # iterate to fit assumed minimum crustal thickness
 
