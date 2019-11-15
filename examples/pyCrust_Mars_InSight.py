@@ -5,7 +5,8 @@ pyCrust_Mars_InSight
 Create a crustal thickness map of Mars from gravity and topography, using
 the InSight crustal thickness constraint.
 
-The script assumes that the density of both the crust and mantle are constant.
+The script assumes that the density of both the crust and mantle are constant,
+and that porosity in present in a constant thickness surficial layer.
 The average crustal thickness is iterated in order to fit the specified
 thickness at the InSight landing site.
 """
@@ -25,7 +26,6 @@ def main():
 
     gravfile = 'Data/gmm3_120_sha.tab'
     topofile = 'Data/MarsTopo719.shape'
-    densityfile = 'Data/dichotomy_359.sh'
 
     model_name = ['DWThot', 'DWThotCrust1', 'DWThotCrust1r', 'EH45Tcold',
                   'EH45TcoldCrust1', 'EH45TcoldCrust1r', 'EH45ThotCrust2',
@@ -39,8 +39,10 @@ def main():
 
     potential = pyshtools.SHGravCoeffs.from_file(gravfile, header_units='km')
 
+    directory = 'InSight/constant-porosity/'
+
     try:
-        os.mkdir('InSight/constant')
+        os.mkdir(directory)
     except:
         pass
 
@@ -55,11 +57,6 @@ def main():
     print('Topography file = {:s}'.format(topofile))
     print('Lmax of topography coefficients = {:d}'.format(topo.lmax))
     print('Reference radius (km) = {:f}\n'.format(topo.r0 / 1.e3))
-
-    print('Crustal density file = {:s}'.format(densityfile))
-    density = pyshtools.SHCoeffs.from_file(densityfile, lmax=lmax)
-
-    print('Lmax of density coefficients = {:d}\n'.format(density.lmax))
 
     filter = 1
     half = 50
@@ -78,13 +75,47 @@ def main():
     t_insight_ref = float(input())
     t_insight_ref *= 1.e3
 
+    print('Input thickness of porous layer (km) >')
+    t_porosity = float(input())
+    t_porosity *= 1.e3
+
+    porosity = 0.
+    if t_porosity != 0.:
+        print('Input porosity of porous layer in percent >')
+        porosity = float(input())
+        porosity /= 100.
+
     rho_c_min = 2550.
     rho_c_max = 3200.
     rho_c_int = 50.
 
-    f_summary = open('InSight/constant/summary.txt', 'w')
+    f_summary = open(directory + 'summary.txt', 'w')
     f_summary.write('Model    rho_c    rho_mantle    t_insight    t_ave    '
                     + ' t_min    t_max\n')
+
+    # Compute contribution to the gravitational potential resulting
+    # from porosity. The density contrast at the surface of this layer
+    # is: - porosity * rho_crust and at the base it is porosity * rho_crust.
+    # Here we assume that rho_c is 1 and then multiply this later by the
+    # correct value.
+    if porosity != 0.:
+        pot_porosity = pyshtools.SHGravCoeffs.from_shape(topo, -porosity,
+                                                         potential.gm,
+                                                         nmax=nmax,
+                                                         lmax_grid=lmax,
+                                                         lmax=lmax_calc)
+        pot_porosity = pot_porosity.change_ref(r0=potential.r0)
+
+        pot_lower = pyshtools.SHGravCoeffs.from_shape(topo - t_porosity,
+                                                      porosity,
+                                                      potential.gm,
+                                                      nmax=nmax,
+                                                      lmax_grid=lmax,
+                                                      lmax=lmax_calc)
+        pot_porosity += pot_lower.change_ref(r0=potential.r0)
+
+        pot_porosity_correction = pyshtools.SHGravCoeffs.from_zeros(
+            lmax_calc, potential.gm, potential.r0)
 
     for model in range(len(model_name)):
         print('Working on model : {:s}'.format(model_name[model]))
@@ -104,6 +135,9 @@ def main():
 
             ident = model_name[model] + '-' + str(int(t_insight_ref / 1.e3)) \
                 + '-' + str(int(rho_c))
+            if porosity != 0.:
+                ident += '-' + str(int(t_porosity / 1.e3)) + '-' \
+                    + str(int(porosity * 100))
 
             # Compute gravity contribution from hydrostatic density interfaces
             thickave = 44.e3  # initial guess of average crustal thickness
@@ -122,19 +156,33 @@ def main():
             pot_lith.coeffs[:, :lmax_hydro+1, :lmax_hydro+1] -= \
                 clm_hydro.coeffs[:, :lmax_hydro+1, :lmax_hydro+1]
 
+            if porosity != 0.:
+                pot_lith.coeffs[:, :lmax_calc+1, :lmax_calc+1] -= \
+                    rho_c * pot_porosity.coeffs[:, :lmax_calc+1, :lmax_calc+1]
+
             t_insight = 1.e9
             thickave = 44.e3    # initial guess of average crustal thickness
 
+            pot_temp = pot_lith.copy()
             while abs(t_insight_ref - t_insight) > t_sigma:
                 # iterate to fit assumed minimum crustal thickness
 
-                moho = pyMoho(pot_lith, topo, lmax, rho_c, rho_mantle,
+                if porosity != 0.:
+                    pot_temp = pot_lith.pad(lmax=lmax_calc) \
+                        - pot_porosity_correction.pad(lmax=lmax_calc)
+
+                moho = pyMoho(pot_temp, topo, lmax, rho_c, rho_mantle,
                               thickave, filter_type=filter, half=half,
                               lmax_calc=lmax_calc, nmax=nmax,
                               quiet=True)
 
-                thick_grid = (topo.pad(lmax) -
-                              moho.pad(lmax)).expand(grid='DH2')
+                if porosity != 0.:
+                    topo_grid = topo.pad(lmax).expand(grid='DH2')
+                    moho_grid = moho.pad(lmax).expand(grid='DH2')
+                    thick_grid = topo_grid - moho_grid
+                else:
+                    thick_grid = (topo.pad(lmax)
+                                  - moho.pad(lmax)).expand(grid='DH2')
                 t_insight = (topo.pad(lmax) -
                              moho.pad(lmax)).expand(lat=lat_insight,
                                                     lon=lon_insight)
@@ -142,6 +190,28 @@ def main():
                 tmin = thick_grid.min()
                 tmax = thick_grid.max()
                 thickave += t_insight_ref - t_insight
+
+                # Compute correction resulting from porosity in the mantle
+                if porosity != 0.:
+                    lower_grid = topo_grid - t_porosity
+                    upper_grid = lower_grid.copy()
+                    upper_grid.data[moho_grid.data > lower_grid.data] = \
+                        moho_grid.data[moho_grid.data > lower_grid.data]
+
+                    pot_porosity_correction = \
+                        pyshtools.SHGravCoeffs.from_shape(
+                            upper_grid, -porosity * (rho_mantle - rho_c),
+                            potential.gm, nmax=nmax, lmax_grid=lmax,
+                            lmax=lmax_calc)
+                    pot_porosity_correction = \
+                        pot_porosity_correction.change_ref(r0=potential.r0)
+
+                    pot_lower = pyshtools.SHGravCoeffs.from_shape(
+                        lower_grid, porosity * (rho_mantle - rho_c),
+                        potential.gm, nmax=nmax, lmax_grid=lmax,
+                        lmax=lmax_calc)
+                    pot_porosity_correction += \
+                        pot_lower.change_ref(r0=potential.r0)
 
             print('Average crustal thickness (km) = {:f}'
                   .format(thickave / 1.e3))
@@ -153,17 +223,16 @@ def main():
             if tmin < 0:
                 break
 
-            moho.pad(lmax_calc).to_file('InSight/constant/Moho-Mars-'
+            moho.pad(lmax_calc).to_file(directory + 'Moho-Mars-'
                                         + ident + '.sh')
             fig, ax = (thick_grid/1.e3).plot(
                 show=False, colorbar=True,
                 cb_label='Crustal thickness (km)',
                 cb_orientation='horizontal',
-                fname='InSight/constant/Thick-Mars-'
-                + ident + '.png')
+                fname=directory + 'Thick-Mars-' + ident + '.png')
             # fig2, ax2 = moho.plot_spectrum(
             #    show=False,
-            #    fname='InSight/constant/Moho-spectrum-Mars-' + ident + '.png',
+            #    fname=directory + 'Moho-spectrum-Mars-' + ident + '.png',
             #    legend=ident)
             f_summary.write('{:s}    {:f}    {:f}    {:f}    {:f}    '
                             '{:f}    {:f}\n'

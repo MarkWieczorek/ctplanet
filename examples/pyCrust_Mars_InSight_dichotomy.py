@@ -39,8 +39,10 @@ def main():
 
     potential = pyshtools.SHGravCoeffs.from_file(gravfile, header_units='km')
 
+    directory = 'InSight/dichotomy/'
+
     try:
-        os.mkdir('InSight/dichotomy')
+        os.mkdir(directory)
     except:
         pass
 
@@ -82,7 +84,7 @@ def main():
     rho_c_max = 3200.
     rho_c_int = 50.
 
-    f_summary = open('InSight/dichotomy/summary.txt', 'w')
+    f_summary = open(directory + 'summary.txt', 'w')
     f_summary.write('Model    rho_south    rho_north    rho_mantle    '
                     't_insight    t_ave    t_min    t_max\n')
 
@@ -113,7 +115,7 @@ def main():
                 density = dichotomy.copy()
                 density = density * (rho_north - rho_south)
                 density.coeffs[0, 0, 0] += rho_south
-                porosity = 0.0
+                crustal_porosity = 0.0
 
                 ident = model_name[model] + '-' \
                     + str(int(t_insight_ref / 1.e3)) \
@@ -145,7 +147,7 @@ def main():
                     # iterate to fit assumed minimum crustal thickness
 
                     moho = pyMohoRho(pot_lith, topo, density,
-                                     porosity, lmax,
+                                     crustal_porosity, lmax,
                                      rho_mantle, thickave,
                                      filter_type=filter,
                                      half=half, lmax_calc=lmax_calc,
@@ -173,16 +175,16 @@ def main():
                     break
 
                 moho.pad(lmax_calc).to_file(
-                    'InSight/dichotomy/Moho-Mars-' + ident + '.sh')
+                    directory + 'Moho-Mars-' + ident + '.sh')
                 fig, ax = (thick_grid/1.e3).plot(
                     show=False,
                     colorbar=True,
                     cb_label='Crustal thickness (km)',
                     cb_orientation='horizontal',
-                    fname='InSight/dichotomy/Thick-Mars-' + ident + '.png')
+                    fname=directory + 'Thick-Mars-' + ident + '.png')
                 # fig2, ax2 = moho.plot_spectrum(
                 #    show=False,
-                #    fname='InSight/dichotomy/Moho-spectrum-Mars-'
+                #    fname=directory + 'Moho-spectrum-Mars-'
                 #    + ident + '.png',
                 #    legend=ident)
                 f_summary.write('{:s}    {:f}    {:f}    {:f}    {:f}    '
