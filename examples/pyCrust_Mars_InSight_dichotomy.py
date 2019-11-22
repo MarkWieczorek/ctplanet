@@ -178,9 +178,8 @@ def main():
                     directory + 'Moho-Mars-' + ident + '.sh')
                 fig, ax = (thick_grid/1.e3).plot(
                     show=False,
-                    colorbar=True,
+                    colorbar='horizontal',
                     cb_label='Crustal thickness (km)',
-                    cb_orientation='horizontal',
                     fname=directory + 'Thick-Mars-' + ident + '.png')
                 # fig2, ax2 = moho.plot_spectrum(
                 #    show=False,
