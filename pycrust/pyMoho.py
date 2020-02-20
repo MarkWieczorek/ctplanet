@@ -71,7 +71,7 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
                                    (pot.r0 / topo.r0)**l
     pot2.r0 = topo.r0
 
-    topo_grid = topo.expand(grid='DH2', lmax=lmax)
+    topo_grid = topo.expand(grid='DH2', lmax=lmax, extend=False)
 
     if quiet is False:
         print("Maximum radius (km) = {:f}".format(topo_grid.data.max() / 1.e3))
@@ -100,7 +100,8 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
                 (2 * l + 1) * ((r0 / d)**l) / \
                 (4. * np.pi * (rho_m - rho_c) * d**2)
 
-    moho_grid3 = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc)
+    moho_grid3 = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc,
+                             extend=False)
 
     temp_grid = topo_grid - moho_grid3
     if quiet is False:
@@ -116,7 +117,8 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
                                                filter_deg=half,
                                                lmax_calc=lmax_calc)
 
-    moho_grid2 = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc)
+    moho_grid2 = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc,
+                             extend=False)
     temp_grid = topo_grid - moho_grid2
 
     if quiet is False:
@@ -162,7 +164,8 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
                                                    filter_deg=half,
                                                    lmax_calc=lmax_calc)
 
-        moho_grid = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc)
+        moho_grid = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc,
+                                extend=False)
 
         delta = abs(moho_grid.data - moho_grid2.data).max()
         temp_grid = topo_grid - moho_grid
@@ -253,8 +256,8 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
                                    (pot.r0 / topo.r0)**l
     pot2.r0 = topo.r0
 
-    topo_grid = topo.expand(grid='DH2', lmax=lmax)
-    density_grid = density.expand(grid='DH2', lmax=lmax)
+    topo_grid = topo.expand(grid='DH2', lmax=lmax, extend=False)
+    density_grid = density.expand(grid='DH2', lmax=lmax, extend=False)
 
     if quiet is False:
         print("Maximum radius (km) = {:f}".format(topo_grid.data.max() / 1.e3))
@@ -296,7 +299,8 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
                 (2 * l + 1) * ((r0 / d)**l) / \
                 (4.0 * np.pi * (rho_m - rho_crust_ave) * d**2)
 
-    moho_grid3 = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc)
+    moho_grid3 = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc,
+                             extend=False)
     drho_grid = rho_m - density_grid * (1. - porosity)
     temp_grid = topo_grid - moho_grid3
 
@@ -311,7 +315,8 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
         lmax=lmax, filter_type=filter_type, filter_deg=half,
         lmax_calc=lmax_calc)
 
-    moho_grid2 = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc)
+    moho_grid2 = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc,
+                             extend=False)
     temp_grid = topo_grid - moho_grid2
 
     if quiet is False:
@@ -355,7 +360,8 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
             lmax=lmax, filter_type=filter_type, filter_deg=half,
             lmax_calc=lmax_calc)
 
-        moho_grid = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc)
+        moho_grid = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc,
+                                extend=False)
 
         delta = abs(moho_grid.data - moho_grid2.data).max()
         temp_grid = topo_grid - moho_grid
