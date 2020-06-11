@@ -51,7 +51,6 @@ def ReadRefModel(filename, depth=None, quiet=True):
 
     with open(filename, 'r') as f:
         lines = f.readlines()
-        print(lines[0].strip())
         data = lines[1].split()
         if float(data[2]) != 1:
             raise RuntimeError('Program not capable of reading polynomial ' +
@@ -110,6 +109,7 @@ def ReadRefModel(filename, depth=None, quiet=True):
                     break
 
         if quiet is False:
+            print(lines[0].strip())
             print('Surface radius of model (km) = {:f}'
                   .format(r0_model / 1.e3))
             print('Mantle density (kg/m3) = {:f}'.format(rho_mantle))

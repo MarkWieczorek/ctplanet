@@ -19,7 +19,7 @@ except(IOError, ImportError):
           'formatted correctly. ***')
     long_description = open('README.md').read()
 
-install_requires = ['pyshtools>=4.5']
+install_requires = ['pyshtools>=4.6']
 
 setup(name='pycrust',
       version=versioneer.get_version(),

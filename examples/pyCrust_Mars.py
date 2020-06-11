@@ -57,7 +57,7 @@ def main():
     print('Lmax of topography coefficients = {:d}'.format(topo.lmax))
     print('Reference radius (km) = {:f}\n'.format(topo.r0 / 1.e3))
 
-    density = pyshtools.SHCoeffs.from_file(densityfile, lmax=lmax)
+    density = pyshtools.SHCoeffs.from_file(densityfile).pad(lmax=lmax)
 
     print('Lmax of density coefficients = {:d}\n'.format(density.lmax))
 

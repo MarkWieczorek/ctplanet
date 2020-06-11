@@ -4,14 +4,14 @@ a planet using gravity and topography.
 '''
 import numpy as np
 
-import pyshtools as pyshtools
+import pyshtools as pysh
 
 
 # ==== pyMoho ====
 
 
 def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
-           nmax=8, delta_max=5., lmax_calc=None, quiet=False):
+           nmax=8, delta_max=5., lmax_calc=None, correction=None, quiet=False):
     """
     Calculate the relief along the crust-mantle interface assuming a
     constant density crust and mantle.
@@ -23,12 +23,10 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
 
     Parameters
     ----------
-    pot : SHCoeffs class instance
-        Gravitational potential spherical harmonic coefficients. The attributes
-        gm, mass, and r_ref must be set.
+    pot : SHGravCoeffs class instance
+        Gravitational potential spherical harmonic coefficients.
     topo : SHCoeffs class instance
-        Spherical harmonic coefficients of the surface relief. The attribute
-        r0 must be set.
+        Spherical harmonic coefficients of the surface relief.
     lmax : int
         Maximum spherical harmonic degree of the function, which determines the
         sampling interval of the internally computed grids.
@@ -52,6 +50,12 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
         relief between solutions is less than this value (in meters).
     lmax_calc : int
         Maximum spherical harmonic degree when evalulating the functions.
+    correction : SHGravCoeffs class instance, optional, default = None
+        If present, these coefficients will be added to the Bouguer correction
+        (subtracted from the Bouguer anomaly) before performing the inversion.
+        This could be used to account for the pre-computed gravitational
+        attraction of the polar caps of Mars, which have a different density
+        than the crust.
     quiet : boolean, optional, default = False
         If True, suppress printing output during the iterations.
     """
@@ -60,16 +64,9 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
 
     if lmax_calc is None:
         lmax_calc = lmax
-    d = topo.r0 - thickave
+    d = topo.coeffs[0, 0, 0] - thickave
 
-    mass = pot.gm / pyshtools.constant.G.value
-
-    pot2 = pot.copy()
-
-    for l in range(2, pot2.lmax + 1):
-        pot2.coeffs[:, l, :l + 1] = pot.coeffs[:, l, :l + 1] * \
-                                   (pot.r0 / topo.r0)**l
-    pot2.r0 = topo.r0
+    mass = pot.mass
 
     topo_grid = topo.expand(grid='DH2', lmax=lmax, extend=False)
 
@@ -77,11 +74,15 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
         print("Maximum radius (km) = {:f}".format(topo_grid.data.max() / 1.e3))
         print("Minimum radius (km) = {:f}".format(topo_grid.data.min() / 1.e3))
 
-    bc, r0 = pyshtools.gravmag.CilmPlusDH(topo_grid.data, nmax, mass,
-                                          rho_c, lmax=lmax_calc)
+    bc, r0 = pysh.gravmag.CilmPlusDH(topo_grid.data, nmax, mass,
+                                     rho_c, lmax=lmax_calc)
+    if correction is not None:
+        bc += correction.change_ref(r0=r0).to_array(lmax=lmax_calc)
+
+    pot2 = pot.change_ref(r0=r0)
     ba = pot2.to_array(lmax=lmax_calc) - bc
 
-    moho = pyshtools.SHCoeffs.from_zeros(lmax=lmax_calc)
+    moho = pysh.SHCoeffs.from_zeros(lmax=lmax_calc)
     moho.coeffs[0, 0, 0] = d
 
     for l in range(1, lmax_calc + 1):
@@ -90,12 +91,12 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
                 (2 * l + 1) * ((r0 / d)**l) / \
                 (4. * np.pi * (rho_m - rho_c) * d**2)
         elif filter_type == 1:
-            moho.coeffs[:, l, :l + 1] = pyshtools.gravmag.DownContFilterMA(
+            moho.coeffs[:, l, :l + 1] = pysh.gravmag.DownContFilterMA(
                 l, half, r0, d) * ba[:, l, :l + 1] * mass * \
                 (2 * l + 1) * ((r0 / d)**l) / \
                 (4. * np.pi * (rho_m - rho_c) * d**2)
         else:
-            moho.coeffs[:, l, :l + 1] = pyshtools.gravmag.DownContFilterMC(
+            moho.coeffs[:, l, :l + 1] = pysh.gravmag.DownContFilterMC(
                 l, half, r0, d) * ba[:, l, :l + 1] * mass * \
                 (2 * l + 1) * ((r0 / d)**l) / \
                 (4. * np.pi * (rho_m - rho_c) * d**2)
@@ -110,12 +111,12 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
         print('Minimum Crustal thickness (km) = {:e}'.format(
             temp_grid.data.min() / 1.e3))
 
-    moho.coeffs = pyshtools.gravmag.BAtoHilmDH(ba, moho_grid3.data, nmax,
-                                               mass, r0, (rho_m - rho_c),
-                                               lmax=lmax,
-                                               filter_type=filter_type,
-                                               filter_deg=half,
-                                               lmax_calc=lmax_calc)
+    moho.coeffs = pysh.gravmag.BAtoHilmDH(ba, moho_grid3.data, nmax,
+                                          mass, r0, (rho_m - rho_c),
+                                          lmax=lmax,
+                                          filter_type=filter_type,
+                                          filter_deg=half,
+                                          lmax_calc=lmax_calc)
 
     moho_grid2 = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc,
                              extend=False)
@@ -157,12 +158,12 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
         if quiet is False:
             print('Iteration {:d}'.format(iter))
 
-        moho.coeffs = pyshtools.gravmag.BAtoHilmDH(ba, moho_grid2.data, nmax,
-                                                   mass, r0,
-                                                   (rho_m - rho_c), lmax=lmax,
-                                                   filter_type=filter_type,
-                                                   filter_deg=half,
-                                                   lmax_calc=lmax_calc)
+        moho.coeffs = pysh.gravmag.BAtoHilmDH(ba, moho_grid2.data, nmax,
+                                              mass, r0,
+                                              (rho_m - rho_c), lmax=lmax,
+                                              filter_type=filter_type,
+                                              filter_deg=half,
+                                              lmax_calc=lmax_calc)
 
         moho_grid = moho.expand(grid='DH2', lmax=lmax, lmax_calc=lmax_calc,
                                 extend=False)
@@ -192,7 +193,7 @@ def pyMoho(pot, topo, lmax, rho_c, rho_m, thickave, filter_type=0, half=None,
 
 def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
               filter_type=0, half=None, nmax=8, delta_max=5., lmax_calc=None,
-              quiet=False):
+              correction=None, quiet=False):
     """
     Calculate the relief along the crust-mantle interface assuming a
     constant density mantle and a laterally varying crustal density.
@@ -204,12 +205,10 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
 
     Parameters
     ----------
-    pot : SHCoeffs class instance
-        Gravitational potential spherical harmonic coefficients. The attributes
-        gm, mass, and r_ref must be set.
+    pot : SHGravCoeffs class instance
+        Gravitational potential spherical harmonic coefficients.
     topo : SHCoeffs class instance
-        Spherical harmonic coefficients of the surface relief. The attribute
-        r0 must be set.
+        Spherical harmonic coefficients of the surface relief.
     density : SHCoeffs class instance
         Spherical harmonic coefficients of the crustal grain density.
     porosity : float
@@ -235,6 +234,12 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
         relief between solutions is less than this value (in meters).
     lmax_calc : int
         Maximum spherical harmonic degree when evalulating the functions.
+    correction : SHGravCoeffs class instance, optional, default = None
+        If present, these coefficients will be added to the Bouguer correction
+        (subtracted from the Bouguer anomaly) before performing the inversion.
+        This could be used to account for the pre-computed gravitational
+        attraction of the polar caps of Mars, which have a different density
+        than the crust.
     quiet : boolean, optional, default = False
         If True, suppress printing output during the iterations.
     """
@@ -244,17 +249,10 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
     if lmax_calc is None:
         lmax_calc = lmax
 
-    d = topo.r0 - thickave
+    d = topo.coeffs[0, 0, 0] - thickave
     rho_crust_ave = density.coeffs[0, 0, 0] * (1. - porosity)
 
-    mass = pot.gm / pyshtools.constant.G.value
-
-    pot2 = pot.copy()
-
-    for l in range(2, pot2.lmax + 1):
-        pot2.coeffs[:, l, :l + 1] = pot.coeffs[:, l, :l + 1] * \
-                                   (pot.r0 / topo.r0)**l
-    pot2.r0 = topo.r0
+    mass = pot.mass
 
     topo_grid = topo.expand(grid='DH2', lmax=lmax, extend=False)
     density_grid = density.expand(grid='DH2', lmax=lmax, extend=False)
@@ -267,9 +265,13 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
         print("Minimum desntiy (kg/m3) = {:f}".format(
             density_grid.data.min() / 1.e3))
 
-    bc, r0 = pyshtools.gravmag.CilmPlusRhoHDH(
+    bc, r0 = pysh.gravmag.CilmPlusRhoHDH(
         topo_grid.data, nmax, mass, density_grid.data * (1. - porosity),
         lmax=lmax_calc)
+    if correction is not None:
+        bc += correction.change_ref(r0=r0).to_array(lmax=lmax_calc)
+
+    pot2 = pot.change_ref(r0=r0)
     ba = pot2.to_array(lmax=lmax_calc) - bc
 
     # next subtract lateral variations in the crust without reflief
@@ -280,7 +282,7 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
                            * (r0**3 - (d**3)*(d/r0)**l) \
                            / (2 * l + 1) / (l + 3) / mass
 
-    moho = pyshtools.SHCoeffs.from_zeros(lmax=lmax_calc)
+    moho = pysh.SHCoeffs.from_zeros(lmax=lmax_calc)
     moho.coeffs[0, 0, 0] = d
 
     for l in range(1, lmax_calc + 1):
@@ -289,12 +291,12 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
                 (2 * l + 1) * ((r0 / d)**l) / \
                 (4. * np.pi * (rho_m - rho_crust_ave) * d**2)
         elif filter_type == 1:
-            moho.coeffs[:, l, :l + 1] = pyshtools.gravmag.DownContFilterMA(
+            moho.coeffs[:, l, :l + 1] = pysh.gravmag.DownContFilterMA(
                 l, half, r0, d) * ba[:, l, :l + 1] * mass * \
                 (2 * l + 1) * ((r0 / d)**l) / \
                 (4. * np.pi * (rho_m - rho_crust_ave) * d**2)
         else:
-            moho.coeffs[:, l, :l + 1] = pyshtools.gravmag.DownContFilterMC(
+            moho.coeffs[:, l, :l + 1] = pysh.gravmag.DownContFilterMC(
                 l, half, r0, d) * ba[:, l, :l + 1] * mass * \
                 (2 * l + 1) * ((r0 / d)**l) / \
                 (4.0 * np.pi * (rho_m - rho_crust_ave) * d**2)
@@ -310,7 +312,7 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
         print('Minimum Crustal thickness (km) = {:f}'.format(
             temp_grid.data.min() / 1.e3))
 
-    moho.coeffs = pyshtools.gravmag.BAtoHilmRhoHDH(
+    moho.coeffs = pysh.gravmag.BAtoHilmRhoHDH(
         ba, moho_grid3.data, drho_grid.data, nmax, mass, r0,
         lmax=lmax, filter_type=filter_type, filter_deg=half,
         lmax_calc=lmax_calc)
@@ -355,7 +357,7 @@ def pyMohoRho(pot, topo, density, porosity, lmax, rho_m, thickave,
         if quiet is False:
             print('Iteration {:d}'.format(iter))
 
-        moho.coeffs = pyshtools.gravmag.BAtoHilmRhoHDH(
+        moho.coeffs = pysh.gravmag.BAtoHilmRhoHDH(
             ba, moho_grid2.data, drho_grid.data, nmax, mass, r0,
             lmax=lmax, filter_type=filter_type, filter_deg=half,
             lmax_calc=lmax_calc)

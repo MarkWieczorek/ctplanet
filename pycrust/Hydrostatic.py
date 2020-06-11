@@ -157,7 +157,7 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
 
     # Calculate potential coefficients of the surface relief
 
-    grid = topo.expand(grid='DH2', lmax=lmaxgrid, lmax_calc=lmax)
+    grid = topo.expand(grid='DH2', lmax=lmaxgrid, lmax_calc=lmax, extend=False)
     cplus, r_surface = pyshtools.gravmag.CilmPlusDH(grid.data, nmax, gm/g,
                                                     rho_surface, lmax=lmax)
     cminus, r_surface = pyshtools.gravmag.CilmMinusDH(grid.data, nmax, gm/g,
