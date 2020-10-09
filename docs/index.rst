@@ -9,20 +9,35 @@
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :hidden:
-   :caption: User Guide
+   :caption: Modules
 
-   source/pycrust.rst
+   source/hydrostatic.rst
+   source/pymoho.rst
+   source/inertiatensor.rst
+   source/readrefmodel.rst
 
-
-.. image:: Thick-Mars-DWThot-30-2900.png
+.. figure:: Thick-Mars-DWThot-41-2900.png
     :width: 700px
     :align: center
     :alt: Crustal thickness of Mars
 
+    Crustal thickness of Mars derived from gravity, topography, and InSight seismic constraints.
+
 pyCrust
 =======
 
-pyCrust provides several functions and example scripts for generating
-crustal thickness maps of a planet from gravity and topography data.
+pyCrust provides several functions for working with the gravitational field of planetary crusts and hydrostatic density interfaces in the mantle and core. With this python module, you can:
+
+* Compute the hydrostatic shape of density interfaces in an entirely hydrostatic planet.
+
+* Compute the hydrostatic shape of density interfaces in a planet that has a non-hydrostatic lithosphere.
+
+* Compute the relief along the crust-mantle interface from gravity and topography data.
+
+* Compute the inertia tensor of a planet when given the relief of all density interfaces.
+
+* Read 1-D interior structure models in 'deck' format.
+
+In addition to these functions, example scripts are provided for computing crustal thickness models for the Moon and Mars, for computing the shapes of the fluid cores of the planets, and for computing free-core nutation periods.
