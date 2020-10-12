@@ -3,7 +3,7 @@
 Compute the free core nutation period of Mars.
 """
 import numpy as np
-import pyshtools
+import pyshtools as pysh
 from pycrust import InertiaTensor_from_C
 
 
@@ -14,33 +14,29 @@ def main():
 
     lmax = 2
 
-    gravfile = 'Data/jgmro_120d_sha.tab'
-    topofile = 'Data/MarsTopo719.shape'
-
-    potential = pyshtools.SHGravCoeffs.from_file(gravfile, header_units='km',
-                                                 lmax=lmax)
+    potential = pysh.datasets.Mars.GMM3(lmax=lmax)
 
     mass_mars = potential.mass
     r0_pot = potential.r0
-    omega = pyshtools.constant.omega_mars.value
+    omega = pysh.constants.Mars.omega.value
 
-    print('Gravity file = {:s}'.format(gravfile))
+    print('Gravity file = {:s}'.format('GMM3'))
     print('Reference radius (km) = {:f}'.format(potential.r0 / 1.e3))
     print('GM = {:e}'.format(potential.gm))
-    print('G, m3 / (kg s2) = {:e}'.format(pyshtools.constant.G.value))
+    print('G, m3 / (kg s2) = {:e}'.format(pysh.constants.G.value))
     print('Mass = {:e}'.format(potential.mass))
     print('Omega = {:e}'.format(omega))
 
-    topo = pyshtools.SHCoeffs.from_file(topofile, lmax=lmax)
+    topo = pysh.datasets.Mars.MarsTopo2600(lmax=lmax)
     r_mars = topo.coeffs[0, 0, 0]
 
-    print('Topography file = {:s}'.format(topofile))
+    print('Topography file = {:s}'.format('MarsTopo2600'))
     print('Mean planetary radius (km) = {:f}\n'.format(r_mars / 1.e3))
 
     # Compute polar moment using precession rate and other constants
     # defined in Konopliv et al. 2016 (and 2011).
 
-    J2 = - potential.to_array(normalization='unnorm')[0, 2, 0]
+    J2 = - potential.to_array(normalization='unnorm', errors=False)[0, 2, 0]
     print('J2 = {:e}'.format(J2))
     phidot = -7608.3  # +- 2.1 mas / yr (Konopliv et al. 2016)
     phidotp = -0.2  # planetary torque correction, from Konopliv et al. 2011

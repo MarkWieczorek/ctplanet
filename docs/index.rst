@@ -7,16 +7,13 @@
    examples.rst
    references.rst
 
-
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :hidden:
-   :caption: Modules
+   :caption: Reference Documentation
 
-   source/hydrostatic.rst
-   source/pymoho.rst
-   source/inertiatensor.rst
-   source/readrefmodel.rst
+   source/api.rst
+
 
 .. figure:: Thick-Mars-DWThot-41-2900.png
     :width: 700px

@@ -9,7 +9,7 @@ how results change if hydrostatic interfaces are not taken into account.
 import os
 import numpy as np
 
-import pyshtools
+import pyshtools as pysh
 
 from pycrust import pyMoho
 from pycrust import HydrostaticShapeLith
@@ -19,9 +19,6 @@ from pycrust import HydrostaticShape
 
 
 def main():
-
-    gravfile = 'Data/gmm3_120_sha.tab'
-    topofile = 'Data/MarsTopo719.shape'
 
     model_name = ['DWThot', 'DWThotCrust1', 'DWThotCrust1r', 'EH45Tcold',
                   'EH45TcoldCrust1', 'EH45TcoldCrust1r', 'EH45ThotCrust2',
@@ -34,27 +31,26 @@ def main():
 
     d_lith = 150.e3
 
-    potential = pyshtools.SHGravCoeffs.from_file(gravfile, header_units='km')
-
     lmax_calc = 90
     lmax = lmax_calc * 4
     lmax_grid = 719
+
+    potential = pysh.datasets.Mars.GMM3()
+    topo = pysh.datasets.Mars.MarsTopo2600(lmax=lmax_grid)
+    topo.r0 = topo.coeffs[0, 0, 0]
 
     try:
         os.mkdir('figs')
     except:
         pass
 
-    print('Gravity file = {:s}'.format(gravfile))
+    print('Gravity file = {:s}'.format('GMM3'))
     print('Lmax of potential coefficients = {:d}'.format(potential.lmax))
     print('Reference radius (km) = {:f}'.format(potential.r0 / 1.e3))
     print('GM = {:e}'.format(potential.gm))
     print('Mass = {:e}'.format(potential.mass))
 
-    topo = pyshtools.SHCoeffs.from_file(topofile, lmax=lmax_grid)
-    topo.r0 = topo.coeffs[0, 0, 0]
-
-    print('Topography file = {:s}'.format(topofile))
+    print('Topography file = {:s}'.format('MarsTopo2600'))
     print('Lmax of topography coefficients = {:d}'.format(topo.lmax))
     print('Reference radius (km) = {:f}\n'.format(topo.r0 / 1.e3))
 
@@ -64,12 +60,12 @@ def main():
     filter = 1
     half = 50
     nmax = 7
-    lmax_hydro = 90
+    lmax_hydro = 50
     t0_sigma = 5.  # maximum difference between minimum crustal thickness
     rho_c = 2900.
     t0 = 1.e3  # minimum crustal thickness
 
-    omega = pyshtools.constant.omega_mars.value
+    omega = pysh.constants.Mars.omega.value
     print('Omega = {:e}'.format(omega))
 
     # --- read 1D reference interior model ---
@@ -194,7 +190,8 @@ def main():
         print('Maximum thickness (km) = {:e}'.format(tmax / 1.e3))
         thickave += t0 - tmin
 
-    (thick_grid/1.e3).plot(show=False, colorbar=True,
+    (thick_grid/1.e3).plot(show=False, colorbar='bottom',
+                           cb_label='Crustal thickness, km',
                            fname='figs/Thick-Mars-without-hydro.png')
 
     print('Thickness at north pole (km) = ', thick_grid.data[0, 0] / 1.e3)
@@ -230,10 +227,12 @@ def main():
         print('Maximum thickness (km) = {:e}'.format(tmax / 1.e3))
         thickave += t0 - tmin
 
-    (thick2_grid/1.e3).plot(show=False, colorbar=True,
+    (thick2_grid/1.e3).plot(show=False, colorbar='bottom',
+                           cb_label='Crustal thickness, km',
                             fname='figs/Thick-Mars-with-hydro-lith.png')
     (thick2_grid/1.e3 - thick_grid/1.e3).plot(
-        show=False, colorbar=True, fname='figs/Thick-Mars-diff-hydro-lith.png')
+        show=False, colorbar='bottom', cb_label='Crustal thickness, km',
+        fname='figs/Thick-Mars-diff-hydro-lith.png')
     print('Thickness at north pole (km) = ', thick2_grid.data[0, 0] / 1.e3)
     min = (thick2_grid/1.e3 - thick_grid/1.e3).min()
     max = (thick2_grid/1.e3 - thick_grid/1.e3).max()
@@ -273,11 +272,13 @@ def main():
         print('Maximum thickness (km) = {:e}'.format(tmax / 1.e3))
         thickave += t0 - tmin
 
-    (thick3_grid/1.e3).plot(show=False, colorbar=True,
+    (thick3_grid/1.e3).plot(show=False, colorbar='bottom',
+                            cb_label='Crustal thickness, km',
                             fname='figs/Thick-Mars-with-fluid.png')
     print('Thickness at north pole (km) = ', thick3_grid.data[0, 0] / 1.e3)
     (thick2_grid/1.e3 - thick3_grid/1.e3).plot(
-        show=False, colorbar=True, fname='figs/Thick-Mars-diff-lith-fluid.png')
+        show=False, colorbar='bottom', cb_label='Crustal thickness, km',
+        fname='figs/Thick-Mars-diff-lith-fluid.png')
     min = (thick2_grid/1.e3 - thick3_grid/1.e3).min()
     max = (thick2_grid/1.e3 - thick3_grid/1.e3).max()
     print('Minimum and maximum difference (km) = ', min, max)

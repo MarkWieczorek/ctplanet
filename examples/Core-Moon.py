@@ -6,7 +6,7 @@
 import os
 import numpy as np
 
-import pyshtools
+import pyshtools as pysh
 
 from pycrust import HydrostaticShapeLith
 from pycrust import HydrostaticShape
@@ -20,9 +20,9 @@ def main():
     lmax = 20
     lmax_grid = 719
 
-    omega = pyshtools.constant.omega_moon.value
-    rem = pyshtools.constant.a_orbit_moon.value
-    mass_earth = pyshtools.constant.mass_egm2008.value
+    omega = pysh.constants.Moon.omega.value
+    rem = pysh.constants.Moon.a_orbit.value
+    mass_earth = pysh.constants.Earth.egm2008.mass.value
 
     cthick = 34.e3  # 43.e3 or 34.0e3
     rho_crust = 2550.
@@ -48,11 +48,10 @@ def main():
     rhocore_end = 8000.
     rhocore_int = 1.
 
-    pot_file = 'Data/JGGRAIL_900C11A_SHA.TAB'
     topo_file = 'Data/LOLA1500p.sh'
 
-    potential = pyshtools.SHGravCoeffs.from_file(pot_file, header_units='km')
-    topo = pyshtools.SHCoeffs.from_file(topo_file, lmax=900)
+    potential = pysh.datasets.Moon.GRGM900C()
+    topo = pysh.datasets.Moon.MoonTopo2600p(lmax=900)
     r0 = topo.coeffs[0, 0, 0]
 
     r_sigma = r0 - cthick
@@ -66,7 +65,7 @@ def main():
     print("Reference radius of potential model (km) = {:e}"
           .format(potential.r0/1.e3))
     print("GM = {:e}".format(potential.gm))
-    mass = potential.gm / pyshtools.constant.G.value
+    mass = potential.gm / pysh.constants.G.value
     print("Mass (kg) = {:e}".format(mass))
     print("Omega = {:e}".format(omega))
     print("Period (days) = {:e}".format(2. * np.pi / omega / 60. / 60. / 24.))

@@ -6,7 +6,7 @@ interfaces beneath the lithosphere.
 import numpy as np
 import os
 
-import pyshtools
+import pyshtools as pysh
 
 from pycrust import HydrostaticShapeLith
 
@@ -20,14 +20,11 @@ def main():
     d_sigma = 45.e3
     lmax_hydro = 2
 
-    gravfile = 'Data/gmm3_120_sha.tab'
-    topofile = 'Data/MarsTopo719.shape'
-
-    potential = pyshtools.SHGravCoeffs.from_file(gravfile, header_units='km')
-    omega = pyshtools.constant.omega_mars.value
+    potential = pysh.datasets.Mars.GMM3()
+    omega = pysh.constants.Mars.omega.value
     potential.omega = omega
 
-    print('Gravity file = {:s}'.format(gravfile))
+    print('Gravity file = {:s}'.format('GMM3'))
     print('Lmax of potential coefficients = {:d}'.format(potential.lmax))
     print('Reference radius (km) = {:f}'.format(potential.r0 / 1.e3))
     print('GM = {:e}'.format(potential.gm))
@@ -36,10 +33,10 @@ def main():
 
     lmax = 359
 
-    topo = pyshtools.SHCoeffs.from_file(topofile, lmax=lmax)
+    topo = pysh.datasets.Mars.MarsTopo2600(lmax=lmax)
     topo.r0 = topo.coeffs[0, 0, 0]
 
-    print('Topography file = {:s}'.format(topofile))
+    print('Topography file = {:s}'.format('MarsTopo2600'))
     print('Lmax of topography coefficients = {:d}'.format(topo.lmax))
     print('Reference radius (km) = {:f}\n'.format(topo.r0 / 1.e3))
 
@@ -130,69 +127,6 @@ def main():
             print('Percentage of h20 derived from hydrostatic mantle = '
                   '{:f}'.format(clm_hydro.coeffs[0, 2, 0] /
                                 potential.coeffs[0, 2, 0]*100))
-
-    # --- read 1D reference interior model ---
-    # --- From Rivoldini
-    model_dir = 'Data/Mars-reference-interior-models/modelsMQS-2'
-    models = os.listdir(model_dir)
-    models.sort()
-
-    pmin = 100
-    pmax = 0
-
-    for file in models:
-        if os.path.splitext(file)[1] != '.dat':
-            continue
-
-        print('=== Reading model {:s} ==='.format(file))
-        with open(os.path.join(model_dir, file), 'r') as f:
-            lines = f.readlines()
-            num = len(lines) - 4
-            radius = np.zeros(num)
-            rho = np.zeros(num)
-            for i in range(0, num):
-                data = lines[i+4].split()
-                radius[i] = float(data[0])
-                rho[i] = float(data[1])
-
-            r0_model = radius[num-1]
-            print('Surface radius of model (km) = {:f}'
-                  .format(r0_model / 1.e3))
-
-            for i in range(0, num):
-                if radius[i] <= (r0_model - d_lith) and \
-                        radius[i+1] > (r0_model - d_lith):
-                    if radius[i] == (r0_model - d_lith):
-                        i_lith = i
-                    elif (r0_model - d_lith) - radius[i] <= radius[i+1] -\
-                            (r0_model - d_lith):
-                        i_lith = i
-                    else:
-                        i_lith = i + 1
-                    break
-
-            n = num - 1
-            rho[n] = 0.  # the density above the surface is zero
-
-            print('Assumed depth of lithosphere (km) = {:f}'
-                  .format(d_lith / 1.e3))
-            print('Actual depth of lithosphere in discretized model (km) = '
-                  '{:f}'.format((r0_model - radius[i_lith]) / 1.e3))
-
-            r_sigma = topo.r0 - d_sigma
-            hlm, clm_hydro, mass_model = \
-                HydrostaticShapeLith(radius, rho, i_lith, potential, topo,
-                                     rho_crust, r_sigma, omega, lmax_hydro)
-            percent = clm_hydro.coeffs[0, 2, 0] / potential.coeffs[0, 2, 0]*100
-            print('Percentage of h20 derived from hydrostatic mantle = '
-                  '{:f}'.format(percent))
-
-            if percent > pmax:
-                pmax = percent
-            if percent < pmin:
-                pmin = percent
-
-    print(pmin, pmax)
 
 
 # ==== EXECUTE SCRIPT ====

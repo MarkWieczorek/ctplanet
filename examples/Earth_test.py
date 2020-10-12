@@ -5,7 +5,7 @@ Earth_test
 Compute hydrostatic shape of Earth using PREM.
 """
 import numpy as np
-import pyshtools
+import pyshtools as pysh
 
 from pycrust import HydrostaticShape
 
@@ -18,10 +18,10 @@ def main():
     spec = 'Data/'
     interior_file = [spec + name for name in model_name]
 
-    r_ref = pyshtools.constant.a_wgs84.value
-    gm = pyshtools.constant.gm_wgs84.value
-    mass = gm / pyshtools.constant.G.value
-    omega = pyshtools.constant.omega_wgs84.value
+    r_ref = pysh.constants.Earth.wgs84.a.value
+    gm = pysh.constants.Earth.wgs84.gm.value
+    mass = gm / pysh.constants.G.value
+    omega = pysh.constants.Earth.wgs84.omega.value
 
     print('Reference radius (km) = {:f}'.format(r_ref / 1.e3))
     print('GM = {:e}'.format(gm))

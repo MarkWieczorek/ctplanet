@@ -5,7 +5,7 @@ gravitational potential in a planet with a non-hydrostatic lithosphere.
 import numpy as np
 import scipy.linalg.lapack as lapack
 
-import pyshtools as pyshtools
+import pyshtools as pysh
 
 
 # ==== HydrostaticShapeLith ====
@@ -83,12 +83,12 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
     n = len(radius) - 1  # index of surface
     lmaxgrid = 3*lmax  # increase grid size to avoid aliasing
 
-    g = pyshtools.constant.G.value
+    g = pysh.constants.G.value
     gm = potential.gm
     r_ref = potential.r0
 
-    hlm = [pyshtools.SHCoeffs.from_zeros(lmax) for i in range(ilith+1)]
-    clm_hydro = pyshtools.SHCoeffs.from_zeros(lmax)
+    hlm = [pysh.SHCoeffs.from_zeros(lmax) for i in range(ilith+1)]
+    clm_hydro = pysh.SHCoeffs.from_zeros(lmax)
 
     for i in range(ilith+1):
         hlm[i].coeffs[0, 0, 0] = radius[i]
@@ -110,7 +110,7 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
     for l in range(1, lmax+1):
         for m in range(0, l+1):
             sh[0, l, m] = 1.
-            coeffs = pyshtools.expand.SHMultiply(sh20, sh)
+            coeffs = pysh.expand.SHMultiply(sh20, sh)
             cp20[0, l, m] = coeffs[0, l, m]
             if m != 0:
                 cp20[1, l, m] = cp20[0, l, m]
@@ -121,13 +121,13 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
             if l == 2 and m == 2:
                 p422022 = coeffs[0, 4, 2]
 
-            coeffs = pyshtools.expand.SHMultiply(sh22, sh)
+            coeffs = pysh.expand.SHMultiply(sh22, sh)
             cp22[0, l, m] = coeffs[0, l, m]
             sh[0, l, m] = 0.
 
             if m > 0:
                 sh[1, l, m] = 1.
-                coeffs = pyshtools.expand.SHMultiply(sh22, sh)
+                coeffs = pysh.expand.SHMultiply(sh22, sh)
                 cp22[1, l, m] = coeffs[1, l, m]
                 sh[1, l, m] = 0.
 
@@ -158,10 +158,10 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
     # Calculate potential coefficients of the surface relief
 
     grid = topo.expand(grid='DH2', lmax=lmaxgrid, lmax_calc=lmax, extend=False)
-    cplus, r_surface = pyshtools.gravmag.CilmPlusDH(grid.data, nmax, gm/g,
-                                                    rho_surface, lmax=lmax)
-    cminus, r_surface = pyshtools.gravmag.CilmMinusDH(grid.data, nmax, gm/g,
-                                                      rho_surface, lmax=lmax)
+    cplus, r_surface = pysh.gravmag.CilmPlusDH(grid.data, nmax, gm/g,
+                                               rho_surface, lmax=lmax)
+    cminus, r_surface = pysh.gravmag.CilmMinusDH(grid.data, nmax, gm/g,
+                                                 rho_surface, lmax=lmax)
 
     # Calculate matrix A and invert for relief.
 
@@ -305,8 +305,8 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
                 np.pi * drho[i] * radius[i]**2 * (radius[i] / r_ref)**l * \
                 g / gm / (2. * l + 1.)
 
-    clm_hydro = pyshtools.SHGravCoeffs.from_array(coeffs, gm=gm, r0=r_ref,
-                                                  omega=omega)
+    clm_hydro = pysh.SHGravCoeffs.from_array(coeffs, gm=gm, r0=r_ref,
+                                             omega=omega)
 
     return hlm, clm_hydro, mass_model
 
@@ -376,10 +376,10 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None,
     n = len(radius) - 1  # index of surface
     lmax = 4
 
-    g = pyshtools.constant.G.value
+    g = pysh.constants.G.value
 
-    hlm = [pyshtools.SHCoeffs.from_zeros(lmax) for i in range(n+1)]
-    clm_hydro = pyshtools.SHCoeffs.from_zeros(lmax)
+    hlm = [pysh.SHCoeffs.from_zeros(lmax) for i in range(n+1)]
+    clm_hydro = pysh.SHCoeffs.from_zeros(lmax)
 
     for i in range(n+1):
         hlm[i].coeffs[0, 0, 0] = radius[i]
@@ -401,7 +401,7 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None,
     for l in range(2, lmax+1):
         for m in range(0, l+1):
             sh[0, l, m] = 1.
-            coeffs = pyshtools.expand.SHMultiply(sh20, sh)
+            coeffs = pysh.expand.SHMultiply(sh20, sh)
             cp20[0, l, m] = coeffs[0, l, m]
             if m != 0:
                 cp20[1, l, m] = cp20[0, l, m]
@@ -412,13 +412,13 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None,
             if l == 2 and m == 2:
                 p422022 = coeffs[0, 4, 2]
 
-            coeffs = pyshtools.expand.SHMultiply(sh22, sh)
+            coeffs = pysh.expand.SHMultiply(sh22, sh)
             cp22[0, l, m] = coeffs[0, l, m]
             sh[0, l, m] = 0.
 
             if m > 0:
                 sh[1, l, m] = 1.
-                coeffs = pyshtools.expand.SHMultiply(sh22, sh)
+                coeffs = pysh.expand.SHMultiply(sh22, sh)
                 cp22[1, l, m] = coeffs[1, l, m]
                 sh[1, l, m] = 0.
 
@@ -568,7 +568,7 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None,
                 g / gm / (2. * l + 1.)
     coeffs[0, 0, 0] = 1.
 
-    clm_hydro = pyshtools.SHGravCoeffs.from_array(coeffs, gm=gm, r0=r_ref,
-                                                  omega=omega)
+    clm_hydro = pysh.SHGravCoeffs.from_array(coeffs, gm=gm, r0=r_ref,
+                                             omega=omega)
 
     return hlm, clm_hydro, mass_model

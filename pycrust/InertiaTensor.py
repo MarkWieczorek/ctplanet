@@ -175,7 +175,7 @@ def InertiaTensor_from_C(C, potential, normalize=False, r_norm=None,
         coefficients.
     normalize : bool, optional, default = False
         If True, return all moments normalized by MR^2
-    r_norm : float, optional default = None
+    r_norm : float, optional, default = None
         If specified, and if normalize is True, use this radius to normalize
         all output moments of inertia. If normalize is False, then r_norm will
         be used when printing the normalized moments to screen when quiet is
@@ -203,7 +203,8 @@ def InertiaTensor_from_C(C, potential, normalize=False, r_norm=None,
     mass = potential.mass
     r0 = potential.r0
 
-    clm_unnorm = potential.to_array(normalization='unnorm', csphase=1, lmax=2)
+    clm_unnorm = potential.to_array(normalization='unnorm', csphase=1, lmax=2,
+                                    errors=False)
 
     I33 = C
     I22 = mass * r0**2 * (clm_unnorm[0, 2, 0] + 2 * clm_unnorm[0, 2, 2]) \

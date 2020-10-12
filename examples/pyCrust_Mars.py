@@ -11,7 +11,7 @@ boundary. The average crustal thickness is iterated in order to obtain
 a specified minimum crustal thickness.
 """
 import os
-import pyshtools
+import pyshtools as pysh
 
 from pycrust import pyMoho
 from pycrust import pyMohoRho
@@ -24,8 +24,6 @@ from pycrust import ReadRefModel
 
 def main():
 
-    gravfile = 'Data/gmm3_120_sha.tab'
-    topofile = 'Data/MarsTopo719.shape'
     densityfile = 'Data/dichotomy_359.sh'
 
     model_name = ['DWThot', 'DWThotCrust1', 'DWThotCrust1r', 'EH45Tcold',
@@ -38,26 +36,26 @@ def main():
     lmax_calc = 90
     lmax = lmax_calc * 4
 
-    potential = pyshtools.SHGravCoeffs.from_file(gravfile, header_units='km')
+    potential = pysh.datasets.Mars.GMM3()
 
     try:
         os.mkdir('figs')
     except:
         pass
 
-    print('Gravity file = {:s}'.format(gravfile))
+    print('Gravity file = {:s}'.format('GMM3'))
     print('Lmax of potential coefficients = {:d}'.format(potential.lmax))
     print('Reference radius (km) = {:f}'.format(potential.r0 / 1.e3))
     print('GM = {:e}\n'.format(potential.gm))
 
-    topo = pyshtools.SHCoeffs.from_file(topofile, lmax=lmax)
+    topo = pysh.datasets.Mars.MarsTopo2600(lmax=lmax)
     topo.r0 = topo.coeffs[0, 0, 0]
 
-    print('Topography file = {:s}'.format(topofile))
+    print('Topography file = {:s}'.format('MarsTopo2600'))
     print('Lmax of topography coefficients = {:d}'.format(topo.lmax))
     print('Reference radius (km) = {:f}\n'.format(topo.r0 / 1.e3))
 
-    density = pyshtools.SHCoeffs.from_file(densityfile).pad(lmax=lmax)
+    density = pysh.SHCoeffs.from_file(densityfile).pad(lmax=lmax)
 
     print('Lmax of density coefficients = {:d}\n'.format(density.lmax))
 
@@ -69,7 +67,7 @@ def main():
     nmax = 7
     lmax_hydro = 15
     t0_sigma = 5.  # maximum difference between minimum crustal thickness
-    omega = pyshtools.constant.omega_mars.value
+    omega = pysh.constants.Mars.omega.value
 
     d_lith = 150.e3
 
@@ -140,7 +138,9 @@ def main():
         print('Maximum thickness (km) = {:e}'.format(tmax / 1.e3))
         thickave += t0 - tmin
 
-    thick_grid.plot(show=False, fname='figs/Thick-Mars-1.png')
+    thick_grid.plot(colorbar='bottom', show=False,
+                    cb_label='Crustal thickness, km',
+                    fname='figs/Thick-Mars-1.png')
     moho.plot_spectrum(show=False, fname='figs/Moho-spectrum-Mars-1.png')
 
     # --- Model with variable density ---
@@ -178,7 +178,9 @@ def main():
         print('Maximum thickness (km) = {:e}'.format(tmax / 1.e3))
         thickave += t0 - tmin
 
-    thick_grid.plot(show=False, fname='figs/Thick-Mars-2.png')
+    thick_grid.plot(colorbar='bottom', show=False,
+                    cb_label='Crustal thickness, km',
+                    fname='figs/Thick-Mars-2.png')
     moho.plot_spectrum(show=False, fname='figs/Moho-spectrum-Mars-2.png')
 
 

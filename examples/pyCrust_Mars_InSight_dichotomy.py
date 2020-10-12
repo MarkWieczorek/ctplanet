@@ -24,8 +24,6 @@ from pycrust import ReadRefModel
 
 def main():
 
-    gravfile = 'Data/gmm3_120_sha.tab'
-    topofile = 'Data/MarsTopo719.shape'
     densityfile = 'Data/dichotomy_359.sh'
     northpolarcap = 'Data/Mars_NorthPolarCapThickness719.sh.gz'
     southpolarcap = 'Data/Mars_SouthPolarCapThickness719.sh.gz'
@@ -40,7 +38,7 @@ def main():
     lmax_calc = 90
     lmax = lmax_calc * 4
 
-    potential = pysh.SHGravCoeffs.from_file(gravfile, header_units='km')
+    potential = pysh.datasets.Mars.GMM3()
 
     directory = 'InSight/dichotomy/'
 
@@ -49,15 +47,15 @@ def main():
     except:
         pass
 
-    print('Gravity file = {:s}'.format(gravfile))
+    print('Gravity file = {:s}'.format('GMM3'))
     print('Lmax of potential coefficients = {:d}'.format(potential.lmax))
     print('Reference radius (km) = {:f}'.format(potential.r0 / 1.e3))
     print('GM = {:e}\n'.format(potential.gm))
 
-    topo = pysh.SHCoeffs.from_file(topofile, lmax=lmax)
+    topo = pysh.datasets.Mars.MarsTopo2600(lmax=lmax)
     topo_grid = topo.pad(lmax).expand(grid='DH2')
 
-    print('Topography file = {:s}'.format(topofile))
+    print('Topography file = {:s}'.format('MarsTopo2600'))
     print('Lmax of topography coefficients = {:d}'.format(topo.lmax))
     print('Reference radius (km) = {:f}\n'.format(topo.coeffs[0, 0, 0] / 1.e3))
 
@@ -116,7 +114,7 @@ def main():
     nmax = 7
     lmax_hydro = 15
     t_sigma = 5.  # maximum difference between crustal thickness iterations
-    omega = pysh.constant.omega_mars.value
+    omega = pysh.constants.Mars.omega.value
 
     d_lith = 150.e3
 

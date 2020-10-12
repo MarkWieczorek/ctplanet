@@ -17,7 +17,7 @@ Wieczorek, M. A., G. A. Neumann, F. Nimmo, W. S. Kiefer, G. J. Taylor,
     Science, 339, 671-675, doi:10.1126/science.1231530, 2013.
 """
 import os
-import pyshtools
+import pyshtools as pysh
 
 from pycrust import pyMoho
 from pycrust import pyMohoRho
@@ -30,30 +30,28 @@ def main():
     lmax = 900  # determines spatial resolution of grids
     lmax_calc = 600  # maximum degree to use in calculations
 
-    gravfile = 'Data/JGGRAIL_900C11A_SHA.TAB'
-    topofile = 'Data/LOLA1500p.sh'
     densityfile = 'Data/density_no_mare_n3000_f3050_719.sh'
 
-    pot = pyshtools.SHGravCoeffs.from_file(gravfile, header_units='km')
+    pot = pysh.datasets.Moon.GRGM900C()
 
     try:
         os.mkdir('figs')
     except:
         pass
 
-    print('Gravity file = {:s}'.format(gravfile))
+    print('Gravity file = {:s}'.format('GRGM900C'))
     print('Lmax of potential coefficients = {:d}'.format(pot.lmax))
     print('Reference radius (m) = {:e}'.format(pot.r0))
     print('GM = {:e}\n'.format(pot.gm))
 
-    topo = pyshtools.SHCoeffs.from_file(topofile, lmax=lmax)
+    topo = pysh.datasets.Moon.MoonTopo2600p(lmax=lmax)
     topo.r0 = topo.coeffs[0, 0, 0]
 
-    print('Topography file = {:s}'.format(topofile))
+    print('Topography file = {:s}'.format('MoonTopo2600p'))
     print('Lmax of topography coefficients = {:d}'.format(topo.lmax))
     print('Reference radius (m) = {:e}\n'.format(topo.r0))
 
-    density = pyshtools.SHCoeffs.from_file(densityfile, lmax=lmax)
+    density = pysh.SHCoeffs.from_file(densityfile, lmax=719)
     rho_c0 = density.coeffs[0, 0, 0]  # average grain density
 
     print('Average grain density of crust (kg/m3) = {:e}'.format(rho_c0))
@@ -81,7 +79,7 @@ def main():
 
     moho = pyMoho(pot, topo, lmax, rho_c, rho_m, thickave,
                   filter_type=filter, half=half, lmax_calc=lmax_calc,
-                  quiet=False, delta_max=25.)
+                  quiet=False, delta_max=50.)
 
     thick_grid = (topo.pad(lmax) - moho.pad(lmax)).expand(grid='DH2') / 1.e3
     thick_grid.plot(show=False, colorbar='bottom',
@@ -98,7 +96,7 @@ def main():
 
     moho = pyMohoRho(pot, topo, density, porosity, lmax, rho_m,
                      thickave, filter_type=filter, half=half,
-                     lmax_calc=lmax_calc, quiet=False, delta_max=25.)
+                     lmax_calc=lmax_calc, quiet=False, delta_max=50.)
 
     thick_grid = (topo-moho.pad(topo.lmax)).expand(grid='DH2') / 1.e3
     thick_grid.plot(show=False, colorbar='bottom',

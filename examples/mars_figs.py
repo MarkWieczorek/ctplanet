@@ -5,7 +5,7 @@ Create images related to Mars in Wieczorek et al. (2019)
 import os
 import numpy as np
 
-import pyshtools
+import pyshtools as pysh
 
 from pycrust import HydrostaticShapeLith
 from pycrust import HydrostaticShape
@@ -20,10 +20,7 @@ def main():
     d_lith = 150.e3
     rho_crust = 2900.
     d_sigma = 45.e3
-    lmax_hydro = 90
-
-    gravfile = 'Data/gmm3_120_sha.tab'
-    topofile = 'Data/MarsTopo719.shape'
+    lmax_hydro = 50
 
     model_name = ['DWThot', 'DWThotCrust1', 'DWThotCrust1r', 'EH45Tcold',
                   'EH45TcoldCrust1', 'EH45TcoldCrust1r', 'EH45ThotCrust2',
@@ -32,8 +29,8 @@ def main():
     spec = 'Data/Mars-reference-interior-models/Smrekar/'
     interior_file = [spec + name + '.deck' for name in model_name]
 
-    potential = pyshtools.SHGravCoeffs.from_file(gravfile, header_units='km')
-    omega = pyshtools.constant.omega_mars.value
+    potential = pysh.datasets.Mars.GMM3()
+    omega = pysh.constants.Mars.omega.value
     potential.omega = omega
     mass_mars = np.float_(potential.mass)
 
@@ -42,7 +39,7 @@ def main():
     except:
         pass
 
-    print('Gravity file = {:s}'.format(gravfile))
+    print('Gravity file = {:s}'.format('GMM3'))
     print('Lmax of potential coefficients = {:d}'.format(potential.lmax))
     print('Reference radius (km) = {:f}'.format(potential.r0 / 1.e3))
     print('GM = {:e}'.format(potential.gm))
@@ -54,11 +51,11 @@ def main():
 
     model = 10
 
-    topo = pyshtools.SHCoeffs.from_file(topofile, lmax=lmax)
+    topo = pysh.datasets.Mars.MarsTopo2600(lmax=lmax)
     topo.r0 = topo.coeffs[0, 0, 0]
     r_mars = topo.coeffs[0, 0, 0]
 
-    print('Topography file = {:s}'.format(topofile))
+    print('Topography file = {:s}'.format('MarsTopo2600'))
     print('Lmax of topography coefficients = {:d}'.format(topo.lmax))
     print('Reference radius (km) = {:f}\n'.format(topo.r0 / 1.e3))
 

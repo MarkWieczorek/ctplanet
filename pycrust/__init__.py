@@ -29,12 +29,11 @@ Notes
     moi                       Calculate the mean, normalized, moment of inertia
                               up to index n.
     ReadRefModel              Read the reference interior model file.
-
 """
 from ._version import get_versions
 
-from .pyMoho import pyMoho
-from .pyMoho import pyMohoRho
+from .Moho import pyMoho
+from .Moho import pyMohoRho
 
 from .Hydrostatic import HydrostaticShapeLith
 from .Hydrostatic import HydrostaticShape
@@ -45,12 +44,15 @@ from .InertiaTensor import moi
 
 from .ReadRefModel import ReadRefModel
 
+del Moho
+del Hydrostatic
+del InertiaTensor
+
 __version__ = get_versions()['version']
 del get_versions
 
 __author__ = 'Mark Wieczorek'
 
-# ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['pyMoho', 'pyMohoRho', 'HydrostaticShapeLith', 'HydrostaticShape',
            'InertiaTensor_from_shape', 'InertiaTensor_from_C', 'moi',
            'ReadRefModel']
