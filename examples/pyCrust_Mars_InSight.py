@@ -31,7 +31,7 @@ def main():
     model_name = ['DWThot', 'DWThotCrust1', 'DWThotCrust1r', 'EH45Tcold',
                   'EH45TcoldCrust1', 'EH45TcoldCrust1r', 'EH45ThotCrust2',
                   'EH45ThotCrust2r', 'LFAK', 'SANAK', 'TAYAK', 'DWAK',
-                  'ZG_DW']
+                  'ZG_DW', 'YOTHotRc1760kmDc40km', 'YOTHotRc1810kmDc40km']
     spec = 'Data/Mars-reference-interior-models/Smrekar/'
     interior_file = [spec + name + '.deck' for name in model_name]
 
@@ -65,7 +65,7 @@ def main():
           .format(rho_npc))
     print('South polar cap thickness file = {:s}'.format(southpolarcap))
     print('Lmax of South polar cap coefficients = {:d}'.format(spc.lmax))
-    print('Assumed density of the Sorth polar cap (kg m-3) = {:e}'
+    print('Assumed density of the South polar cap (kg m-3) = {:e}'
           .format(rho_npc))
 
     # Topography excluding the polar caps
