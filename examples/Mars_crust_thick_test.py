@@ -228,7 +228,7 @@ def main():
         thickave += t0 - tmin
 
     (thick2_grid/1.e3).plot(show=False, colorbar='bottom',
-                           cb_label='Crustal thickness, km',
+                            cb_label='Crustal thickness, km',
                             fname='figs/Thick-Mars-with-hydro-lith.png')
     (thick2_grid/1.e3 - thick_grid/1.e3).plot(
         show=False, colorbar='bottom', cb_label='Crustal thickness, km',

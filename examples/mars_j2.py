@@ -4,7 +4,6 @@ Compute the contribution to the gravitational J2 of Mars from hydrostatic
 interfaces beneath the lithosphere.
 """
 import numpy as np
-import os
 
 import pyshtools as pysh
 

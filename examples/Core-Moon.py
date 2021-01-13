@@ -48,8 +48,6 @@ def main():
     rhocore_end = 8000.
     rhocore_int = 1.
 
-    topo_file = 'Data/LOLA1500p.sh'
-
     potential = pysh.datasets.Moon.GRGM900C()
     topo = pysh.datasets.Moon.MoonTopo2600p(lmax=900)
     r0 = topo.coeffs[0, 0, 0]
