@@ -8,7 +8,8 @@ import numpy as np
 
 def ReadRefModel(filename, depth=None, quiet=True):
     '''
-    Read the reference interior model file.
+    Read a reference interior model file in deck format and convert to the form
+    required by HydrostaticShapeLith.
 
     Returns
     -------
@@ -20,7 +21,7 @@ def ReadRefModel(filename, depth=None, quiet=True):
         between radius[i] and radius[i+1]. The density above the surface,
         rho[n], is set to zero. The density of the base of the crust is
         rho[i_crust], the density of the upper mantle is rho[i_crust-1], and
-        the density if the upper core is rho[i_core-1].
+        the density of the upper core is rho[i_core-1].
     i_crust : integer
         Index of the radius vector corresponding to the base of the crust.
     i_core : integer
@@ -41,12 +42,29 @@ def ReadRefModel(filename, depth=None, quiet=True):
 
     Notes
     -----
-    This routine reads in a "deck" Mars reference interior model for use in
-    the routine HydrostaticShapeLith. Note that the latter routine requires the
-    density to be a specified constant value between two radii, whereas the
-    format of the "deck" files provides the density at each specified radii.
-    Thus this routine sets the density from radius[i] as specified in the file
-    to be equal to the density between radius[i] and radius[i+1].
+    This routine reads in a "deck" reference interior model for use in the
+    routine HydrostaticShapeLith. Note that the latter routine requires the
+    density to be a specified constant value between two radii (see Figure 1 of
+    Wieczorek et al. 2019), whereas the format of the "deck" files provides the
+    density at each specified radius. Thus, this routine sets density[i] equal
+    to the average of the density at radius[i] and radius[i+1] in the original
+    file.
+
+    The deck file must be formatted as follows. The first line is a header
+    line, which is output only when quiet is set to False. The second line
+    lists three parameters: (1) ifanis, which is 0 or 1 for an isotropic or
+    anisotropic model, respectively, (2) tref, which is the reference period in
+    seconds of the model for the physical dispersion correction, and (3)
+    ifdeck, which is 1 for tabular data or 0 for a polynomial model
+    (unsupported). The third line lists the following: (1) N, the number of
+    model entries, excluding the first three lines of the file, (2) the line
+    number, starting from 1, corresponding to the top of the solid inner core,
+    (3) the line number corresponding to the top of the fluid core, and (4) the
+    line number corresponding to the top of the mantle. Following this, each
+    line must contain the radius and density (other values are not used).
+    Discontinuities at the inner-outer core boundary, core-mantle interface and
+    crust-mantle interface are represented by two adjacent lines with identical
+    radii providing the density on either side of the discontinuity.
     '''
 
     with open(filename, 'r') as f:

@@ -16,7 +16,7 @@ def main():
 
     # Thomas et al. 2005
     mass = 9.395e20
-    gm = mass * pyshtools.constant.G.value
+    gm = mass * pyshtools.constants.G.value
     r0 = 476.2e3
     omega = 2 * np.pi / (9.076 * 60 * 60)
     volume = 4 * np.pi / 3 * r0**3

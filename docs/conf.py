@@ -4,7 +4,7 @@ import pycrust
 # Project information
 year = datetime.date.today().year
 project = 'pycrust'
-copyright = "2018-{}, The pyCrust Developers".format(year)
+copyright = "{}, The pyCrust Developers".format(year)
 author = 'Mark A. Wieczorek'
 version = pycrust.__version__.split(sep='-')[0]  # use version of last tag
 

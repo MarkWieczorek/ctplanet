@@ -15,7 +15,7 @@
    source/api.rst
 
 
-.. figure:: Thick-Mars-DWThot-41-2900.png
+.. figure:: Mars-crustal-thickness.png
     :width: 700px
     :align: center
     :alt: Crustal thickness of Mars
