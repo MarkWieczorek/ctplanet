@@ -1,23 +1,88 @@
 name: Create html web documentation
 
-on: [push]
+on: [push, release]
+  branches: [master]
 
 jobs:
   docs:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python environment
-      uses: actions/setup-python@v2
+
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.6.0
+      with:
+        access_token: ${{ github.token }}
+
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Setup Miniconda
+      uses: conda-incubator/setup-miniconda@v2
       with:
         python-version: 3.8
-    - name: Update pip
+        channels: conda-forge
+        auto-update-conda: true
+        miniconda-version: "latest"
+        activate-environment: docs
+
+    - name: Set up Conda environment
+      shell: bash -l {0}
       run: |
-        python -m pip install --upgrade pip
-    - name: Install the package your documenting together with its dependencies.
+        conda config --set always_yes yes --set changeps1 no
+        conda install -q -n docs python=3.8 \
+                                 pip \
+                                 twine\
+                                 setuptools \
+                                 pypandoc \
+                                 versioneer \
+                                 sphinx \
+                                 sphinx_rtd_theme \
+                                 pyshtools
+        conda list -n docs
+
+    - name: Build pycrust using pip
+      shell: bash -l {0}
       run: |
-        pip install .
-    - name: Build the sphinx documentation and posts warnings.
-      uses: rickstaa/sphinx-action@master
+        conda env list
+        pip install --no-deps .
+
+    - name: Build the sphinx documentation
+      shell: bash -l {0}
+      run: |
+        cd docs
+        make html
+
+    - name: Upload artifact of the html output
+      uses: actions/upload-artifact@v2
       with:
-        docs-folder: "./docs"
+        name: gh-pages-documentation
+        path: docs/_build/html/
+        retention-days: 1
+
+    - name: Clean gh-pages branch
+      shell: bash -l {0}
+      run: |
+        git switch gh-pages
+        git clean -fd
+        git config --local user.email "mark.a.wieczorek@gmail.com"
+        git config --local user.name "GitHub Action"
+
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: gh-pages-documentation
+
+    - name: Commit changes
+      shell: bash -l {0}
+      run: |
+        git add .
+        git commit -m "Update gh-pages documenation" -a || true
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        branch: gh-pages
+        github_token: ${{ secrets.GITHUB_TOKEN }}
