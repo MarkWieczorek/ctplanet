@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pycrust.InertiaTensor_from_C &mdash; pycrust</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="pycrust.InertiaTensor_from_shape" href="pycrust.InertiaTensor_from_shape.html" />
+    <link rel="prev" title="pycrust.pyMohoRho" href="pycrust.pyMohoRho.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> pycrust
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pycrust.HydrostaticShape.html">pycrust.HydrostaticShape</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pycrust.HydrostaticShapeLith.html">pycrust.HydrostaticShapeLith</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pycrust.pyMoho.html">pycrust.pyMoho</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pycrust.pyMohoRho.html">pycrust.pyMohoRho</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pycrust.InertiaTensor_from_C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pycrust.InertiaTensor_from_shape.html">pycrust.InertiaTensor_from_shape</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pycrust.moi.html">pycrust.moi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pycrust.ReadRefModel.html">pycrust.ReadRefModel</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pycrust</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
+      <li>pycrust.InertiaTensor_from_C</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pycrust-inertiatensor-from-c">
+<h1>pycrust.InertiaTensor_from_C<a class="headerlink" href="#pycrust-inertiatensor-from-c" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycrust.InertiaTensor_from_C">
+<code class="sig-prename descclassname">pycrust.</code><code class="sig-name descname">InertiaTensor_from_C</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">C</span></em>, <em class="sig-param"><span class="n">potential</span></em>, <em class="sig-param"><span class="n">normalize</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">r_norm</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">quiet</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycrust.InertiaTensor_from_C" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the inertia tensor given the polar moment of inertia and the
+gravitational potential coefficients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>I</strong> (<em>ndarray, size(3, 3)</em>) – The inertia tensor.</p></li>
+<li><p><strong>A, B, C</strong> (<em>float</em>) – The principal moments of inertia, with A&lt;B&lt;C.</p></li>
+<li><p><strong>angles</strong> (<em>ndarray, size(3,2)</em>) – Matrix with each row containing the latitude and longitude
+coordinates (in degrees) of the principal moments A, B and C.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>C</strong> (<em>float</em>) – The polar moment of inertia, which is assumed to be equal to the
+I33 component of the inertia tensor.</p></li>
+<li><p><strong>potential</strong> (<em>SHGravCoeffs</em>) – An SHGravCoeffs instance containing the gravitational potential
+coefficients.</p></li>
+<li><p><strong>normalize</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default = False</em>) – If True, return all moments normalized by MR^2</p></li>
+<li><p><strong>r_norm</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default = None</em>) – If specified, and if normalize is True, use this radius to normalize
+all output moments of inertia. If normalize is False, then r_norm will
+be used when printing the normalized moments to screen when quiet is
+False.</p></li>
+<li><p><strong>quiet</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default = True</em>) – If False, print additional information, including the principal and
+normalized principal moments of inertial, and the directions of the
+axes of the principal moments.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This routine assumes that the polar moment of inertia C is equal to the
+I33 term of the inertia tensor. This is equivalent to assuming that the
+coordinate system defining the gravitational potential is aligned with
+the principal moment C. As such, the gravitational potential terms of order
+2 and degree 1 should be identically zero. If they are not, the returned
+value of the largest principal moment will differ slightly from the input
+value, and the difference provides an estimate of the error associated with
+the assumption that C=I33.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="pycrust.InertiaTensor_from_shape.html" class="btn btn-neutral float-right" title="pycrust.InertiaTensor_from_shape" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pycrust.pyMohoRho.html" class="btn btn-neutral float-left" title="pycrust.pyMohoRho" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, The pyCrust Developers.
+
+    </p>
+  </div> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
