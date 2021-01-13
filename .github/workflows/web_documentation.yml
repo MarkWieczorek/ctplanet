@@ -1,0 +1,23 @@
+name: Create html web documentation
+
+on: [push]
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python environment
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Update pip
+      run: |
+        python -m pip install --upgrade pip
+    - name: Install the package your documenting together with its dependencies.
+      run: |
+        pip install .
+    - name: Build the sphinx documentation and posts warnings.
+      uses: rickstaa/sphinx-action@master
+      with:
+        docs-folder: "./docs"
