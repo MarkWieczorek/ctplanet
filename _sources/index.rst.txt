@@ -22,10 +22,10 @@
 
     Crustal thickness of Mars derived from gravity, topography, and InSight seismic constraints.
 
-pyCrust
-=======
+ctplanet
+========
 
-pyCrust provides several functions for working with the gravitational field of planetary crusts and hydrostatic density interfaces in the mantle and core. With this python module, you can:
+ctplanet provides several functions for working with the gravitational field of planetary crusts and hydrostatic density interfaces in the mantle and core. With this python module, you can:
 
 * Compute the hydrostatic shape of density interfaces in an entirely hydrostatic planet.
 

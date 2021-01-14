@@ -3,7 +3,7 @@
 API Reference
 =============
 
-.. currentmodule:: pycrust
+.. currentmodule:: ctplanet
 
 .. autosummary::
    :toctree: generated/
