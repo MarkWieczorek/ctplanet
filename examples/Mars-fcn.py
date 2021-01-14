@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """
+Mars-fcn
+
 Compute the free core nutation period of Mars.
 """
 import numpy as np
 import pyshtools as pysh
-from pycrust import InertiaTensor_from_C
+
+from ctplanet import InertiaTensor_from_C
 
 
 # ==== MAIN FUNCTION ====

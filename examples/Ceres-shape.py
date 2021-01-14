@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-    Calculate the hydrostatic shape of Ceres.
+Ceres-shape
 
+Calculate the hydrostatic shape of Ceres, as in Wieczorek et al. (2019).
 """
 import numpy as np
-
 import pyshtools
 
-from pycrust import HydrostaticShape
+from ctplanet import HydrostaticShape
 
 # ==== MAIN FUNCTION ====
 

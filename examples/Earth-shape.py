@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Earth_test
+Earth-shape
 
 Compute hydrostatic shape of Earth using PREM.
 """
 import numpy as np
 import pyshtools as pysh
 
-from pycrust import HydrostaticShape
+from ctplanet import HydrostaticShape
 
 # ==== MAIN FUNCTION ====
 

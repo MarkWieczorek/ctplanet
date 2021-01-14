@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """
-    Calculate the hydrostatic shape of the core of the Moon.
+Moon-Core
 
+Calculate the hydrostatic shape of the core of the Moon, as presented in
+Wieczorek et al. (2019).
 """
 import os
 import numpy as np
-
 import pyshtools as pysh
 
-from pycrust import HydrostaticShapeLith
-from pycrust import HydrostaticShape
-from pycrust import InertiaTensor_from_shape
+from ctplanet import HydrostaticShapeLith
+from ctplanet import HydrostaticShape
+from ctplanet import InertiaTensor_from_shape
 
 # ==== MAIN FUNCTION ====
 

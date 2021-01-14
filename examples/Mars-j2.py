@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """
+Mars-j2
+
 Compute the contribution to the gravitational J2 of Mars from hydrostatic
 interfaces beneath the lithosphere.
 """
@@ -7,7 +9,7 @@ import numpy as np
 
 import pyshtools as pysh
 
-from pycrust import HydrostaticShapeLith
+from ctplanet import HydrostaticShapeLith
 
 # ==== MAIN FUNCTION ====
 

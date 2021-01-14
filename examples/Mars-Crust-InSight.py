@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-pyCrust_Mars_InSight
+Mars-Crust-InSight
 
 Create a crustal thickness map of Mars from gravity and topography, using
 the InSight crustal thickness constraint.
@@ -13,12 +13,11 @@ order to fit the specified thickness at the InSight landing site.
 """
 import os
 import matplotlib.pyplot as plt
-
 import pyshtools as pysh
 
-from pycrust import pyMoho
-from pycrust import HydrostaticShapeLith
-from pycrust import ReadRefModel
+from ctplanet import pyMoho
+from ctplanet import HydrostaticShapeLith
+from ctplanet import ReadRefModel
 
 # ==== MAIN FUNCTION ====
 

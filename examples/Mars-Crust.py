@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-pyCrust_Mars
+Mars-Crust
 
 Create a crustal thickness map of Mars from gravity and topography.
 
@@ -8,16 +8,17 @@ This script generates two different crustal thickness maps. The first assumes
 that the density of both the crust and mantle are constant, whereas the second
 includes the effect of different densities on either side of the dichotomy
 boundary. The average crustal thickness is iterated in order to obtain
-a specified minimum crustal thickness.
+a specified minimum crustal thickness. The routine does not consider the low
+densities of the polar deposits.
 """
 import os
 import pyshtools as pysh
 
-from pycrust import pyMoho
-from pycrust import pyMohoRho
-from pycrust import HydrostaticShapeLith
-from pycrust import HydrostaticShape
-from pycrust import ReadRefModel
+from ctplanet import pyMoho
+from ctplanet import pyMohoRho
+from ctplanet import HydrostaticShapeLith
+from ctplanet import HydrostaticShape
+from ctplanet import ReadRefModel
 
 # ==== MAIN FUNCTION ====
 

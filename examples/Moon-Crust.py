@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-pyCrust-Moon
+Moon-Crust
 
 Create a crustal thickness map of the Moon from gravity and topography.
 
@@ -8,7 +8,6 @@ This script generates two different crustal thickness maps. The first assumes
 that the density of both the crust and mantle are constant, whereas the second
 includes the effect of lateral variations in crustal density. This script can
 be used to reproduce the results presented in Wieczorek et al. (2013).
-
 
 Wieczorek, M. A., G. A. Neumann, F. Nimmo, W. S. Kiefer, G. J. Taylor,
     H. J. Melosh, R. J. Phillips, S. C. Solomon, J. C. Andrews-Hanna,
@@ -19,8 +18,8 @@ Wieczorek, M. A., G. A. Neumann, F. Nimmo, W. S. Kiefer, G. J. Taylor,
 import os
 import pyshtools as pysh
 
-from pycrust import pyMoho
-from pycrust import pyMohoRho
+from ctplanet import pyMoho
+from ctplanet import pyMohoRho
 
 # ==== MAIN FUNCTION ====
 

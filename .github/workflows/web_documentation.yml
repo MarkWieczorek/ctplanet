@@ -45,7 +45,7 @@ jobs:
                                  pyshtools
         conda list -n docs
 
-    - name: Build pycrust using pip
+    - name: Build ctplanet using pip
       shell: bash -l {0}
       run: |
         conda env list

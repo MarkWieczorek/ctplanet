@@ -1,8 +1,8 @@
 """
-pycrust
+ctplanet
 =======
 
-pycrust provides several functions for generating crustal thickness maps of a
+ctplanet provides several functions for generating crustal thickness maps of a
 planet from gravity and topography data, and the calculation of hydrostatic
 relief along density interfaces beneath the lithosphere.
 

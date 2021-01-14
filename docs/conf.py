@@ -1,12 +1,12 @@
 import datetime
-import pycrust
+import ctplanet
 
 # Project information
 year = datetime.date.today().year
-project = 'pycrust'
-copyright = "{}, The pyCrust Developers".format(year)
+project = 'ctplanet'
+copyright = "{}, The ctplanet Developers".format(year)
 author = 'Mark A. Wieczorek'
-version = pycrust.__version__.split(sep='-')[0]  # use version of last tag
+version = ctplanet.__version__.split(sep='-')[0]  # use version of last tag
 
 
 # General configuration

@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
 """
-Create images related to Mars in Wieczorek et al. (2019)
+Mars-shape
+
+Calculations and images of the shape of density interfaces of Mars as presented
+in Wieczorek et al. (2019).
 """
 import os
 import numpy as np
 
 import pyshtools as pysh
 
-from pycrust import HydrostaticShapeLith
-from pycrust import HydrostaticShape
-from pycrust import InertiaTensor_from_shape
-from pycrust import ReadRefModel
+from ctplanet import HydrostaticShapeLith
+from ctplanet import HydrostaticShape
+from ctplanet import InertiaTensor_from_shape
+from ctplanet import ReadRefModel
 
 # ==== MAIN FUNCTION ====
 

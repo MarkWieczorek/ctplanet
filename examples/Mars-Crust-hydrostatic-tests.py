@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Mars_crust_thick_test
+Mars-Crust-hydrostatic-tests
 
 Create a crustal thickness map of Mars from gravity and topography and compare
 how results change if hydrostatic interfaces are not taken into account.
@@ -11,9 +11,9 @@ import numpy as np
 
 import pyshtools as pysh
 
-from pycrust import pyMoho
-from pycrust import HydrostaticShapeLith
-from pycrust import HydrostaticShape
+from ctplanet import pyMoho
+from ctplanet import HydrostaticShapeLith
+from ctplanet import HydrostaticShape
 
 # ==== MAIN FUNCTION ====
 

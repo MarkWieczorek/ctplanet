@@ -4,10 +4,10 @@
 from setuptools import setup, find_packages
 import versioneer
 
-versioneer.versionfile_source = 'pycrust/_version.py'
-versioneer.versionfile_build = 'pycrust/_version.py'
+versioneer.versionfile_source = 'ctplanet/_version.py'
+versioneer.versionfile_build = 'ctplanet/_version.py'
 versioneer.tag_prefix = ''
-versioneer.parentdir_prefix = 'pycrust-'
+versioneer.parentdir_prefix = 'ctplanet-'
 
 # Convert markdown README.md to restructured text (.rst) for PyPi
 try:
@@ -19,14 +19,14 @@ except(IOError, ImportError):
           'formatted correctly. ***')
     long_description = open('README.md').read()
 
-install_requires = ['pyshtools>=4.7']
+install_requires = ['pyshtools>=4.7.1']
 
-setup(name='pycrust',
+setup(name='ctplanet',
       version=versioneer.get_version(),
       cmdclass=versioneer.get_cmdclass(),
       description='Create a crustal thickness map of a planet',
       long_description=long_description,
-      url='https://github.com/MarkWieczorek/pyCrust',
+      url='https://github.com/MarkWieczorek/ctplanet',
       author='Mark A. Wieczorek',
       author_email='mark.a.wieczorek@gmail.com',
       license='BSD',

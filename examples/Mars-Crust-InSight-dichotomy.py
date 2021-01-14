@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
 """
-pyCrust_Mars_InSight
+Mars-Crust-InSight-dichotomy
 
 Create a crustal thickness map of Mars from gravity and topography, using
 the InSight crustal thickness constraint.
 
-The script assumes that the density of both the crust and mantle are constant.
-The gravitational contribution of the polar caps are explicitly accounted
-for, and the average crustal thickness is iterated in order to fit the
-specified thickness at the InSight landing site.
+The script assumes that the mantle density is constant and that the density of
+the crust differs on either side of the dichotomy boundary. The gravitational
+contribution of the polar caps are explicitly accounted for, and the average
+crustal thickness is iterated in order to fit the specified thickness at the
+InSight landing site.
 """
 import os
 import matplotlib.pyplot as plt
-
 import pyshtools as pysh
 
-from pycrust import pyMohoRho
-from pycrust import HydrostaticShapeLith
-from pycrust import ReadRefModel
+from ctplanet import pyMohoRho
+from ctplanet import HydrostaticShapeLith
+from ctplanet import ReadRefModel
 
 # ==== MAIN FUNCTION ====
 
