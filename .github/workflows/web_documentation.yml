@@ -1,8 +1,10 @@
 name: Create html web documentation
 
-on: [push, release]
-  branches: [master]
-
+on:
+  release:
+    types:
+      - created
+  
 jobs:
   docs:
     runs-on: ubuntu-latest
