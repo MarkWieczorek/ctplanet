@@ -108,7 +108,7 @@ def main():
     print('Moments of hydrostatic core')
     II, AA, BB, CC, mass, RR, vec = InertiaTensor_from_shape(hlm_fluid, rho,
                                                              i_core,
-                                                             quiet=False)
+                                                             quiet=True)
     print('I = ', II)
     print('A, B, C = ', AA, BB, CC)
     print('A, B, C / (mass_mars r0^2) = ', (AA, BB, CC) / mass_mars /
@@ -118,7 +118,7 @@ def main():
 
     print('Moments of hydrostatic planet')
     II, AA, BB, CC, mass, RR, vec = InertiaTensor_from_shape(hlm_fluid, rho, n,
-                                                             quiet=False)
+                                                             quiet=True)
     print('I = ', II)
     print('A, B, C = ', AA, BB, CC)
     print('A, B, C / (mass_mars r0^2) = ', (AA, BB, CC) / mass_mars /
@@ -143,7 +143,7 @@ def main():
           hlm[i_core].expand(lmax=1).min())
 
     II, AA, BB, CC, mass, RR, vec = InertiaTensor_from_shape(hlm, rho, i_core,
-                                                             quiet=False)
+                                                             quiet=True)
     print('I = ', II)
     print('A, B, C = ', AA, BB, CC)
     print('A, B, C / (mass_mars r0^2) = ', (AA, BB, CC) / mass_mars /

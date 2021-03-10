@@ -8,7 +8,7 @@ from scipy.linalg import eigh
 
 # ==== InertiaTensor ====
 
-def InertiaTensor_from_shape(hilm, rho, i_core, normalize=False, quiet=True):
+def InertiaTensor_from_shape(hilm, rho, n, normalize=False, quiet=True):
     '''
     Calculate the inertia tensor given a radial density profile and shape of
     each interface.
@@ -20,24 +20,24 @@ def InertiaTensor_from_shape(hilm, rho, i_core, normalize=False, quiet=True):
     A, B, C : float
         The principal moments of inertia, with A<B<C.
     M : float
-        Mass of the core.
+        Mass of material beneath interface n.
     R : float
-        The core radius.
+        The radius of the uppermost interface.
     angles : ndarray, size(3,2)
         Matrix with each row containing the latitude and longitude
         coordinates (in degrees) of the principal moments A, B and C.
 
     Parameters
     ----------
-    hilm : array of SHCoeffs class instances, size(i_core+1)
+    hilm : array of SHCoeffs class instances, size(n+1)
         Array of SHCoeffs class instances of the spherical harmonic
         coefficients of the relief at each interface. hilm[0] corresponds to
-        r=0.
-    rho : ndarray, size(i_core)
+        r=0 and hilm[n] to the uppermost interface.
+    rho : ndarray, size(n)
         Array of the densities of each layer, where index i corresponds to the
         density between interfaces i and i+1.
-    i_core : int
-        index corresponding to the top of the core.
+    n : int
+        index corresponding to the uppermost layer.
     normalize : bool, optional, default = False
         If True, return all moments normalized by MR^2
     quiet : bool, optional, default = True
@@ -49,10 +49,10 @@ def InertiaTensor_from_shape(hilm, rho, i_core, normalize=False, quiet=True):
     # and components of the inertia tensor for each layer.
     I0 = 0
     mass = 0
-    r_core = hilm[i_core].coeffs[0, 0, 0]
+    r_n = hilm[n].coeffs[0, 0, 0]
     II = np.zeros((3, 3))
 
-    for i in range(0, i_core):
+    for i in range(0, n):
         r1 = hilm[i].coeffs[0, 0, 0]
         r2 = hilm[i+1].coeffs[0, 0, 0]
         I0 += rho[i] * np.pi * 8. / 15. * (r2**5 - r1**5)
@@ -120,31 +120,31 @@ def InertiaTensor_from_shape(hilm, rho, i_core, normalize=False, quiet=True):
         e[1, 1] = np.rad2deg(np.arctan2(vec[1, 1], vec[1, 0]))
         e[2, 0] = 90. - np.rad2deg(np.arccos(vec[2, 2]))
         e[2, 1] = np.rad2deg(np.arctan2(vec[2, 1], vec[2, 0]))
-        print('Mass core (kg) = {:e}'.format(mass))
-        print('R core (m) = {:e}'.format(r_core))
-        print('I / (MR^2) = ', II / mass / r_core**2)
-        print('A / (MR^2) = {:e}'.format(A / mass / r_core**2))
-        print('B / (MR^2) = {:e}'.format(B / mass / r_core**2))
-        print('C / (MR^2) = {:e}'.format(C / mass / r_core**2))
+        print('Mass (kg) = {:e}'.format(mass))
+        print('R (m) = {:e}'.format(r_n))
+        print('I / (MR^2) = ', II / mass / r_n**2)
+        print('A / (MR^2) = {:e}'.format(A / mass / r_n**2))
+        print('B / (MR^2) = {:e}'.format(B / mass / r_n**2))
+        print('C / (MR^2) = {:e}'.format(C / mass / r_n**2))
         print('A (lat, lon) = ', e[0, 0], e[0, 1])
         print('B (lat, lon) = ', e[1, 0], e[1, 1])
         print('C (lat, lon) = ', e[2, 0], e[2, 1])
-        print('a (m) = ', hilm[i_core].expand(lat=e[0, 0], lon=e[0, 1]))
-        print('b (m) = ', hilm[i_core].expand(lat=e[1, 0], lon=e[1, 1]))
-        print('c (m) = ', hilm[i_core].expand(lat=e[2, 0], lon=e[2, 1]))
+        print('a (m) = ', hilm[n].expand(lat=e[0, 0], lon=e[0, 1]))
+        print('b (m) = ', hilm[n].expand(lat=e[1, 0], lon=e[1, 1]))
+        print('c (m) = ', hilm[n].expand(lat=e[2, 0], lon=e[2, 1]))
         # print('\nC20 (unnorm) = ', -(II[2, 2] - (II[0, 0] + II[1, 1])/2.)
-        #      / mass / r_core**2)
-        # print('C21 (unnorm) = ', II[0, 2] / mass / r_core**2)
-        # print('S21 (unnorm) = ', II[1, 2] / mass / r_core**2)
+        #      / mass / r_n**2)
+        # print('C21 (unnorm) = ', II[0, 2] / mass / r_n**2)
+        # print('S21 (unnorm) = ', II[1, 2] / mass / r_n**2)
         # print('C22 (unnorm) = ', (II[1, 1] - II[0, 0]) / 4.
-        #       / mass / r_core**2)
-        # print('S22 (unnorm) = ', II[0, 1] / 2. / mass / r_core**2)
+        #       / mass / r_n**2)
+        # print('S22 (unnorm) = ', II[0, 1] / 2. / mass / r_n**2)
 
     if normalize:
-        return II / mass / r_core**2, A / mass / r_core**2, \
-            B / mass / r_core**2, C / mass / r_core**2, mass, r_core, vec
+        return II / mass / r_n**2, A / mass / r_n**2, \
+            B / mass / r_n**2, C / mass / r_n**2, mass, r_n, vec
     else:
-        return II, A, B, C, mass, r_core, vec
+        return II, A, B, C, mass, r_n, vec
 
 
 # === Compute the three moments of inertia given C and the gravity coefficients
