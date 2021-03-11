@@ -91,7 +91,7 @@ def main():
     
 	# ---- Save data to files ---
     print('Saving the crustal thickness grid to a file ...')
-    (thick_grid/1.e3).to_file(directory + 'Thick-Mercury.sh')
+    (thick_grid/1.e3).to_file(directory + 'Thick-Mercury.dat')
 
     print('Saving the gridded data as a netcdf file for use with GMT ...')
     (thick_grid/1.e3).to_netcdf(directory + 'Thick-Mercury.nc')
