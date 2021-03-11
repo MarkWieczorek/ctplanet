@@ -83,7 +83,7 @@ def main():
     
 	# ---- Save data to files ---
     print('Saving the crustal thickness grid to a file ...')
-    (thick_grid).to_file(directory + 'Thick-Venus-ave.sh')
+    (thick_grid).to_file(directory + 'Thick-Venus-ave.dat')
 
     print('Saving the gridded data as a netcdf file for use with GMT ...')
     (thick_grid).to_netcdf(directory + 'Thick-Venus-ave.nc')
