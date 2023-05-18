@@ -1,23 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from pathlib import Path  # noqa: E402
 from setuptools import setup, find_packages
 import versioneer
 
-versioneer.versionfile_source = 'ctplanet/_version.py'
-versioneer.versionfile_build = 'ctplanet/_version.py'
-versioneer.tag_prefix = ''
-versioneer.parentdir_prefix = 'ctplanet-'
-
-# Convert markdown README.md to restructured text (.rst) for PyPi
-try:
-    import pypandoc
-    rst = pypandoc.convert_file('README.md', 'rst')
-    long_description = rst.split('\n', 5)[5]
-except(IOError, ImportError):
-    print('*** pypandoc is not installed. PYPI description will not be '
-          'formatted correctly. ***')
-    long_description = open('README.md').read()
 
 install_requires = ['pyshtools>=4.7.1']
 
@@ -25,10 +12,11 @@ setup(name='ctplanet',
       version=versioneer.get_version(),
       cmdclass=versioneer.get_cmdclass(),
       description='Create a crustal thickness map of a planet',
-      long_description=long_description,
+      long_description=Path('README.md').read_text(encoding='utf-8'),
+      long_description_content_type='text/markdown',
       url='https://github.com/MarkWieczorek/ctplanet',
       author='Mark A. Wieczorek',
-      author_email='mark.a.wieczorek@gmail.com',
+      author_email='mark.wieczorek@ipgp.fr',
       license='BSD',
       classifiers=[
           'Development Status :: 3 - Alpha',
@@ -47,4 +35,4 @@ setup(name='ctplanet',
       packages=find_packages(),
       include_package_data=True,
       install_requires=install_requires,
-      python_requires='>=3.5')
+      python_requires='>=3.6')
