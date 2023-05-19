@@ -30,6 +30,8 @@ Notes
                               up to index n.
     ReadRefModel              Read the reference interior model file.
 """
+from . import _version
+
 from .Moho import pyMoho
 from .Moho import pyMohoRho
 
@@ -47,12 +49,9 @@ del Hydrostatic
 del InertiaTensor
 
 __version__ = _version.get_versions()['version']
-del get_versions
 
 __author__ = 'Mark Wieczorek'
 
 __all__ = ['pyMoho', 'pyMohoRho', 'HydrostaticShapeLith', 'HydrostaticShape',
            'InertiaTensor_from_shape', 'InertiaTensor_from_C', 'moi',
            'ReadRefModel']
-
-from . import _version

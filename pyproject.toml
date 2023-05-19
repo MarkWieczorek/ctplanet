@@ -1,0 +1,41 @@
+[project]
+name = 'ctplanet'
+dynamic = ['version']
+description = 'Create a crustal thickness map of a planet'
+readme = 'README.md'
+license = { text = 'BSD-3-Clause' }
+requires-python = '>=3.6'
+keywords = ['crust', 'gravity', 'geophysics']
+classifiers = [
+'Development Status :: 3 - Alpha',
+     'Environment :: Console',
+     'Intended Audience :: Science/Research',
+     'Intended Audience :: Developers',
+     'License :: OSI Approved :: BSD License',
+     'Natural Language :: English',
+     'Operating System :: OS Independent',
+     'Programming Language :: Python',
+     'Programming Language :: Python :: 3',
+     'Topic :: Scientific/Engineering :: Physics',
+     'Topic :: Scientific/Engineering',
+]
+authors = [
+  { name = 'Mark Wieczorek', email = 'mark.wieczorek@ipgp.fr' },
+]
+dependencies = ['pyshtools>=4.7.1']
+
+[project.urls]
+homepage = 'https://github.com/MarkWieczorek/ctplanet'
+download = 'https://github.com/MarkWieczorek/ctplanet/zipball/master'
+
+[build-system]
+requires = ["setuptools", "wheel", "versioneer[toml]==0.28"]
+build-backend = "setuptools.build_meta"
+
+[tool.versioneer]
+VCS = 'git'
+style = 'pep440'
+versionfile_source = 'ctplanet/_version.py'
+versionfile_build = 'ctplanet/_version.py'
+tag_prefix = ''
+parentdir_prefix = 'ctplanet-'
