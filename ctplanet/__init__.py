@@ -30,7 +30,7 @@ Notes
                               up to index n.
     ReadRefModel              Read the reference interior model file.
 """
-from . import _version
+from importlib.metadata import version, PackageNotFoundError
 
 from .Moho import pyMoho
 from .Moho import pyMohoRho
@@ -48,7 +48,11 @@ del Moho
 del Hydrostatic
 del InertiaTensor
 
-__version__ = _version.get_versions()['version']
+try:
+    __version__ = version('ctplanet')
+except PackageNotFoundError:
+    # package is not installed
+    pass
 
 __author__ = 'Mark Wieczorek'
 
