@@ -1,100 +1,57 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>ctplanet.InertiaTensor_from_shape &mdash; ctplanet</title>
-  
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="ctplanet.moi" href="ctplanet.moi.html" />
     <link rel="prev" title="ctplanet.InertiaTensor_from_C" href="ctplanet.InertiaTensor_from_C.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../index.html" class="icon icon-home"> ctplanet
           
-
-          
+          <a href="../../index.html" class="icon icon-home">
+            ctplanet
           </a>
-
-          
-            
-            
               <div class="version">
-                v0.2.1
+                0+unknown
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference Documentation</span></p>
+<p class="caption" role="heading"><span class="caption-text">Reference Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="ctplanet.HydrostaticShape.html">ctplanet.HydrostaticShape</a></li>
@@ -102,105 +59,67 @@
 <li class="toctree-l2"><a class="reference internal" href="ctplanet.pyMoho.html">ctplanet.pyMoho</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ctplanet.pyMohoRho.html">ctplanet.pyMohoRho</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ctplanet.InertiaTensor_from_C.html">ctplanet.InertiaTensor_from_C</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">ctplanet.InertiaTensor_from_shape</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ctplanet.InertiaTensor_from_shape</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ctplanet.InertiaTensor_from_shape"><code class="docutils literal notranslate"><span class="pre">InertiaTensor_from_shape()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="ctplanet.moi.html">ctplanet.moi</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ctplanet.ReadRefModel.html">ctplanet.ReadRefModel</a></li>
 </ul>
 </li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">ctplanet</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../api.html">API Reference</a> &raquo;</li>
-        
-      <li>ctplanet.InertiaTensor_from_shape</li>
-    
-    
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
+      <li class="breadcrumb-item active">ctplanet.InertiaTensor_from_shape</li>
       <li class="wy-breadcrumbs-aside">
-        
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="ctplanet-inertiatensor-from-shape">
-<h1>ctplanet.InertiaTensor_from_shape<a class="headerlink" href="#ctplanet-inertiatensor-from-shape" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="ctplanet-inertiatensor-from-shape">
+<h1>ctplanet.InertiaTensor_from_shape<a class="headerlink" href="#ctplanet-inertiatensor-from-shape" title="Permalink to this heading"></a></h1>
 <dl class="py function">
-<dt id="ctplanet.InertiaTensor_from_shape">
-<code class="sig-prename descclassname">ctplanet.</code><code class="sig-name descname">InertiaTensor_from_shape</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hilm</span></em>, <em class="sig-param"><span class="n">rho</span></em>, <em class="sig-param"><span class="n">i_core</span></em>, <em class="sig-param"><span class="n">normalize</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">quiet</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ctplanet.InertiaTensor_from_shape" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ctplanet.InertiaTensor_from_shape">
+<span class="sig-prename descclassname"><span class="pre">ctplanet.</span></span><span class="sig-name descname"><span class="pre">InertiaTensor_from_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hilm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ctplanet.InertiaTensor_from_shape" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate the inertia tensor given a radial density profile and shape of
 each interface.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><ul class="simple">
 <li><p><strong>I</strong> (<em>ndarray, size(3, 3)</em>) – The inertia tensor.</p></li>
 <li><p><strong>A, B, C</strong> (<em>float</em>) – The principal moments of inertia, with A&lt;B&lt;C.</p></li>
-<li><p><strong>M</strong> (<em>float</em>) – Mass of the core.</p></li>
-<li><p><strong>R</strong> (<em>float</em>) – The core radius.</p></li>
+<li><p><strong>M</strong> (<em>float</em>) – Mass of material beneath interface n.</p></li>
+<li><p><strong>R</strong> (<em>float</em>) – The radius of the uppermost interface.</p></li>
 <li><p><strong>angles</strong> (<em>ndarray, size(3,2)</em>) – Matrix with each row containing the latitude and longitude
 coordinates (in degrees) of the principal moments A, B and C.</p></li>
 </ul>
 </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>hilm</strong> (<em>array of SHCoeffs class instances</em><em>, </em><em>size</em><em>(</em><em>i_core+1</em><em>)</em>) – Array of SHCoeffs class instances of the spherical harmonic
+<li><p><strong>hilm</strong> (<em>array</em><em> of </em><em>SHCoeffs class instances</em><em>, </em><em>size</em><em>(</em><em>n+1</em><em>)</em>) – Array of SHCoeffs class instances of the spherical harmonic
 coefficients of the relief at each interface. hilm[0] corresponds to
-r=0.</p></li>
-<li><p><strong>rho</strong> (<em>ndarray</em><em>, </em><em>size</em><em>(</em><em>i_core</em><em>)</em>) – Array of the densities of each layer, where index i corresponds to the
+r=0 and hilm[n] to the uppermost interface.</p></li>
+<li><p><strong>rho</strong> (<em>ndarray</em><em>, </em><em>size</em><em>(</em><em>n</em><em>)</em>) – Array of the densities of each layer, where index i corresponds to the
 density between interfaces i and i+1.</p></li>
-<li><p><strong>i_core</strong> (<em>int</em>) – index corresponding to the top of the core.</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – index corresponding to the uppermost layer.</p></li>
 <li><p><strong>normalize</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default = False</em>) – If True, return all moments normalized by MR^2</p></li>
 <li><p><strong>quiet</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default = True</em>) – If False, print additional information, including the directions of the
 axes of the principal moments and gravitational coefficients.</p></li>
@@ -209,46 +128,34 @@ axes of the principal moments and gravitational coefficients.</p></li>
 </dl>
 </dd></dl>
 
-</div>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="ctplanet.moi.html" class="btn btn-neutral float-right" title="ctplanet.moi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="ctplanet.InertiaTensor_from_C.html" class="btn btn-neutral float-left" title="ctplanet.InertiaTensor_from_C" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ctplanet.moi.html" class="btn btn-neutral float-right" title="ctplanet.moi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, The ctplanet Developers.
+    <p>&#169; Copyright 2023, The ctplanet Developers.</p>
+  </div>
 
-    </p>
-  </div> 
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
