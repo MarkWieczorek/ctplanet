@@ -30,6 +30,7 @@ jobs:
                                  setuptools \
                                  pypandoc \
                                  versioneer \
+                                 build \
                                  twine
         conda list -n pypi
 
@@ -45,5 +46,5 @@ jobs:
       shell: bash -l {0}
       run: |
         conda env list
-        python setup.py sdist
+        python -m build .
         twine upload dist/*
