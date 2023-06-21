@@ -27,12 +27,17 @@ def main():
     northpolarcap = 'Data/Mars_NorthPolarCapThickness719.sh.gz'
     southpolarcap = 'Data/Mars_SouthPolarCapThickness719.sh.gz'
 
-    model_name = ['DWThot', 'DWThotCrust1', 'DWThotCrust1r', 'EH45Tcold',
-                  'EH45TcoldCrust1', 'EH45TcoldCrust1r', 'EH45ThotCrust2',
-                  'EH45ThotCrust2r', 'LFAK', 'SANAK', 'TAYAK', 'DWAK',
-                  'ZG_DW', 'YOTHotRc1760kmDc40km', 'YOTHotRc1810kmDc40km']
-    spec = 'Data/Mars-reference-interior-models/Smrekar/'
-    interior_file = [spec + name + '.deck' for name in model_name]
+    model_name1 = ['DWThot', 'DWThotCrust1', 'DWThotCrust1r', 'EH45Tcold',
+                   'EH45TcoldCrust1', 'EH45TcoldCrust1r', 'EH45ThotCrust2',
+                   'EH45ThotCrust2r', 'LFAK', 'SANAK', 'TAYAK', 'DWAK',
+                   'ZG_DW', 'YOTHotRc1760kmDc40km', 'YOTHotRc1810kmDc40km']
+    spec1 = 'Data/Mars-reference-interior-models/Smrekar/'
+    model_name2 = ['Khan2022']
+    spec2 = 'Data/Mars-reference-interior-models/'
+
+    interior_file = [spec1 + name + '.deck' for name in model_name1]
+    interior_file += [spec2 + name + '.deck' for name in model_name2]
+    model_name = model_name1 + model_name2
 
     lmax_calc = 90
     lmax = lmax_calc * 4
