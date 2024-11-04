@@ -21,7 +21,7 @@ def main():
 
     mass_mars = potential.mass
     r0_pot = potential.r0
-    omega = pysh.constants.Mars.omega.value
+    omega = pysh.constants.Mars.angular_velocity.value
 
     print('Gravity file = {:s}'.format('GMM3'))
     print('Reference radius (km) = {:f}'.format(potential.r0 / 1.e3))
@@ -30,10 +30,10 @@ def main():
     print('Mass = {:e}'.format(potential.mass))
     print('Omega = {:e}'.format(omega))
 
-    topo = pysh.datasets.Mars.MarsTopo2600(lmax=lmax)
+    topo = pysh.datasets.Mars.MOLA_shape(lmax=lmax)
     r_mars = topo.coeffs[0, 0, 0]
 
-    print('Topography file = {:s}'.format('MarsTopo2600'))
+    print('Topography file = {:s}'.format('MOLA_shape'))
     print('Mean planetary radius (km) = {:f}\n'.format(r_mars / 1.e3))
 
     # Compute polar moment using precession rate and other constants

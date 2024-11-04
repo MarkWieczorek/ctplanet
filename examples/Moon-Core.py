@@ -21,8 +21,8 @@ def main():
     lmax = 20
     lmax_grid = 719
 
-    omega = pysh.constants.Moon.omega.value
-    rem = pysh.constants.Moon.a_orbit.value
+    omega = pysh.constants.Moon.angular_velocity.value
+    rem = pysh.constants.Moon.orbit_semimajor_axis.value
     mass_earth = pysh.constants.Earth.egm2008.mass.value
 
     cthick = 34.e3  # 43.e3 or 34.0e3

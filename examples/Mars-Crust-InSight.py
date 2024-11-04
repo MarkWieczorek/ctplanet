@@ -50,10 +50,10 @@ def main():
     print('GM = {:e}\n'.format(potential.gm))
 
     # read topo up to degree lmax
-    topo = pysh.datasets.Mars.MarsTopo2600(lmax=lmax)
+    topo = pysh.datasets.Mars.MOLA_shape(lmax=lmax)
     topo_grid = topo.pad(lmax).expand(grid='DH2')
 
-    print('Topography file = {:s}'.format('MarsTopo2600'))
+    print('Topography file = {:s}'.format('MOLA_shape'))
     print('Lmax of topography coefficients = {:d}'.format(topo.lmax))
     print('Reference radius (km) = {:f}\n'.format(topo.coeffs[0, 0, 0] / 1.e3))
 
@@ -108,7 +108,7 @@ def main():
     nmax = 7
     lmax_hydro = 15
     t_sigma = 5.  # maximum difference between crustal thickness iterations
-    omega = pysh.constants.Mars.omega.value
+    omega = pysh.constants.Mars.angular_velocity.value
 
     d_lith = 150.e3
 

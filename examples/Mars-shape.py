@@ -33,9 +33,9 @@ def main():
     interior_file = [spec + name + '.deck' for name in model_name]
 
     potential = pysh.datasets.Mars.GMM3()
-    omega = pysh.constants.Mars.omega.value
+    omega = pysh.constants.Mars.angular_velocity.value
     potential.omega = omega
-    mass_mars = np.float_(potential.mass)
+    mass_mars = np.float64(potential.mass)
 
     try:
         os.mkdir('figs')
@@ -54,11 +54,11 @@ def main():
 
     model = 10
 
-    topo = pysh.datasets.Mars.MarsTopo2600(lmax=lmax)
+    topo = pysh.datasets.Mars.MOLA_shape(lmax=lmax)
     topo.r0 = topo.coeffs[0, 0, 0]
     r_mars = topo.coeffs[0, 0, 0]
 
-    print('Topography file = {:s}'.format('MarsTopo2600'))
+    print('Topography file = {:s}'.format('MOLA_shape'))
     print('Lmax of topography coefficients = {:d}'.format(topo.lmax))
     print('Reference radius (km) = {:f}\n'.format(topo.r0 / 1.e3))
 

@@ -36,7 +36,7 @@ def main():
     lmax_grid = 719
 
     potential = pysh.datasets.Mars.GMM3()
-    topo = pysh.datasets.Mars.MarsTopo2600(lmax=lmax_grid)
+    topo = pysh.datasets.Mars.MOLA_shape(lmax=lmax_grid)
     topo.r0 = topo.coeffs[0, 0, 0]
 
     try:
@@ -50,7 +50,7 @@ def main():
     print('GM = {:e}'.format(potential.gm))
     print('Mass = {:e}'.format(potential.mass))
 
-    print('Topography file = {:s}'.format('MarsTopo2600'))
+    print('Topography file = {:s}'.format('MOLA_shape'))
     print('Lmax of topography coefficients = {:d}'.format(topo.lmax))
     print('Reference radius (km) = {:f}\n'.format(topo.r0 / 1.e3))
 
@@ -65,7 +65,7 @@ def main():
     rho_c = 2900.
     t0 = 1.e3  # minimum crustal thickness
 
-    omega = pysh.constants.Mars.omega.value
+    omega = pysh.constants.Mars.angular_velocity.value
     print('Omega = {:e}'.format(omega))
 
     # --- read 1D reference interior model ---
