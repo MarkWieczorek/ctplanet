@@ -39,7 +39,7 @@ def main():
 
     try:
         os.mkdir('figs')
-    except:
+    except Exception:
         pass
 
     print('Gravity file = {:s}'.format('GMM3'))
@@ -74,10 +74,10 @@ def main():
     # --- read 1D reference interior model ---
     radius, rho, i_crust, i_core, i_lith = ReadRefModel(interior_file[model],
                                                         depth=d_lith)
-    rho_mantle = rho[i_crust-1]
-    rho_core = rho[i_core-1]
+    # rho_mantle = rho[i_crust-1]
+    # rho_core = rho[i_core-1]
     n = len(radius)-1
-    r0_model = radius[n]
+    # r0_model = radius[n]
 
     # --- Compute purely hydrostatic relief of all interfaces ---
     print('\n=== Fluid planet ===')

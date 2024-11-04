@@ -30,7 +30,7 @@ def main():
 
     try:
         os.mkdir('figs')
-    except:
+    except Exception:
         pass
 
     out_rc_fc = "figs/rc_fc_34_2550.dat"
@@ -50,7 +50,7 @@ def main():
     rhocore_int = 1.
 
     potential = pysh.datasets.Moon.GRGM900C()
-    topo = pysh.datasets.Moon.MoonTopo2600p(lmax=900)
+    topo = pysh.datasets.Moon.LDEM_shape_pa(lmax=900)
     r0 = topo.coeffs[0, 0, 0]
 
     r_sigma = r0 - cthick

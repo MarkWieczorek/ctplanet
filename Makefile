@@ -7,7 +7,7 @@
 
 FLAKE8 = flake8
 
-FLAKE8_FILES = setup.py ctplanet examples
+FLAKE8_FILES = ctplanet examples
 
 .PHONY: clean check
 
@@ -25,4 +25,4 @@ clean:
 	@-rm -rf examples/figs/*.sh
 
 check:
-	@$(FLAKE8) --extend-ignore=E741,W605 --exclude=versioneer.py,ctplanet/_version.py $(FLAKE8_FILES)
+	@$(FLAKE8) --extend-ignore=E741,W605 --exclude=ctplanet/_version.py $(FLAKE8_FILES)

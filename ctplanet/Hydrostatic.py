@@ -76,9 +76,9 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
         tides = True
 
     if len(radius) != len(rho):
-        raise('Length of radius and density must be the same.' +
-              'len(radius) = {:d}. len(density) = {:d}.'
-              .format(len(radius), len(rho)))
+        raise ValueError('Length of radius and density must be the same.' +
+                         'len(radius) = {:d}. len(density) = {:d}.'
+                         .format(len(radius), len(rho)))
 
     n = len(radius) - 1  # index of surface
     lmaxgrid = 3*lmax  # increase grid size to avoid aliasing
@@ -234,7 +234,8 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
             # note that the zero index is not used
             lu, piv, x, info = lapack.dgesv(atemp[1:, 1:], btemp[1:])
             if info != 0:
-                raise("lapack.dgesv did not exit properly: {:d}", info)
+                raise RuntimeError("lapack.dgesv did not exit properly: {:d}",
+                                   info)
             for i in range(1, ilith+1):
                 hlm[i].coeffs[0, l, m] = x[i-1]
 
@@ -279,7 +280,8 @@ def HydrostaticShapeLith(radius, rho, ilith, potential, topo, rho_surface,
                 # note that the zero index is not used
                 lu, piv, x, info = lapack.dgesv(atemp[1:, 1:], btemp[1:])
                 if info != 0:
-                    raise("lapack.dgesv did not exit properly: {:d}", info)
+                    raise RuntimeError(
+                        "lapack.dgesv did not exit properly: {:d}", info)
                 for i in range(1, ilith+1):
                     hlm[i].coeffs[1, l, m] = x[i-1]
 
@@ -369,9 +371,9 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None,
         tides = True
 
     if len(radius) != len(rho):
-        raise('Length of radius and density must be the same.' +
-              'len(radius) = {:d}. len(density) = {:d}.'
-              .format(len(radius), len(rho)))
+        raise ValueError('Length of radius and density must be the same.' +
+                         'len(radius) = {:d}. len(density) = {:d}.'
+                         .format(len(radius), len(rho)))
 
     n = len(radius) - 1  # index of surface
     lmax = 4
@@ -499,7 +501,8 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None,
             # note that the zero index is not used
             lu, piv, x, info = lapack.dgesv(atemp[1:, 1:], btemp[1:])
             if info != 0:
-                raise("lapack.dgesv did not exit properly: {:d}", info)
+                raise RuntimeError(
+                    "lapack.dgesv did not exit properly: {:d}", info)
             for i in range(1, n+1):
                 hlm[i].coeffs[0, l, m] = x[i-1]
 
@@ -538,7 +541,8 @@ def HydrostaticShape(radius, rho, omega, gm, r_ref, rp=None, mp=None,
                 # note that the zero index is not used
                 lu, piv, x, info = lapack.dgesv(atemp[1:, 1:], btemp[1:])
                 if info != 0:
-                    raise("lapack.dgesv did not exit properly: {:d}", info)
+                    raise RuntimeError(
+                        "lapack.dgesv did not exit properly: {:d}", info)
                 for i in range(1, n+1):
                     hlm[i].coeffs[1, l, m] = x[i-1]
 

@@ -41,7 +41,7 @@ def main():
 
     try:
         os.mkdir('figs')
-    except:
+    except Exception:
         pass
 
     print('Gravity file = {:s}'.format('GMM3'))
@@ -81,9 +81,9 @@ def main():
         interior_file[model], depth=d_lith, quiet=False)
 
     rho_mantle = rho[i_crust-1]
-    rho_core = rho[i_core-1]
+    # rho_core = rho[i_core-1]
     n = len(radius) - 1
-    r0_model = radius[n]
+    # r0_model = radius[n]
 
     # --- Compute gravity contribution from hydrostatic density interfaces ---
 

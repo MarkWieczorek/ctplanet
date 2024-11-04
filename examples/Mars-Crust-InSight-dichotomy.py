@@ -1,7 +1,4 @@
-model_name = ['DWThot', 'DWThotCrust1', 'DWThotCrust1r', 'EH45Tcold',
-                  'EH45TcoldCrust1', 'EH45TcoldCrust1r', 'EH45ThotCrust2',
-                  'EH45ThotCrust2r', 'LFAK', 'SANAK', 'TAYAK', 'DWAK',
-                  'ZG_DW', 'YOTHotRc1760kmDc40km', 'YOTHotRc1810kmDc40km']#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 Mars-Crust-InSight-dichotomy
 
@@ -52,7 +49,7 @@ def main():
 
     try:
         os.mkdir(directory)
-    except:
+    except Exception:
         pass
 
     print('Gravity file = {:s}'.format('GMM3'))
@@ -151,7 +148,7 @@ def main():
             interior_file[model], depth=d_lith, quiet=False)
 
         rho_mantle = rho[i_crust-1]
-        rho_core = rho[i_core-1]
+        # rho_core = rho[i_core-1]
         # n = len(radius) - 1
         # r0_model = radius[n]
 

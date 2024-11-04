@@ -1,6 +1,0 @@
-include README.md
-include LICENSE.txt
-include versioneer.py
-recursive-include examples *.py
-graft examples/Data/Mars-reference-interior-models/Smrekar
-recursive-include examples/Data *.gz *.sh *.dat

@@ -22,7 +22,7 @@ classifiers = [
 authors = [
   { name = 'Mark Wieczorek', email = 'mark.wieczorek@ipgp.fr' },
 ]
-dependencies = ['pyshtools>=4.7.1']
+dependencies = ['pyshtools>=4.13.1']
 
 [project.urls]
 homepage = 'https://github.com/MarkWieczorek/ctplanet'

@@ -44,9 +44,9 @@ from .InertiaTensor import moi
 
 from .ReadRefModel import ReadRefModel
 
-del Moho
-del Hydrostatic
-del InertiaTensor
+del Moho  # noqa: F821
+del Hydrostatic  # noqa: F821
+del InertiaTensor  # noqa: F821
 
 try:
     __version__ = version('ctplanet')

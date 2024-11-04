@@ -43,7 +43,7 @@ def main():
                                'files')
         num = int(lines[2].split()[0])
         crust_index = int(lines[2].split()[3])
-        mantle_index = int(lines[2].split()[3])
+        # mantle_index = int(lines[2].split()[3])
         radius = np.zeros(num)
         rho = np.zeros(num)
         for i in range(0, num):

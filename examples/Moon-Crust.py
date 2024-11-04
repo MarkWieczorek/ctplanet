@@ -35,7 +35,7 @@ def main():
 
     try:
         os.mkdir('figs')
-    except:
+    except Exception:
         pass
 
     print('Gravity file = {:s}'.format('GRGM900C'))
@@ -43,10 +43,10 @@ def main():
     print('Reference radius (m) = {:e}'.format(pot.r0))
     print('GM = {:e}\n'.format(pot.gm))
 
-    topo = pysh.datasets.Moon.MoonTopo2600p(lmax=lmax)
+    topo = pysh.datasets.Moon.LDEM_shape_pa(lmax=lmax)
     topo.r0 = topo.coeffs[0, 0, 0]
 
-    print('Topography file = {:s}'.format('MoonTopo2600p'))
+    print('Topography file = {:s}'.format('LDEM_shape_pa'))
     print('Lmax of topography coefficients = {:d}'.format(topo.lmax))
     print('Reference radius (m) = {:e}\n'.format(topo.r0))
 

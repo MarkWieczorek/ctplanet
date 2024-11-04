@@ -140,7 +140,7 @@ def main():
 
     try:
         os.mkdir(directory)
-    except:
+    except Exception:
         pass
 
     rho_c_min = 2550.
@@ -184,7 +184,7 @@ def main():
             interior_file[model], depth=d_lith, quiet=False)
 
         rho_mantle = rho[i_crust-1]
-        rho_core = rho[i_core-1]
+        # rho_core = rho[i_core-1]
         # n = len(radius) - 1
         # r0_model = radius[n]
 

@@ -41,7 +41,7 @@ def main():
 
     try:
         os.mkdir('figs')
-    except:
+    except Exception:
         pass
 
     print('Gravity file = {:s}'.format('GMM3'))
