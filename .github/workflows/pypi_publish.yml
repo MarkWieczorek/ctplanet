@@ -20,7 +20,7 @@ jobs:
     - name: Setup Miniconda
       uses: conda-incubator/setup-miniconda@v3
       with:
-        python-version: 3.12
+        python-version: 3.11
         channels: conda-forge
         auto-update-conda: true
         miniconda-version: "latest"
@@ -30,7 +30,7 @@ jobs:
       shell: bash -l {0}
       run: |
         conda config --set always_yes yes --set changeps1 no
-        conda install -q -n pypi python=3.12 \
+        conda install -q -n pypi python=3.11 \
                                  setuptools \
                                  pypandoc \
                                  build \
