@@ -38,16 +38,12 @@ jobs:
         conda list -n pypi
 
     - name: Build and publish
-      env:
-        # PYPI repository
-        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        # PYPITEST repository
-        # TWINE_USERNAME: ${{ secrets.PYPITEST_USERNAME }}
-        # TWINE_PASSWORD: ${{ secrets.PYPITEST_PASSWORD }}
-        # TWINE_REPOSITORY_URL: 'https://test.pypi.org/legacy/'
+      permissions:
+        id-token: write
       shell: bash -l {0}
       run: |
         conda env list
         python -m build .
-        twine upload dist/*
+      uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true
