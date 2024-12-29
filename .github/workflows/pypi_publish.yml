@@ -12,6 +12,8 @@ jobs:
   deploy:
 
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
 
     steps:
     - name: Checkout
@@ -39,6 +41,4 @@ jobs:
         python -m build .
 
     - name: Publish
-      permissions:
-        id-token: write
       uses: pypa/gh-action-pypi-publish@release/v1
