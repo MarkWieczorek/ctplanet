@@ -45,5 +45,3 @@ jobs:
         conda env list
         python -m build .
       uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          skip-existing: true
