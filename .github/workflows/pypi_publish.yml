@@ -26,7 +26,7 @@ jobs:
         miniconda-version: "latest"
         activate-environment: pypi
 
-    - name: Set up Conda environment
+    - name: Set up Conda environment and build package
       shell: bash -l {0}
       run: |
         conda config --set always_yes yes --set changeps1 no
@@ -36,12 +36,9 @@ jobs:
                                  build \
                                  twine
         conda list -n pypi
+        python -m build .
 
-    - name: Build and publish
+    - name: Publish
       permissions:
         id-token: write
-      shell: bash -l {0}
-      run: |
-        conda env list
-        python -m build .
       uses: pypa/gh-action-pypi-publish@release/v1
