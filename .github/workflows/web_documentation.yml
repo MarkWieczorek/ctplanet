@@ -39,6 +39,7 @@ jobs:
                                  sphinx \
                                  sphinx-book-theme \
                                  sphinx-toolbox \
+                                 sphinx-copybutton \
                                  pyshtools
 
     - name: Build ctplanet using pip
