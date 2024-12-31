@@ -38,7 +38,7 @@ jobs:
                                  pypandoc \
                                  sphinx \
                                  sphinx-book-theme \
-                                 sphinx-toolbox
+                                 sphinx-toolbox \
                                  pyshtools
 
     - name: Build ctplanet using pip
