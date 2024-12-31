@@ -34,13 +34,12 @@ jobs:
         conda config --set always_yes yes --set changeps1 no
         conda install -q -n docs python=3.12 \
                                  pip \
-                                 twine\
                                  setuptools \
                                  pypandoc \
                                  sphinx \
-                                 sphinx_rtd_theme \
+                                 sphinx_book_theme \
+                                 sphinx-toolbox
                                  pyshtools
-        conda list -n docs
 
     - name: Build ctplanet using pip
       shell: bash -l {0}

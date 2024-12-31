@@ -35,9 +35,7 @@ jobs:
         conda install -q -n pypi python=3.11 \
                                  setuptools \
                                  pypandoc \
-                                 build \
-                                 twine
-        conda list -n pypi
+                                 build
         python -m build .
 
     - name: Publish
