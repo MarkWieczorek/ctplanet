@@ -37,7 +37,7 @@ jobs:
                                  setuptools \
                                  pypandoc \
                                  sphinx \
-                                 sphinx_book_theme \
+                                 sphinx-book-theme \
                                  sphinx-toolbox
                                  pyshtools
 
