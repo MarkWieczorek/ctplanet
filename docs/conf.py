@@ -7,7 +7,8 @@ year = datetime.date.today().year
 project = 'ctplanet'
 copyright = "{}".format(year)
 author = 'the ctplanet developers'
-version = Version(ctplanet.__version__).base_version
+v = Version(ctplanet.__version__)
+version = f'v{v.major}.{v.minor}'
 
 # General configuration
 extensions = [
