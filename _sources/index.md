@@ -1,22 +1,22 @@
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: Getting Started
+```{toctree}
+:maxdepth: 2
+:hidden:
+:caption: Getting Started
 
-   installation.rst
-   examples.rst
-   references.rst
+installation.md
+examples.md
+references.md
+```
 
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: Reference Documentation
+```{toctree}
+:maxdepth: 2
+:hidden:
+:caption: Reference Documentation
 
-   source/api.rst
+source/api.rst
+```
 
-
-CTPLANET
-========
+# CTPLANET
 
 **ctplanet** provides several functions for working with the gravitational field of planetary crusts and hydrostatic density interfaces in the mantle and core. With this python package, you can:
 

@@ -30,9 +30,10 @@
   <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=e165fc2d" />
   
   <!-- So that users can add custom icons -->
   <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -40,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=9fd5c01c"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,8 +54,8 @@
     <link rel="prev" title="Installation" href="installation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2.14" />
-    <meta name="docbuild:last-update" content="Dec 31, 2024"/>
+  <meta name="docsearch:version" content="0.2.15" />
+    <meta name="docbuild:last-update" content="Jan 07, 2025"/>
   </head>
   
   
@@ -133,9 +134,11 @@
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="ctplanet - Home"/>
-    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="ctplanet - Home"/>
+    <img src="_static/logo.png" class="logo__image only-light" alt=""/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt=""/>
   
+  
+    <p class="title logo__title"><span class="project-version">0.2.15</span></p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -297,7 +300,7 @@
 <h1>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>In order to access the example files, it is necessary to download or clone the <cite>ctplanet</cite> repo from <a class="reference external" href="https://github.com/MarkWieczorek/ctplanet">GitHub</a>. The files are located in the <cite>examples</cite> directory.</p>
+<p>In order to access the example files, it is necessary to download or clone the <a class="reference external" href="https://github.com/MarkWieczorek/ctplanet">ctplanet repo</a> from GitHub. The files are located in the <code class="docutils literal notranslate"><span class="pre">examples</span></code> directory.</p>
 </div>
 <section id="moon">
 <h2>Moon<a class="headerlink" href="#moon" title="Link to this heading">#</a></h2>
@@ -319,16 +322,16 @@
 <span class="sd">    J. G. Williams, M. T. Zuber (2013), The crust of the Moon as seen by GRAIL,</span>
 <span class="sd">    Science, 339, 671-675, doi:10.1126/science.1231530, 2013.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pyshtools</span> <span class="k">as</span> <span class="nn">pysh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyshtools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pysh</span>
 
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">pyMoho</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">pyMohoRho</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyMoho</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyMohoRho</span>
 
 <span class="c1"># ==== MAIN FUNCTION ====</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 
     <span class="n">lmax</span> <span class="o">=</span> <span class="mi">900</span>  <span class="c1"># determines spatial resolution of grids</span>
     <span class="n">lmax_calc</span> <span class="o">=</span> <span class="mi">600</span>  <span class="c1"># maximum degree to use in calculations</span>
@@ -428,18 +431,18 @@ to reproduce the results presented in <em>Wieczorek et al.</em> (2013).</p>
 <span class="sd">Calculate the hydrostatic shape of the core of the Moon, as presented in</span>
 <span class="sd">Wieczorek et al. (2019).</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pyshtools</span> <span class="k">as</span> <span class="nn">pysh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyshtools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pysh</span>
 
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">HydrostaticShapeLith</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">HydrostaticShape</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">InertiaTensor_from_shape</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">HydrostaticShapeLith</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">HydrostaticShape</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">InertiaTensor_from_shape</span>
 
 <span class="c1"># ==== MAIN FUNCTION ====</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 
     <span class="n">lmax</span> <span class="o">=</span> <span class="mi">20</span>
     <span class="n">lmax_grid</span> <span class="o">=</span> <span class="mi">719</span>
@@ -638,7 +641,7 @@ to reproduce the results presented in <em>Wieczorek et al.</em> (2013).</p>
                 <span class="n">diff_old</span> <span class="o">=</span> <span class="n">diff_new</span>
 
 
-<span class="k">def</span> <span class="nf">moi_solid</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">moi_solid</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the mean, normalized, moment of inertia of the solid portion</span>
 <span class="sd">    of the planet.</span>
@@ -688,19 +691,19 @@ non-hydrostatic potential that comes from the lithosphere.</p>
 <span class="sd">a specified minimum crustal thickness. The routine does not consider the low</span>
 <span class="sd">densities of the polar deposits.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pyshtools</span> <span class="k">as</span> <span class="nn">pysh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyshtools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pysh</span>
 
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">pyMoho</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">pyMohoRho</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">HydrostaticShapeLith</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">HydrostaticShape</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">ReadRefModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyMoho</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyMohoRho</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">HydrostaticShapeLith</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">HydrostaticShape</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReadRefModel</span>
 
 <span class="c1"># ==== MAIN FUNCTION ====</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 
     <span class="n">densityfile</span> <span class="o">=</span> <span class="s1">&#39;Data/dichotomy_359.sh&#39;</span>
 
@@ -880,19 +883,19 @@ dichotomy boundary.</p>
 <span class="sd">how results change if hydrostatic interfaces are not taken into account.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">pyshtools</span> <span class="k">as</span> <span class="nn">pysh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyshtools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pysh</span>
 
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">pyMoho</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">HydrostaticShapeLith</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">HydrostaticShape</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyMoho</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">HydrostaticShapeLith</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">HydrostaticShape</span>
 
 <span class="c1"># ==== MAIN FUNCTION ====</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 
     <span class="n">model_name</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;DWThot&#39;</span><span class="p">,</span> <span class="s1">&#39;DWThotCrust1&#39;</span><span class="p">,</span> <span class="s1">&#39;DWThotCrust1r&#39;</span><span class="p">,</span> <span class="s1">&#39;EH45Tcold&#39;</span><span class="p">,</span>
                   <span class="s1">&#39;EH45TcoldCrust1&#39;</span><span class="p">,</span> <span class="s1">&#39;EH45TcoldCrust1r&#39;</span><span class="p">,</span> <span class="s1">&#39;EH45ThotCrust2&#39;</span><span class="p">,</span>
@@ -1183,18 +1186,18 @@ account.</p>
 <span class="sd">explicitly accounted for, and the average crustal thickness is iterated in</span>
 <span class="sd">order to fit the specified thickness at the InSight landing site.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">pyshtools</span> <span class="k">as</span> <span class="nn">pysh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyshtools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pysh</span>
 
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">pyMoho</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">HydrostaticShapeLith</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">ReadRefModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyMoho</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">HydrostaticShapeLith</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReadRefModel</span>
 
 <span class="c1"># ==== MAIN FUNCTION ====</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 
     <span class="n">northpolarcap</span> <span class="o">=</span> <span class="s1">&#39;Data/Mars_NorthPolarCapThickness719.sh.gz&#39;</span>
     <span class="n">southpolarcap</span> <span class="o">=</span> <span class="s1">&#39;Data/Mars_SouthPolarCapThickness719.sh.gz&#39;</span>
@@ -1492,18 +1495,18 @@ the InSight crustal thickness constraint.</p>
 <span class="sd">crustal thickness is iterated in order to fit the specified thickness at the</span>
 <span class="sd">InSight landing site.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">pyshtools</span> <span class="k">as</span> <span class="nn">pysh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyshtools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pysh</span>
 
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">pyMohoRho</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">HydrostaticShapeLith</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">ReadRefModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyMohoRho</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">HydrostaticShapeLith</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReadRefModel</span>
 
 <span class="c1"># ==== MAIN FUNCTION ====</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 
     <span class="n">densityfile</span> <span class="o">=</span> <span class="s1">&#39;Data/dichotomy_359.sh&#39;</span>
     <span class="n">northpolarcap</span> <span class="o">=</span> <span class="s1">&#39;Data/Mars_NorthPolarCapThickness719.sh.gz&#39;</span>
@@ -1748,16 +1751,16 @@ the dichotomy boundary.</p>
 
 <span class="sd">Compute the free core nutation period of Mars.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pyshtools</span> <span class="k">as</span> <span class="nn">pysh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyshtools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pysh</span>
 
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">InertiaTensor_from_C</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">InertiaTensor_from_C</span>
 
 
 <span class="c1"># ==== MAIN FUNCTION ====</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 
     <span class="n">lmax</span> <span class="o">=</span> <span class="mi">2</span>
 
@@ -1834,7 +1837,7 @@ the dichotomy boundary.</p>
                   <span class="o">/</span> <span class="mi">60</span> <span class="o">/</span> <span class="mi">60</span> <span class="o">/</span> <span class="mi">24</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">sigma_fcn</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">Ac</span><span class="p">,</span> <span class="n">Bc</span><span class="p">,</span> <span class="n">Cc</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sigma_fcn</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">Ac</span><span class="p">,</span> <span class="n">Bc</span><span class="p">,</span> <span class="n">Cc</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Compute the free core nutation frequency.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -1859,20 +1862,20 @@ the dichotomy boundary.</p>
 <span class="sd">Calculations and images of the shape of density interfaces of Mars as presented</span>
 <span class="sd">in Wieczorek et al. (2019).</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">pyshtools</span> <span class="k">as</span> <span class="nn">pysh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyshtools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pysh</span>
 
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">HydrostaticShapeLith</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">HydrostaticShape</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">InertiaTensor_from_shape</span>
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">ReadRefModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">HydrostaticShapeLith</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">HydrostaticShape</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">InertiaTensor_from_shape</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReadRefModel</span>
 
 <span class="c1"># ==== MAIN FUNCTION ====</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 
     <span class="n">d_lith</span> <span class="o">=</span> <span class="mf">150.e3</span>
     <span class="n">rho_crust</span> <span class="o">=</span> <span class="mf">2900.</span>
@@ -2111,16 +2114,16 @@ the dichotomy boundary.</p>
 <span class="sd">Compute the contribution to the gravitational J2 of Mars from hydrostatic</span>
 <span class="sd">interfaces beneath the lithosphere.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">pyshtools</span> <span class="k">as</span> <span class="nn">pysh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyshtools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pysh</span>
 
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">HydrostaticShapeLith</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">HydrostaticShapeLith</span>
 
 <span class="c1"># ==== MAIN FUNCTION ====</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 
     <span class="n">d_lith</span> <span class="o">=</span> <span class="mf">150.e3</span>
     <span class="n">rho_crust</span> <span class="o">=</span> <span class="mf">2900.</span>
@@ -2255,15 +2258,15 @@ interfaces beneath the lithosphere.</p>
 
 <span class="sd">Compute hydrostatic shape of Earth using PREM.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pyshtools</span> <span class="k">as</span> <span class="nn">pysh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyshtools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pysh</span>
 
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">HydrostaticShape</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">HydrostaticShape</span>
 
 <span class="c1"># ==== MAIN FUNCTION ====</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 
     <span class="n">model_name</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PREM.dat&#39;</span><span class="p">]</span>
     <span class="n">spec</span> <span class="o">=</span> <span class="s1">&#39;Data/&#39;</span>
@@ -2345,15 +2348,15 @@ interfaces beneath the lithosphere.</p>
 
 <span class="sd">Calculate the hydrostatic shape of Ceres, as in Wieczorek et al. (2019).</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pyshtools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyshtools</span>
 
-<span class="kn">from</span> <span class="nn">ctplanet</span> <span class="kn">import</span> <span class="n">HydrostaticShape</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctplanet</span><span class="w"> </span><span class="kn">import</span> <span class="n">HydrostaticShape</span>
 
 <span class="c1"># ==== MAIN FUNCTION ====</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 
     <span class="c1"># Thomas et al. 2005</span>
     <span class="n">mass</span> <span class="o">=</span> <span class="mf">9.395e20</span>
@@ -2466,7 +2469,7 @@ By the ctplanet developers
 
   <p class="copyright">
     
-      © Copyright 2024, The ctplanet developers.
+      © Copyright 2025.
       <br/>
     
   </p>
@@ -2475,7 +2478,7 @@ By the ctplanet developers
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Dec 31, 2024.
+  Last updated on Jan 07, 2025.
   <br/>
 </p>
   </div>

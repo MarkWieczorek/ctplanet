@@ -30,9 +30,10 @@
   <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=e165fc2d" />
   
   <!-- So that users can add custom icons -->
   <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -40,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=9fd5c01c"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,8 +54,8 @@
     <link rel="prev" title="CTPLANET" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2.14" />
-    <meta name="docbuild:last-update" content="Dec 31, 2024"/>
+  <meta name="docsearch:version" content="0.2.15" />
+    <meta name="docbuild:last-update" content="Jan 07, 2025"/>
   </head>
   
   
@@ -133,9 +134,11 @@
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="ctplanet - Home"/>
-    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="ctplanet - Home"/>
+    <img src="_static/logo.png" class="logo__image only-light" alt=""/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt=""/>
   
+  
+    <p class="title logo__title"><span class="project-version">0.2.15</span></p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -297,18 +300,18 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
 <section id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">#</a></h2>
-<p>The <cite>ctplanet</cite> package requires <cite>pyshtools</cite> (&gt;=4.13.1), which can be installed using either <cite>conda</cite></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ctplanet</span></code> package requires <code class="docutils literal notranslate"><span class="pre">pyshtools</span></code> (&gt;=4.13.1), which can be installed using either <code class="docutils literal notranslate"><span class="pre">conda</span></code></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">pyshtools</span>
 </pre></div>
 </div>
-<p>or <cite>pip</cite></p>
+<p>or <code class="docutils literal notranslate"><span class="pre">pip</span></code></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyshtools</span>
 </pre></div>
 </div>
 </section>
 <section id="install-using-pip">
 <h2>Install using pip<a class="headerlink" href="#install-using-pip" title="Link to this heading">#</a></h2>
-<p>Install the <cite>ctplanet</cite> module using pip</p>
+<p>Install the <code class="docutils literal notranslate"><span class="pre">ctplanet</span></code> module using pip</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">ctplanet</span>
 </pre></div>
 </div>
@@ -320,7 +323,7 @@
 <span class="n">cd</span> <span class="n">ctplanet</span>
 </pre></div>
 </div>
-<p>To install <cite>ctplanet</cite> in the active Python environment lib folder, use</p>
+<p>To install <code class="docutils literal notranslate"><span class="pre">ctplanet</span></code> in the active Python environment lib folder, use</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
 </pre></div>
 </div>
@@ -328,16 +331,16 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
 </pre></div>
 </div>
-<p>The second method is preferred if you plan on modifying the <cite>ctplanet</cite> source code.</p>
+<p>The second method is preferred if you plan on modifying the <code class="docutils literal notranslate"><span class="pre">ctplanet</span></code> source code.</p>
 </section>
 <section id="working-with-the-example-scripts">
 <h2>Working with the example scripts<a class="headerlink" href="#working-with-the-example-scripts" title="Link to this heading">#</a></h2>
-<p>To access the example scripts, you must download the <cite>ctplanet</cite>
+<p>To access the example scripts, you must download the <code class="docutils literal notranslate"><span class="pre">ctplanet</span></code>
 repository from GitHub. The easiest way to do this is by cloning the repo</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">MarkWieczorek</span><span class="o">/</span><span class="n">ctplanet</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
-<p>To execute a script, it is only necessary to enter the <cite>examples</cite> directory and run the file using the python command</p>
+<p>To execute a script, it is only necessary to enter the <code class="docutils literal notranslate"><span class="pre">examples</span></code> directory and run the file using the python command</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">ctplanet</span><span class="o">/</span><span class="n">examples</span>
 <span class="n">python</span> <span class="n">Moon</span><span class="o">-</span><span class="n">Crust</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
@@ -425,7 +428,7 @@ By the ctplanet developers
 
   <p class="copyright">
     
-      © Copyright 2024, The ctplanet developers.
+      © Copyright 2025.
       <br/>
     
   </p>
@@ -434,7 +437,7 @@ By the ctplanet developers
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Dec 31, 2024.
+  Last updated on Jan 07, 2025.
   <br/>
 </p>
   </div>
