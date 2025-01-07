@@ -40,7 +40,8 @@ jobs:
                                  sphinx-book-theme \
                                  sphinx-toolbox \
                                  sphinx-copybutton \
-                                 pyshtools
+                                 myst-parser \
+                                 pyshtools \
 
     - name: Build ctplanet using pip
       shell: bash -l {0}
@@ -54,34 +55,8 @@ jobs:
         cd docs
         make html
 
-    - name: Upload artifact of the html output
-      uses: actions/upload-artifact@v4
+    - name: Deploy
+      if: github.event_name != 'pull_request'
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
-        name: gh-pages-documentation
-        path: docs/_build/html/
-        retention-days: 1
-
-    - name: Clean gh-pages branch
-      shell: bash -l {0}
-      run: |
-        git switch gh-pages
-        git clean -fd
-        git config --local user.email "mark.wieczorek@ipgp.fr"
-        git config --local user.name "GitHub Action"
-
-    - name: Download artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: gh-pages-documentation
-
-    - name: Commit changes
-      shell: bash -l {0}
-      run: |
-        git add .
-        git commit -m "Update gh-pages documenation" -a || true
-
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        branch: gh-pages
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        folder: docs/_build/html
