@@ -1,0 +1,39 @@
+{
+    "@context": "https://w3id.org/codemeta/3.0",
+    "type": "SoftwareSourceCode",
+    "applicationCategory": "Science, planetary science, geophysics",
+    "author": [
+        {
+            "id": "https://orcid.org/0000-0001-7007-4222",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Institut de physique du globe de Paris"
+            },
+            "email": "mark.wieczorek@ipgp.fr",
+            "familyName": "Wieczorek",
+            "givenName": "Mark"
+        },
+        {
+            "type": "Role",
+            "schema:author": "https://orcid.org/0000-0001-7007-4222",
+            "roleName": "Maintainer"
+        }
+    ],
+    "codeRepository": "https://github.com/MarkWieczorek/ctplanet.git",
+    "dateModified": "2025-01-07",
+    "description": "Create crustal thickness maps of planets from gravity and topography",
+    "identifier": "10.5281/zenodo.4438566",
+    "keywords": [
+        "Crust",
+        "gravity",
+        "geophysics"
+    ],
+    "license": "https://spdx.org/licenses/BSD-3-Clause",
+    "name": "ctplanet",
+    "programmingLanguage": "Python",
+    "relatedLink": "https://markwieczorek.github.io/ctplanet/",
+    "version": "0.2.15",
+    "developmentStatus": "active",
+    "issueTracker": "https://github.com/MarkWieczorek/ctplanet/issues"
+}
