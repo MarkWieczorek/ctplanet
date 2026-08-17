@@ -27,7 +27,7 @@ pip install ctplanet
 First, clone the repo on your computer and cd to the new directory
 
 ```
-git clone https://github.com/MarkWieczorek/ctplanet.git
+git clone https://codeberg.org/mark-wieczorek/ctplanet.git
 cd ctplanet
 ```
 
@@ -48,10 +48,10 @@ The second method is preferred if you plan on modifying the `ctplanet` source co
 ## Working with the example scripts
 
 To access the example scripts, you must download the `ctplanet`
-repository from GitHub. The easiest way to do this is by cloning the repo
+repository from Codeberg. The easiest way to do this is by cloning the repo
 
 ```
-git clone https://github.com/MarkWieczorek/ctplanet.git
+git clone https://codeberg.org/mark-wieczorek/ctplanet.git
 ```
 
 To execute a script, it is only necessary to enter the `examples` directory and run the file using the python command

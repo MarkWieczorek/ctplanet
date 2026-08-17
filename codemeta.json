@@ -20,7 +20,7 @@
             "roleName": "Maintainer"
         }
     ],
-    "codeRepository": "https://github.com/MarkWieczorek/ctplanet.git",
+    "codeRepository": "https://codeberg.org/mark-wieczorek/ctplanet.git",
     "dateModified": "2025-01-07",
     "description": "Create crustal thickness maps of planets from gravity and topography",
     "identifier": "10.5281/zenodo.4438566",
@@ -32,8 +32,8 @@
     "license": "https://spdx.org/licenses/BSD-3-Clause",
     "name": "ctplanet",
     "programmingLanguage": "Python",
-    "relatedLink": "https://markwieczorek.github.io/ctplanet/",
+    "relatedLink": "https://mark-wieczorek.codeberg.page/ctplanet/",
     "version": "0.2.15",
     "developmentStatus": "active",
-    "issueTracker": "https://github.com/MarkWieczorek/ctplanet/issues"
+    "issueTracker": "https://codeberg.org/mark-wieczorek/ctplanet/issues"
 }

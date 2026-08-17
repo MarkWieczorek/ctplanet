@@ -1,7 +1,7 @@
 # Examples
 
 :::{note}
-In order to access the example files, it is necessary to download or clone the [ctplanet repo](https://github.com/MarkWieczorek/ctplanet) from GitHub. The files are located in the `examples` directory.
+In order to access the example files, it is necessary to download or clone the [ctplanet repo](https://codeberg.org/mark-wieczorek/ctplanet) from Codeberg. The files are located in the `examples` directory.
 :::
 
 ## Moon

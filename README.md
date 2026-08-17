@@ -79,7 +79,7 @@ ctplanet provides several functions and example scripts for generating crustal t
 
 Download the ctplanet repository and install using pip
 ```bash
-    git clone https://github.com/MarkWieczorek/ctplanet.git
+    git clone https://codeberg.org/mark-wieczorek/ctplanet.git
     pip install .
 ```
 

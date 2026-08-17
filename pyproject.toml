@@ -25,8 +25,8 @@ authors = [
 dependencies = ['pyshtools>=4.13.1']
 
 [project.urls]
-homepage = 'https://github.com/MarkWieczorek/ctplanet'
-download = 'https://github.com/MarkWieczorek/ctplanet/zipball/master'
+homepage = 'https://codeberg.org/mark-wieczorek/ctplanet'
+download = 'https://codeberg.org/mark-wieczorek/ctplanet/archive/master.zip'
 
 [build-system]
 requires = ['setuptools', 'wheel', 'setuptools_scm[toml]']

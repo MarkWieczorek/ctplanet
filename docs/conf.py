@@ -37,7 +37,7 @@ html_theme = 'sphinx_book_theme'
 html_logo = "_static/logo.png"
 html_theme_options = {
     "repository_branch": "master",
-    "repository_url": "https://github.com/MarkWieczorek/ctplanet",
+    "repository_url": "https://codeberg.org/mark-wieczorek/ctplanet",
     "use_repository_button": True,
     "use_sidenotes": False,
     "use_edit_page_button": False,
