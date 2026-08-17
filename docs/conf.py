@@ -48,6 +48,7 @@ html_theme_options = {
         "text": f'<span class="project-version">{version}</span>'
     },
     "home_page_in_toc": False,
+    "repository_provider": "github",  # Often works for Codeberg due to URL similarity
 }
 html_static_path = ['_static']
 html_show_sourcelink = False
@@ -57,4 +58,10 @@ html_title = "ctplanet"
 html_short_title = "ctplanet"
 html_last_updated_fmt = "%b %d, %Y"
 html_css_files = ["custom.css"]
-html_context = {}
+html_context = {
+    "repository_url": "https://codeberg.org/mark-wieczorek/ctplanet",
+    "repository_branch": "master",  # or your default branch (e.g., 'master')
+    "path_to_docs": "",  # relative path from repo root to docs source, if not in root
+    "use_issues_button": True,
+    "use_repository_button": True,
+}
