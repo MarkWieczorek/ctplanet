@@ -1,0 +1,38 @@
+name: Upload Python Package to PYPI
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+
+    runs-on: codeberg-tiny
+    permissions:
+      id-token: write
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+
+    - name: Setup Miniconda
+      uses: conda-incubator/setup-miniconda@v4
+      with:
+        python-version: 3.14
+        channels: conda-forge
+        auto-update-conda: true
+        miniconda-version: "latest"
+        activate-environment: pypi
+
+    - name: Set up Conda environment and build package
+      shell: bash -l {0}
+      run: |
+        conda config --set always_yes yes --set changeps1 no
+        conda install -q -n pypi python=3.14 \
+                                 setuptools \
+                                 pypandoc \
+                                 build
+        python -m build .
+
+    - name: Publish
+      uses: https://github.com/pypa/gh-action-pypi-publish@release/v1

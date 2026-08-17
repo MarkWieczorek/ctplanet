@@ -1,0 +1,61 @@
+name: Create html web documentation
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+jobs:
+  docs:
+    runs-on: codeberg-small
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+      with:
+        fetch-depth: 0
+
+    - name: Setup Miniconda
+      uses: conda-incubator/setup-miniconda@v4
+      with:
+        python-version: 3.14
+        channels: conda-forge
+        auto-update-conda: true
+        miniconda-version: "latest"
+        activate-environment: docs
+
+    - name: Set up Conda environment
+      shell: bash -l {0}
+      run: |
+        conda config --set always_yes yes --set changeps1 no
+        conda install -q -n docs python=3.14 \
+                                 pip \
+                                 setuptools \
+                                 pypandoc \
+                                 sphinx \
+                                 sphinx-book-theme \
+                                 sphinx-toolbox \
+                                 sphinx-copybutton \
+                                 myst-parser \
+                                 pyshtools \
+
+    - name: Build ctplanet using pip
+      shell: bash -l {0}
+      run: |
+        conda env list
+        pip install --no-deps .
+
+    - name: Build the sphinx documentation
+      shell: bash -l {0}
+      run: |
+        cd docs
+        make html
+
+    - name: Deploy to codeberg Pages (www subdomain)
+      if: forgejo.event.action == 'published'
+      uses: https://codeberg.org/git-pages/action@v2
+      with:
+        site: https://${{ forge.repository_owner }}.codeberg.page/ctplanet/
+        token: ${{ forge.token }}
+        source: docs/_build/html/
