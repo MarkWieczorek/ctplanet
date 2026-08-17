@@ -8,7 +8,7 @@ on:
 
 jobs:
   docs:
-    runs-on: codeberg-small
+    runs-on: codeberg-medium
 
     steps:
     - name: Checkout
@@ -53,7 +53,6 @@ jobs:
         make html
 
     - name: Deploy to codeberg Pages (www subdomain)
-      if: forgejo.event.action == 'published'
       uses: https://codeberg.org/git-pages/action@v2
       with:
         site: https://${{ forge.repository_owner }}.codeberg.page/ctplanet/
