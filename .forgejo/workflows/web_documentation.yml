@@ -17,7 +17,7 @@ jobs:
         fetch-depth: 0
 
     - name: Setup Miniconda
-      uses: conda-incubator/setup-miniconda@v4
+      uses: https://github.com/conda-incubator/setup-miniconda@v4
       with:
         python-version: 3.14
         channels: conda-forge
