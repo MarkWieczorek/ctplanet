@@ -49,6 +49,14 @@ html_theme_options = {
     },
     "home_page_in_toc": False,
     "repository_provider": "github",  # Often works for Codeberg due to URL similarity
+    "icon_links": [
+        {
+            "name": "Codeberg",
+            "url": "https://codeberg.org/mark-wieczorek/ctplanet",
+            "icon": "_static/codeberg-icon.svg",  # Path to your local SVG
+            "type": "local",
+        },
+    ],
 }
 html_static_path = ['_static']
 html_show_sourcelink = False
