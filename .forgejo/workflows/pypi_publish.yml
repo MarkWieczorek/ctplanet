@@ -35,7 +35,7 @@ jobs:
         conda install -q -n pypi python=3.13 \
                                  setuptools \
                                  pypandoc \
-                                 build
+        pip install build
         python -m build .
 
     - name: Publish
