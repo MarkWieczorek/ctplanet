@@ -29,8 +29,7 @@ jobs:
       shell: bash -l {0}
       run: |
         conda config --set always_yes yes --set changeps1 no
-        conda install -q -n docs python=3.14 \
-                                 pip \
+        conda install -q -n docs pip \
                                  setuptools \
                                  pypandoc \
                                  sphinx \
@@ -38,7 +37,7 @@ jobs:
                                  sphinx-toolbox \
                                  sphinx-copybutton \
                                  myst-parser \
-                                 pyshtools \
+                                 pyshtools
 
     - name: Build ctplanet using pip
       shell: bash -l {0}

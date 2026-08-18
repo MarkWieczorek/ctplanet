@@ -32,9 +32,7 @@ jobs:
       shell: bash -l {0}
       run: |
         conda config --set always_yes yes --set changeps1 no
-        conda install -q -n pypi python=3.14 \
-                                 setuptools \
-                                 pypandoc
+        conda install -q -n pypi setuptools pypandoc
         pip install build
         python -m build .
 
