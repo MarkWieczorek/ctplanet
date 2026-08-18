@@ -39,5 +39,5 @@ jobs:
       if: forgejo.event.action == 'published'
       uses: https://github.com/pypa/gh-action-pypi-publish@release/v1
       with:
-        username = __token__
-        password = ${{ secrets.ctplanet_pypi }}
+        username: __token__
+        password: ${{ secrets.ctplanet_pypi }}
