@@ -22,7 +22,7 @@ jobs:
     - name: Setup Miniconda
       uses: https://github.com/conda-incubator/setup-miniconda@v4
       with:
-        python-version: 3.13
+        python-version: 3.14
         channels: conda-forge
         auto-update-conda: true
         miniconda-version: "latest"
@@ -32,9 +32,9 @@ jobs:
       shell: bash -l {0}
       run: |
         conda config --set always_yes yes --set changeps1 no
-        conda install -q -n pypi python=3.13 \
+        conda install -q -n pypi python=3.14 \
                                  setuptools \
-                                 pypandoc \
+                                 pypandoc
         pip install build
         python -m build .
 
