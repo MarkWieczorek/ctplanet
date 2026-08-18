@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
 
-    runs-on: codeberg-small
+    runs-on: codeberg-medium
     permissions:
       id-token: write
 
